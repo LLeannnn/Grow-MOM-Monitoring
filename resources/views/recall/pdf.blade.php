@@ -14,7 +14,7 @@ tr:nth-child(even) td { background: #f9fafb; }
 </style>
 </head>
 <body>
-<h1>📋 Recall Gizi — {{ $anak->nama_anak }}</h1>
+<h1><i data-feather="clipboard"></i> Recall Gizi — {{ $anak->nama_anak }}</h1>
 <p style="color:#666;font-size:11px;">Dicetak: {{ now()->format('d F Y, H:i') }} | Ibu: {{ $anak->ibu->nama_ibu }}</p>
 
 <table>

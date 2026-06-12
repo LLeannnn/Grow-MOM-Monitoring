@@ -145,7 +145,7 @@ class Pertumbuhan extends Model
     // ──────────────────────────────────────────────────────────────
     // WHO REFERENCE CURVES FOR CHART
     // ──────────────────────────────────────────────────────────────
-    public static function getWhoReferenceForChart(int $minUmur, int $maxUmur, string $jenisKelamin, string $tipe): array
+    public static function getWhoReferenceForChart(int $min, int $max, string $jenisKelamin, string $tipe, bool $perWeek = false): array
     {
         $ref = match($tipe) {
             'weight' => $jenisKelamin === 'L' ? self::$whoWeightBoys : self::$whoWeightGirls,
@@ -154,15 +154,40 @@ class Pertumbuhan extends Model
         };
 
         $labels = []; $m3 = []; $m2 = []; $med = []; $p2 = [];
-        foreach ($ref as $bulan => $vals) {
-            if ($bulan >= $minUmur && $bulan <= $maxUmur) {
-                $labels[] = $bulan . ' bln';
-                $m3[]  = $vals[0];
-                $m2[]  = $vals[1];
-                $med[] = $vals[2];
-                $p2[]  = $vals[3];
+        
+        if ($perWeek) {
+            for ($w = $min; $w <= $max; $w++) {
+                $labels[] = $w . ' mgg';
+                
+                // Approximate 1 month = 4.34524 weeks
+                $m = $w / 4.34524;
+                $m_floor = (int) floor($m);
+                $m_ceil = (int) ceil($m);
+                if ($m_ceil > 60) $m_ceil = 60;
+                if ($m_floor > 60) $m_floor = 60;
+                
+                $fraction = $m - $m_floor;
+                
+                $valFloor = $ref[$m_floor] ?? $ref[60];
+                $valCeil = $ref[$m_ceil] ?? $ref[60];
+                
+                $m3[] = round($valFloor[0] + ($valCeil[0] - $valFloor[0]) * $fraction, 2);
+                $m2[] = round($valFloor[1] + ($valCeil[1] - $valFloor[1]) * $fraction, 2);
+                $med[] = round($valFloor[2] + ($valCeil[2] - $valFloor[2]) * $fraction, 2);
+                $p2[] = round($valFloor[3] + ($valCeil[3] - $valFloor[3]) * $fraction, 2);
+            }
+        } else {
+            foreach ($ref as $bulan => $vals) {
+                if ($bulan >= $min && $bulan <= $max) {
+                    $labels[] = $bulan . ' bln';
+                    $m3[]  = $vals[0];
+                    $m2[]  = $vals[1];
+                    $med[] = $vals[2];
+                    $p2[]  = $vals[3];
+                }
             }
         }
-        return compact('labels', 'm3', 'm2', 'med', 'p2', 'minUmur', 'maxUmur');
+        
+        return compact('labels', 'm3', 'm2', 'med', 'p2', 'min', 'max');
     }
 }

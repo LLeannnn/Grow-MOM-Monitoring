@@ -33,38 +33,68 @@ body{margin:0;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764
     .ob-card { border-radius: 0; min-height: 100vh; }
     body { padding: 0; }
 }
+
+/* NIK shake animation */
+@keyframes nikShake {
+    0%,100% { transform: translateX(0); }
+    15%      { transform: translateX(-7px); }
+    30%      { transform: translateX(7px); }
+    45%      { transform: translateX(-5px); }
+    60%      { transform: translateX(5px); }
+    75%      { transform: translateX(-3px); }
+    90%      { transform: translateX(3px); }
+}
+.nik-shake { animation: nikShake 0.45s ease; }
+.nik-counter {
+    font-size: 11.5px;
+    color: #9ca3af;
+    text-align: right;
+    margin-top: 3px;
+    transition: color .2s;
+}
+.nik-counter.warn { color: #7c3aed; font-weight: 600; }
+.nik-counter.over { color: #ef4444; font-weight: 700; }
+.nik-limit-msg {
+    font-size: 12px;
+    color: #ef4444;
+    margin-top: 4px;
+    display: none;
+}
 </style>
 </head>
 <body>
 <div class="ob-card">
     <div class="ob-header">
-        <div style="font-size:36px;margin-bottom:8px;">👩‍🍼</div>
-        <h1>Halo, {{ auth()->user()->name }}! 👋</h1>
+        <div style="font-size:36px;margin-bottom:8px;"><i data-feather="user"></i><i data-feather="heart"></i></div>
+        <h1>Halo, {{ auth()->user()->name }}! <i data-feather="smile"></i></h1>
         <p>Sebelum mulai, yuk isi informasi dasar Anda. Hanya butuh 2 menit!</p>
     </div>
     <div class="ob-steps">
         <div class="step active"><div class="step-dot">1</div>Profil Ibu</div>
         <div class="step"><div class="step-dot">2</div>Data Anak</div>
-        <div class="step"><div class="step-dot">3</div>Selesai 🎉</div>
+        <div class="step"><div class="step-dot">3</div>Selesai <i data-feather="star"></i></div>
     </div>
     <div class="ob-body">
         @if(session('success'))
-            <div class="welcome-msg">🎉 {{ session('success') }}</div>
+            <div class="welcome-msg"><i data-feather="star"></i> {{ session('success') }}</div>
         @endif
 
         <div class="welcome-msg">
-            📝 <strong>Langkah 1 dari 2:</strong> Isi data diri Ibu. Data anak bisa ditambahkan setelah ini.
+            <i data-feather="edit"></i> <strong>Langkah 1 dari 2:</strong> Isi data diri Ibu. Data anak bisa ditambahkan setelah ini.
         </div>
 
         <form method="POST" action="{{ route('onboarding.store') }}">
             @csrf
 
-            <div class="section-title">📋 Data Pribadi Ibu</div>
+            <div class="section-title"><i data-feather="clipboard"></i> Data Pribadi Ibu</div>
             <div class="grid2">
                 <div class="form-group">
                     <label>NIK KTP <span class="hint">(16 digit)</span></label>
-                    <input name="nik" class="form-control {{ $errors->has('nik') ? 'error-field' : '' }}"
-                        value="{{ old('nik') }}" placeholder="Masukkan 16 digit NIK" required>
+                    <input id="nik-input" name="nik" inputmode="numeric" pattern="[0-9]*"
+                        class="form-control {{ $errors->has('nik') ? 'error-field' : '' }}"
+                        value="{{ old('nik') }}" placeholder="Masukkan 16 digit NIK" maxlength="16" required>
+                    <div class="nik-counter" id="nik-counter">0 / 16</div>
+                    <div class="nik-limit-msg" id="nik-limit-msg">⚠️ Maksimal 16 digit angka</div>
                     @error('nik')<div class="error-msg">{{ $message }}</div>@enderror
                 </div>
                 <div class="form-group">
@@ -75,19 +105,11 @@ body{margin:0;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764
                 </div>
             </div>
 
-            <div class="grid2">
-                <div class="form-group">
-                    <label>Tanggal Lahir</label>
-                    <input type="date" name="tanggal_lahir" class="form-control {{ $errors->has('tanggal_lahir') ? 'error-field' : '' }}"
-                        value="{{ old('tanggal_lahir') }}" required>
-                    @error('tanggal_lahir')<div class="error-msg">{{ $message }}</div>@enderror
-                </div>
-                <div class="form-group">
-                    <label>No. WhatsApp</label>
-                    <input name="no_telepon" class="form-control {{ $errors->has('no_telepon') ? 'error-field' : '' }}"
-                        value="{{ old('no_telepon') }}" placeholder="08xxxxxxxxxx" required>
-                    @error('no_telepon')<div class="error-msg">{{ $message }}</div>@enderror
-                </div>
+            <div class="form-group">
+                <label>Tanggal Lahir</label>
+                <input type="date" name="tanggal_lahir" class="form-control {{ $errors->has('tanggal_lahir') ? 'error-field' : '' }}"
+                    value="{{ old('tanggal_lahir') }}" required>
+                @error('tanggal_lahir')<div class="error-msg">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-group">
@@ -97,18 +119,18 @@ body{margin:0;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764
                 @error('alamat')<div class="error-msg">{{ $message }}</div>@enderror
             </div>
 
-            <div class="section-title" style="margin-top:24px;">👩‍💼 Informasi Tambahan</div>
+            <div class="section-title" style="margin-top:24px;"><i data-feather="user"></i><i data-feather="briefcase"></i> Informasi Tambahan</div>
             <div class="grid2">
                 <div class="form-group">
                     <label>Pekerjaan</label>
                     <select name="pekerjaan" class="form-control {{ $errors->has('pekerjaan') ? 'error-field' : '' }}" required>
                         <option value="">-- Pilih --</option>
-                        <option value="ibu_rumah_tangga" {{ old('pekerjaan')=='ibu_rumah_tangga'?'selected':'' }}>🏠 Ibu Rumah Tangga</option>
-                        <option value="pns"              {{ old('pekerjaan')=='pns'?'selected':'' }}>🏛️ PNS</option>
-                        <option value="swasta"           {{ old('pekerjaan')=='swasta'?'selected':'' }}>🏢 Karyawan Swasta</option>
-                        <option value="wiraswasta"       {{ old('pekerjaan')=='wiraswasta'?'selected':'' }}>🛒 Wiraswasta</option>
-                        <option value="petani"           {{ old('pekerjaan')=='petani'?'selected':'' }}>🌾 Petani</option>
-                        <option value="lainnya"          {{ old('pekerjaan')=='lainnya'?'selected':'' }}>✨ Lainnya</option>
+                        <option value="ibu_rumah_tangga" {{ old('pekerjaan')=='ibu_rumah_tangga'?'selected':'' }}><i data-feather="home"></i> Ibu Rumah Tangga</option>
+                        <option value="pns"              {{ old('pekerjaan')=='pns'?'selected':'' }}><i data-feather="home"></i> PNS</option>
+                        <option value="swasta"           {{ old('pekerjaan')=='swasta'?'selected':'' }}><i data-feather="home"></i> Karyawan Swasta</option>
+                        <option value="wiraswasta"       {{ old('pekerjaan')=='wiraswasta'?'selected':'' }}><i data-feather="shopping-cart"></i> Wiraswasta</option>
+                        <option value="petani"           {{ old('pekerjaan')=='petani'?'selected':'' }}><i data-feather="hash"></i> Petani</option>
+                        <option value="lainnya"          {{ old('pekerjaan')=='lainnya'?'selected':'' }}><i data-feather="star"></i> Lainnya</option>
                     </select>
                     @error('pekerjaan')<div class="error-msg">{{ $message }}</div>@enderror
                 </div>
@@ -132,16 +154,77 @@ body{margin:0;min-height:100vh;background:linear-gradient(135deg,#667eea 0%,#764
                 <label>Status Pernikahan</label>
                 <select name="status_pernikahan" class="form-control {{ $errors->has('status_pernikahan') ? 'error-field' : '' }}" required>
                     <option value="">-- Pilih --</option>
-                    <option value="menikah"     {{ old('status_pernikahan')=='menikah'?'selected':'' }}>💍 Menikah</option>
-                    <option value="cerai_hidup" {{ old('status_pernikahan')=='cerai_hidup'?'selected':'' }}>📋 Cerai Hidup</option>
-                    <option value="cerai_mati"  {{ old('status_pernikahan')=='cerai_mati'?'selected':'' }}>🕊️ Cerai Mati</option>
-                    <option value="janda"       {{ old('status_pernikahan')=='janda'?'selected':'' }}>👤 Janda</option>
+                    <option value="menikah"       {{ old('status_pernikahan')=='menikah'?'selected':'' }}><i data-feather="heart"></i> Menikah</option>
+                    <option value="belum_menikah" {{ old('status_pernikahan')=='belum_menikah'?'selected':'' }}><i data-feather="user"></i> Belum Menikah</option>
+                    <option value="cerai"         {{ old('status_pernikahan')=='cerai'?'selected':'' }}><i data-feather="clipboard"></i> Cerai</option>
                 </select>
                 @error('status_pernikahan')<div class="error-msg">{{ $message }}</div>@enderror
             </div>
 
-            <button type="submit" class="btn-submit">Lanjut: Tambah Data Anak →</button>
+            <button type="submit" class="btn-submit">Lanjut: Tambah Data Anak <i data-feather="arrow-right"></i></button>
         </form>
     </div>
 </div>
+
+<script>
+(function () {
+    const input   = document.getElementById('nik-input');
+    const counter = document.getElementById('nik-counter');
+    const limitMsg= document.getElementById('nik-limit-msg');
+    const MAX     = 16;
+
+    function updateCounter() {
+        const len = input.value.length;
+        counter.textContent = len + ' / ' + MAX;
+        counter.className = 'nik-counter' + (len === MAX ? ' warn' : '');
+    }
+
+    function shake() {
+        input.classList.remove('nik-shake');
+        // force reflow so re-adding the class triggers the animation
+        void input.offsetWidth;
+        input.classList.add('nik-shake');
+        input.classList.add('error-field');
+        limitMsg.style.display = 'block';
+        counter.className = 'nik-counter over';
+    }
+
+    input.addEventListener('animationend', function () {
+        input.classList.remove('nik-shake');
+    });
+
+    // Allow only digits
+    input.addEventListener('keypress', function (e) {
+        if (!/[0-9]/.test(e.key)) { e.preventDefault(); return; }
+        if (input.value.length >= MAX) { e.preventDefault(); shake(); return; }
+    });
+
+    // Handle paste
+    input.addEventListener('paste', function (e) {
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '');
+        const combined = (input.value + pasted).slice(0, MAX);
+        if ((input.value + pasted).length > MAX) shake();
+        input.value = combined;
+        updateCounter();
+        if (combined.length < MAX) {
+            input.classList.remove('error-field');
+            limitMsg.style.display = 'none';
+        }
+    });
+
+    input.addEventListener('input', function () {
+        // Strip non-digits that may slip through (e.g. mobile autocomplete)
+        input.value = input.value.replace(/\D/g, '').slice(0, MAX);
+        updateCounter();
+        if (input.value.length < MAX) {
+            input.classList.remove('error-field');
+            limitMsg.style.display = 'none';
+        }
+    });
+
+    // Initialise counter with old() value if any
+    updateCounter();
+}());
+</script>
 </body></html>

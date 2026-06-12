@@ -4,7 +4,7 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🥕 Edukasi MPASI</h1>
+        <h1><i data-feather="book-open"></i> Edukasi MPASI</h1>
         <p>Panduan lengkap pemberian makanan pendamping ASI</p>
     </div>
     @if(auth()->user()->isAdmin())
@@ -23,7 +23,7 @@
             <input type="hidden" name="kategori" value="{{ request('kategori') }}">
         @endif
         <div class="search-bar">
-            <span class="icon">🔍</span>
+            <span class="icon"><i data-feather="search"></i></span>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari artikel...">
         </div>
     </form>
@@ -36,7 +36,7 @@
             @if($e->gambar)
                 <img src="{{ asset('storage/'.$e->gambar) }}" style="width:100%;height:170px;object-fit:cover;">
             @else
-                🥣
+                <i data-feather="coffee"></i>
             @endif
         </div>
         <div class="edukasi-body">
@@ -57,7 +57,7 @@
     </a>
     @empty
     <div class="empty-state" style="grid-column:1/-1;">
-        <div class="empty-icon">🥕</div>
+        <div class="empty-icon"><i data-feather="book-open"></i></div>
         <div class="empty-title">Belum ada konten edukasi</div>
         <div class="empty-desc">Tambahkan artikel edukasi MPASI untuk ibu dan bayi</div>
         @if(auth()->user()->isAdmin())

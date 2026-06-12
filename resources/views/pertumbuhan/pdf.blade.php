@@ -24,7 +24,7 @@ tr:nth-child(even) td { background: #f9fafb; }
 </style>
 </head>
 <body>
-<h1>📈 Laporan Pertumbuhan Anak</h1>
+<h1><i data-feather="trending-up"></i> Laporan Pertumbuhan Anak</h1>
 <div class="sub">GROW-MOM Monitoring System — Dicetak: {{ now()->format('d F Y, H:i') }}</div>
 
 <div class="info-box">

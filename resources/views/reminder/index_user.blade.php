@@ -5,7 +5,7 @@
 <div class="space-y-6">
     <!-- Header -->
     <div>
-        <h1 class="text-2xl font-bold text-on-surface">🔔 Reminder</h1>
+        <h1 class="text-2xl font-bold text-on-surface"><i data-feather="bell"></i> Reminder</h1>
         <p class="text-sm text-on-surface-variant mt-1">Jadwal imunisasi, posyandu & kontrol penting</p>
     </div>
 
@@ -65,7 +65,7 @@
                     @endif
                 </div>
 
-                <p class="text-[10px] font-bold text-on-surface-variant/80">👶 {{ $r->anak->nama_anak }}</p>
+                <p class="text-[10px] font-bold text-on-surface-variant/80"><i data-feather="smile"></i> {{ $r->anak->nama_anak }}</p>
                 
                 <p class="text-[10px] font-semibold text-on-surface-variant opacity-75 flex items-center gap-1">
                     <span class="material-symbols-outlined text-xs">calendar_today</span>
@@ -89,7 +89,7 @@
         </div>
         @empty
         <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
-            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">🔔</div>
+            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="bell"></i></div>
             <div class="font-bold text-on-surface mb-2">Belum ada reminder</div>
             <div class="text-xs text-on-surface-variant">Jadwal penting atau imunisasi anak Anda akan muncul di sini</div>
         </div>

@@ -2,9 +2,9 @@
 <nav class="pagination">
     {{-- Previous --}}
     @if ($paginator->onFirstPage())
-        <span>‹</span>
+        <span><i data-feather="chevron-left"></i></span>
     @else
-        <a href="{{ $paginator->previousPageUrl() }}">‹</a>
+        <a href="{{ $paginator->previousPageUrl() }}"><i data-feather="chevron-left"></i></a>
     @endif
 
     {{-- Pages --}}
@@ -25,9 +25,9 @@
 
     {{-- Next --}}
     @if ($paginator->hasMorePages())
-        <a href="{{ $paginator->nextPageUrl() }}">›</a>
+        <a href="{{ $paginator->nextPageUrl() }}"><i data-feather="chevron-right"></i></a>
     @else
-        <span>›</span>
+        <span><i data-feather="chevron-right"></i></span>
     @endif
 </nav>
 @endif

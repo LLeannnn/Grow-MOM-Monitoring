@@ -4,14 +4,14 @@
 
     <!-- Hero Section -->
         <section class="space-y-1">
-            <h1 class="text-2xl font-bold text-on-surface">Halo, {{ $ibu->nama_ibu }}! 👋</h1>
+            <h1 class="text-2xl font-bold text-on-surface">Halo, {{ $ibu->nama_ibu }}! <i data-feather="smile"></i></h1>
             <p class="text-base text-on-surface-variant">Pantau kesehatan dan gizi buah hati Anda hari ini</p>
         </section>
 
         @if($anakList->isEmpty())
         <!-- Empty State -->
         <section class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_10px_30px_rgba(30,41,59,0.04)]">
-            <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-4xl mb-4">👶</div>
+            <div class="w-20 h-20 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-4xl mb-4"><i data-feather="smile"></i></div>
             <h2 class="text-xl font-bold text-on-surface mb-2">Belum ada data anak</h2>
             <p class="text-on-surface-variant mb-6 text-sm">Yuk tambahkan data anak pertama Anda untuk mulai memantau tumbuh kembangnya!</p>
             <a href="{{ route('anak.create') }}" class="w-full py-4 px-6 bg-primary text-on-primary rounded-xl font-semibold flex items-center justify-center gap-2 shadow-lg hover:bg-primary-container active:scale-95 transition-all duration-200">
@@ -45,7 +45,7 @@
                     <div class="flex justify-between items-start mb-4 gap-2">
                         <div class="flex flex-col gap-2">
                             <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary/30 to-primary/80 flex items-center justify-center text-white text-lg shadow-inner shrink-0">
-                                {{ $anak->jenis_kelamin === 'laki-laki' ? '👦' : '👧' }}
+                                {!! $anak->jenis_kelamin === 'laki-laki' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                             </div>
                             <div>
                                 <h3 class="text-sm font-bold leading-tight">{{ Str::limit($anak->nama_anak, 12) }}</h3>
@@ -99,7 +99,7 @@
                         </div>
                         <div>
                             <h4 class="text-sm font-bold text-on-surface">{{ $r->judul }}</h4>
-                            <p class="text-[11px] font-medium text-on-surface-variant mt-0.5">📅 {{ \Carbon\Carbon::parse($r->tanggal_reminder)->translatedFormat('d F Y') }}</p>
+                            <p class="text-[11px] font-medium text-on-surface-variant mt-0.5"><i data-feather="calendar"></i> {{ \Carbon\Carbon::parse($r->tanggal_reminder)->translatedFormat('d F Y') }}</p>
                         </div>
                     </div>
                     <form method="POST" action="{{ route('reminder.selesai', $r->id) }}">

@@ -4,7 +4,7 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🔔 Reminder</h1>
+        <h1><i data-feather="bell"></i> Reminder</h1>
         <p>Pengingat imunisasi, posyandu, dan jadwal penting lainnya</p>
     </div>
     @if(auth()->user()->isAdmin())
@@ -29,7 +29,7 @@
 
 <div class="card fade-up">
     <div class="card-header">
-        <div class="card-title">📅 Daftar Reminder ({{ $reminders->total() }})</div>
+        <div class="card-title"><i data-feather="calendar"></i> Daftar Reminder ({{ $reminders->total() }})</div>
     </div>
     <div class="card-body" style="padding:0;">
         @forelse($reminders as $r)
@@ -44,21 +44,21 @@
                 <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;">
                     <span style="font-weight:700;font-size:14px;">{{ $r->judul }}</span>
                     @if($r->status === 'selesai')
-                        <span class="badge badge-success" style="font-size:10px;">✅ Selesai</span>
+                        <span class="badge badge-success" style="font-size:10px;"><i data-feather="check-circle"></i> Selesai</span>
                     @elseif($r->is_expired)
-                        <span class="badge badge-danger" style="font-size:10px;">⚠️ Terlambat</span>
+                        <span class="badge badge-danger" style="font-size:10px;"><i data-feather="alert-triangle"></i> Terlambat</span>
                     @else
-                        <span class="badge badge-info" style="font-size:10px;">🔔 Aktif</span>
+                        <span class="badge badge-info" style="font-size:10px;"><i data-feather="bell"></i> Aktif</span>
                     @endif
                     @if($r->kirim_sms)
-                        <span class="badge badge-purple" style="font-size:10px;">📱 SMS</span>
+                        <span class="badge badge-purple" style="font-size:10px;"><i data-feather="smartphone"></i> SMS</span>
                     @endif
                 </div>
                 <div style="font-size:12.5px;color:var(--text-muted);">
-                    👶 {{ $r->anak->nama_anak }} • 👩 {{ $r->ibu->nama_ibu }}
+                    <i data-feather="smile"></i> {{ $r->anak->nama_anak }} • <i data-feather="user"></i> {{ $r->ibu->nama_ibu }}
                 </div>
                 <div style="font-size:12.5px;color:var(--text-muted);">
-                    📅 {{ $r->tanggal_reminder->format('d F Y, H:i') }}
+                    <i data-feather="calendar"></i> {{ $r->tanggal_reminder->format('d F Y, H:i') }}
                 </div>
                 <div style="font-size:12.5px;margin-top:4px;">{{ $r->pesan }}</div>
             </div>
@@ -67,20 +67,20 @@
                 @if($r->status === 'aktif')
                 <form method="POST" action="{{ route('reminder.selesai', $r) }}">
                     @csrf @method('PATCH')
-                    <button class="btn btn-outline btn-sm" title="Tandai Selesai">✅</button>
+                    <button class="btn btn-outline btn-sm" title="Tandai Selesai"><i data-feather="check-circle"></i></button>
                 </form>
                 @endif
                 @if(auth()->user()->isAdmin())
                 <form method="POST" action="{{ route('reminder.destroy', $r) }}" onsubmit="return confirm('Hapus?')">
                     @csrf @method('DELETE')
-                    <button class="btn btn-danger btn-sm">🗑</button>
+                    <button class="btn btn-danger btn-sm"><i data-feather="trash-2"></i></button>
                 </form>
                 @endif
             </div>
         </div>
         @empty
         <div class="empty-state">
-            <div class="empty-icon">🔔</div>
+            <div class="empty-icon"><i data-feather="bell"></i></div>
             <div class="empty-title">Belum ada reminder</div>
             <div class="empty-desc">Buat reminder untuk mengingatkan jadwal imunisasi atau posyandu</div>
             @if(auth()->user()->isAdmin())

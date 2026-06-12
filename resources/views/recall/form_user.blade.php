@@ -4,10 +4,10 @@
 @section('content')
 @php
 $meals = [
-    'pagi'  => ['label'=>'Pagi',  'icon'=>'🌅','color'=>'text-amber-500', 'bg'=>'bg-amber-500/10', 'border'=>'border-amber-500'],
-    'siang' => ['label'=>'Siang', 'icon'=>'☀️', 'color'=>'text-green-500', 'bg'=>'bg-green-500/10', 'border'=>'border-green-500'],
-    'malam' => ['label'=>'Malam', 'icon'=>'🌙', 'color'=>'text-purple-500', 'bg'=>'bg-purple-500/10', 'border'=>'border-purple-500'],
-    'snack' => ['label'=>'Snack', 'icon'=>'🍎','color'=>'text-red-500', 'bg'=>'bg-red-500/10', 'border'=>'border-red-500'],
+    'pagi'  => ['label'=>'Pagi',  'icon'=>'wb_sunny',   'color'=>'text-amber-500', 'bg'=>'bg-amber-500/10', 'border'=>'border-amber-500'],
+    'siang' => ['label'=>'Siang', 'icon'=>'light_mode',  'color'=>'text-green-500',  'bg'=>'bg-green-500/10',  'border'=>'border-green-500'],
+    'malam' => ['label'=>'Malam', 'icon'=>'nights_stay', 'color'=>'text-purple-500', 'bg'=>'bg-purple-500/10', 'border'=>'border-purple-500'],
+    'snack' => ['label'=>'Snack', 'icon'=>'cookie',      'color'=>'text-red-500',    'bg'=>'bg-red-500/10',    'border'=>'border-red-500'],
 ];
 @endphp
 
@@ -48,14 +48,14 @@ $meals = [
 
         <!-- Sticky Progress Gizi -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-[0px_10px_25px_rgba(30,41,59,0.05)] border border-surface-container-low space-y-4">
-            <h2 class="text-sm font-bold text-on-surface">📊 Estimasi Gizi Harian</h2>
+            <h2 class="text-sm font-bold text-on-surface flex items-center gap-1.5"><span class="material-symbols-outlined text-base">bar_chart</span> Estimasi Gizi Harian</h2>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 @foreach([
-                    ['id'=>'sum-kal','label'=>'🔥 Kalori','satuan'=>'kkal','color'=>'bg-amber-500'],
+                    ['id'=>'sum-kal','label'=>'⚡ Kalori','satuan'=>'kkal','color'=>'bg-amber-500'],
                     ['id'=>'sum-pro','label'=>'🥩 Protein','satuan'=>'g','color'=>'bg-green-500'],
                     ['id'=>'sum-kar','label'=>'🌾 Karbo','satuan'=>'g','color'=>'bg-purple-500'],
-                    ['id'=>'sum-lem','label'=>'🧈 Lemak','satuan'=>'g','color'=>'bg-red-500']
+                    ['id'=>'sum-lem','label'=>'🫒 Lemak','satuan'=>'g','color'=>'bg-red-500']
                 ] as $item)
                 <div class="space-y-1">
                     <div class="flex justify-between text-[11px] font-bold text-on-surface-variant">
@@ -80,7 +80,7 @@ $meals = [
             <div class="flex bg-surface-container-low rounded-2xl p-1 mb-4">
                 @foreach($meals as $key=>$m)
                 <button type="button" onclick="switchTab('{{ $key }}')" id="tab-{{ $key }}" class="flex-1 py-3 text-xs font-bold rounded-xl flex flex-col items-center gap-1 transition-all {{ $loop->first ? 'bg-primary text-on-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}">
-                    <span class="text-xl">{{ $m['icon'] }}</span>
+                    <span class="material-symbols-outlined text-xl">{{ $m['icon'] }}</span>
                     <span class="flex items-center gap-1">
                         {{ $m['label'] }}
                         <span id="count-{{ $key }}" class="hidden text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full">0</span>
@@ -93,7 +93,7 @@ $meals = [
             <div id="pane-{{ $key }}" class="space-y-4 {{ $loop->first ? 'block' : 'hidden' }}">
                 <div class="flex justify-between items-center bg-surface-container-lowest px-4 py-3 rounded-2xl border border-surface-container-low">
                     <span class="text-xs font-bold flex items-center gap-1.5 {{ $m['color'] }}">
-                        <span class="text-lg">{{ $m['icon'] }}</span> Menu {{ $m['label'] }}
+                        <span class="material-symbols-outlined text-lg">{{ $m['icon'] }}</span> Menu {{ $m['label'] }}
                     </span>
                     <button type="button" onclick="tambahBaris('{{ $key }}')" class="px-4 py-2 {{ $m['bg'] }} {{ $m['color'] }} rounded-xl text-xs font-extrabold active:scale-95 transition-transform flex items-center gap-1">
                         <span class="material-symbols-outlined text-sm font-bold">add</span> Tambah
@@ -107,7 +107,7 @@ $meals = [
                 <div class="p-4 rounded-2xl {{ $m['bg'] }} {{ $m['color'] }} text-xs font-bold">
                     <div class="grid grid-cols-4 gap-2 text-center">
                         <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🔥 Kalori</span>
+                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">⚡ Kalori</span>
                             <span id="total-kal-{{ $key }}">0</span> <span class="text-[9px]">kkal</span>
                         </div>
                         <div>
@@ -119,7 +119,7 @@ $meals = [
                             <span id="total-kar-{{ $key }}">0</span> <span class="text-[9px]">g</span>
                         </div>
                         <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🧈 Lemak</span>
+                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🫒 Lemak</span>
                             <span id="total-lem-{{ $key }}">0</span> <span class="text-[9px]">g</span>
                         </div>
                     </div>
@@ -130,7 +130,7 @@ $meals = [
 
         <!-- Button Simpan -->
         <div class="fixed bottom-20 left-0 right-0 p-4 bg-surface-container/80 backdrop-blur-md z-40 max-w-md mx-auto border-t border-surface-container-high">
-            <button type="submit" class="w-full bg-primary text-on-primary py-4 rounded-2xl font-bold text-sm shadow-lg shadow-primary/20 active:scale-[0.98] transition-transform flex items-center justify-center gap-2">
+            <button type="submit" class="w-full py-4 rounded-2xl font-bold text-sm text-white shadow-lg active:scale-[0.98] transition-transform flex items-center justify-center gap-2" style="background:linear-gradient(135deg,#4648d4,#6063ee)">
                 <span class="material-symbols-outlined text-lg">save</span> Simpan Recall Gizi
             </button>
         </div>
@@ -139,42 +139,50 @@ $meals = [
 
 <!-- ROW TEMPLATE -->
 <template id="rowTemplate">
-<div class="food-row bg-surface-container-lowest p-4 rounded-3xl border border-surface-container-low shadow-[0px_5px_15px_rgba(30,41,59,0.02)] space-y-3 relative overflow-hidden">
-    <div class="flex justify-between items-center">
+<div class="food-row bg-surface-container-lowest rounded-2xl border border-surface-container-low shadow-sm relative overflow-hidden">
+    <!-- Header: Badge + Delete -->
+    <div class="flex justify-between items-center px-4 pt-3 pb-1">
         <span class="src-badge text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider hidden"></span>
-        <button type="button" onclick="hapusBaris(this)" class="w-8 h-8 rounded-full bg-error/10 text-error flex items-center justify-center hover:scale-105 active:scale-95 transition-all ml-auto">
-            <span class="material-symbols-outlined text-sm font-bold">delete</span>
+        <button type="button" onclick="hapusBaris(this)" class="w-7 h-7 rounded-full bg-error/10 text-error flex items-center justify-center active:scale-90 transition-all ml-auto">
+            <span class="material-symbols-outlined text-sm">close</span>
         </button>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <!-- Nama Makanan -->
-        <div class="relative">
-            <label class="block text-[10px] font-bold text-on-surface-variant mb-1 ml-0.5">Nama Makanan <span class="text-error">*</span></label>
+    <!-- Input Fields -->
+    <div class="px-4 pb-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <!-- Nama Makanan -->
             <div class="relative">
-                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-on-surface-variant opacity-75 material-symbols-outlined text-base">search</span>
-                <input type="text" class="food-search-input w-full pl-10 pr-4 py-2.5 bg-surface-container-low border-transparent rounded-2xl text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-semibold placeholder:font-normal" name="nama_makanan[]" placeholder="Ketik nama makanan..." autocomplete="off" oninput="onFoodSearch(this)" onblur="hideDropdown(this,300)" required>
-                <div class="food-dropdown hidden absolute top-full left-0 right-0 z-50 bg-white border border-surface-container-high rounded-2xl max-h-56 overflow-y-auto shadow-xl"></div>
+                <label class="block text-[10px] font-bold text-on-surface-variant mb-1 ml-0.5">Nama Makanan <span class="text-error">*</span></label>
+                <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 material-symbols-outlined text-base">search</span>
+                    <input type="text" class="food-search-input w-full pl-9 pr-4 py-2.5 bg-surface-container-low border border-transparent rounded-xl text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-semibold placeholder:font-normal" name="nama_makanan[]" placeholder="Ketik min. 2 huruf..." autocomplete="off" oninput="onFoodSearch(this)" onblur="hideDropdown(this,300)" required>
+                    <!-- Loading spinner -->
+                    <span class="search-spinner hidden absolute right-3 top-1/2 -translate-y-1/2">
+                        <svg class="animate-spin h-4 w-4 text-primary" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                    </span>
+                </div>
+                <div class="food-dropdown hidden absolute top-full left-0 right-0 z-50 bg-white border border-surface-container-high rounded-xl max-h-52 overflow-y-auto shadow-xl mt-1"></div>
             </div>
-        </div>
 
-        <!-- Porsi -->
-        <div>
-            <label class="block text-[10px] font-bold text-on-surface-variant mb-1 ml-0.5">Porsi / Takaran <span class="text-error">*</span></label>
-            <select class="porsi-select w-full px-4 py-2.5 bg-surface-container-low border-transparent rounded-2xl text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-bold" onchange="recalcRow(this)">
-                <option value="100" data-satuan="gr">-- Pilih porsi --</option>
-            </select>
-            <input type="hidden" class="jumlah-input" name="jumlah[]" value="100">
-            <input type="hidden" class="satuan-input" name="satuan[]" value="gr">
+            <!-- Porsi -->
+            <div>
+                <label class="block text-[10px] font-bold text-on-surface-variant mb-1 ml-0.5">Porsi / Takaran <span class="text-error">*</span></label>
+                <select class="porsi-select w-full px-4 py-2.5 bg-surface-container-low border border-transparent rounded-xl text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-bold" onchange="recalcRow(this)">
+                    <option value="100" data-satuan="gr">-- Pilih porsi --</option>
+                </select>
+                <input type="hidden" class="jumlah-input" name="jumlah[]" value="100">
+                <input type="hidden" class="satuan-input" name="satuan[]" value="gr">
+            </div>
         </div>
     </div>
 
-    <!-- Info Nutrisi Ringkas -->
-    <div class="nutrisi-mini flex gap-4 text-[10px] font-bold text-on-surface-variant/80 border-t border-surface-container pt-3">
-        <span>🔥 <span class="d-kal">0</span> kkal</span>
-        <span>🥩 <span class="d-pro">0</span>g Pro</span>
-        <span>🌾 <span class="d-kar">0</span>g Karbo</span>
-        <span>🧈 <span class="d-lem">0</span>g Lemak</span>
+    <!-- Nutrisi Ringkas (pill style) -->
+    <div class="nutrisi-mini flex items-center gap-2 flex-wrap px-4 pb-3 pt-1 border-t border-surface-container-low mx-3 text-[10px] font-bold text-on-surface-variant/70">
+        <span class="inline-flex items-center gap-0.5 bg-amber-500/8 text-amber-600 px-2 py-0.5 rounded-full">⚡ <span class="d-kal">0</span> kkal</span>
+        <span class="inline-flex items-center gap-0.5 bg-green-500/8 text-green-600 px-2 py-0.5 rounded-full">🥩 <span class="d-pro">0</span>g</span>
+        <span class="inline-flex items-center gap-0.5 bg-purple-500/8 text-purple-600 px-2 py-0.5 rounded-full">🌾 <span class="d-kar">0</span>g</span>
+        <span class="inline-flex items-center gap-0.5 bg-red-500/8 text-red-600 px-2 py-0.5 rounded-full">🫒 <span class="d-lem">0</span>g</span>
     </div>
 
     <!-- Hidden Fields -->
@@ -248,8 +256,12 @@ const PORSI_MAP = [
 function getPorsiTipe(nama) {
   const n = nama.toLowerCase();
   for (const m of PORSI_MAP) {
-    if (m.kata.some(k => n.includes(k))) return {tipe:m.tipe, def:m.def};
+    // Gunakan regex boundary \b agar "asi" tidak me-match "nasi"
+    if (m.kata.some(k => new RegExp('\\b' + k + '\\b').test(n))) return {tipe:m.tipe, def:m.def};
   }
+  // Fallback tambahan jika tidak ketemu dan mengandung kata tertentu
+  if (n.includes('air') || n.includes('susu')) return {tipe:'cair', def:1};
+  
   return {tipe:'padat', def:3};
 }
 let currentAkg = null;
@@ -297,21 +309,27 @@ function onFoodSearch(input) {
     const q = input.value.trim();
     const row = input.closest('.food-row');
     const drop = row.querySelector('.food-dropdown');
+    const spinner = row.querySelector('.search-spinner');
 
-    if (q.length < 2) { drop.classList.add('hidden'); return; }
+    if (q.length < 2) { drop.classList.add('hidden'); if(spinner) spinner.classList.add('hidden'); return; }
 
     const id = input.dataset.searchId || (input.dataset.searchId = Math.random());
     clearTimeout(searchTimers[id]);
     searchTimers[id] = setTimeout(() => {
+        if(spinner) spinner.classList.remove('hidden');
         drop.innerHTML = '<div class="p-3 text-xs text-on-surface-variant/70">🔍 Mencari...</div>';
         drop.classList.remove('hidden');
         fetch(SEARCH_URL + '?q=' + encodeURIComponent(q))
             .then(r => r.json())
-            .then(results => renderDropdown(results, drop, input))
+            .then(results => {
+                if(spinner) spinner.classList.add('hidden');
+                renderDropdown(results, drop, input);
+            })
             .catch(() => {
+                if(spinner) spinner.classList.add('hidden');
                 drop.innerHTML = '<div class="p-3 text-xs text-error">Gagal mengambil data</div>';
             });
-    }, 400);
+    }, 300);
 }
 
 function renderDropdown(results, drop, input) {
@@ -324,7 +342,7 @@ function renderDropdown(results, drop, input) {
     results.forEach(r => {
         const badge = r.source_type==='online'
             ? '<span class="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold ml-2">🌐 Internet</span>'
-            : '<span class="text-[9px] bg-tertiary-container/10 text-tertiary-container px-2 py-0.5 rounded-full font-bold ml-2">📚 TKPI</span>';
+            : '<span class="text-[9px] bg-tertiary-container/10 text-tertiary-container px-2 py-0.5 rounded-full font-bold ml-2">📖 TKPI</span>';
         html += `<div class="drop-item p-3 cursor-pointer border-b border-surface-container-high hover:bg-surface-container transition-all" onclick="pilihMakanan(this)"
             data-nama="${r.nama.replace(/"/g,'&quot;')}"
             data-kal="${r.kalori}" data-pro="${r.protein}"
@@ -332,7 +350,7 @@ function renderDropdown(results, drop, input) {
             data-satuan="${r.satuan}" data-sumber="${r.sumber}" data-type="${r.source_type}">
             <div class="font-bold text-xs flex items-center">${r.nama}${badge}</div>
             <div class="text-[10px] text-on-surface-variant mt-1">
-                🔥${r.kalori} kkal &bull; 🥩${r.protein}g Pro &bull; 🌾${r.karbohidrat}g &bull; 🧈${r.lemak}g (per ${r.satuan})
+                ⚡${r.kalori} kkal &bull; 🥩${r.protein}g Pro &bull; 🌾${r.karbohidrat}g &bull; 🫒${r.lemak}g (per ${r.satuan})
             </div>
         </div>`;
     });
@@ -360,7 +378,7 @@ function pilihMakanan(item) {
     isiDropdownPorsi(row, nama);
 
     const badge = row.querySelector('.src-badge');
-    badge.textContent = item.dataset.type==='online' ? '🌐 '+item.dataset.sumber : '📚 '+item.dataset.sumber;
+    badge.textContent = item.dataset.type==='online' ? '🌐 '+item.dataset.sumber : '📖 '+item.dataset.sumber;
     badge.classList.remove('hidden');
     badge.className = item.dataset.type==='online' 
         ? 'src-badge text-[9px] px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider bg-primary/10 text-primary' 

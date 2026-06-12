@@ -4,15 +4,15 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>📏 Input Pengukuran</h1>
+        <h1><i data-feather="bar-chart-2"></i> Input Pengukuran</h1>
         <p>Catat data antropometri anak hari ini</p>
     </div>
-    <a href="{{ route('pertumbuhan.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('pertumbuhan.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 
 <div class="grid-2" style="gap:20px;align-items:start;">
     <div class="card fade-up">
-        <div class="card-header"><div class="card-title">📝 Form Pengukuran</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Form Pengukuran</div></div>
         <div class="card-body">
             <form method="POST" action="{{ route('pertumbuhan.store') }}">
                 @csrf
@@ -55,7 +55,7 @@
                 <div class="divider"></div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;">
                     <a href="{{ route('pertumbuhan.index') }}" class="btn btn-outline">Batal</a>
-                    <button type="submit" class="btn btn-primary">💾 Simpan & Hitung Status</button>
+                    <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Simpan & Hitung Status</button>
                 </div>
             </form>
         </div>
@@ -63,16 +63,16 @@
 
     {{-- Info Standar WHO --}}
     <div class="card fade-up">
-        <div class="card-header"><div class="card-title">ℹ️ Referensi WHO</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="info"></i> Referensi WHO</div></div>
         <div class="card-body">
             <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
                 Status gizi dihitung otomatis berdasarkan berat badan dan usia menggunakan referensi standar WHO.
             </div>
             <div class="divider"></div>
             <div style="display:flex;flex-direction:column;gap:10px;margin-top:12px;">
-                @foreach(['normal'=>['badge-success','✅','Gizi Normal','BB & TB sesuai standar usia'],'stunting'=>['badge-warning','⚠️','Stunting','TB/U < -2 SD (Tinggi Rendah)'],'wasting'=>['badge-danger','🚨','Wasting','BB/U < -3 SD (Berat Sangat Rendah)'],'underweight'=>['badge-warning','⚠️','Underweight','BB/U < -2 SD (Berat Rendah)']] as $status=>[$cls,$icon,$label,$desc])
+                @foreach(['normal'=>['badge-success','<i data-feather="check-circle"></i>','Gizi Normal','BB & TB sesuai standar usia'],'stunting'=>['badge-warning','<i data-feather="alert-triangle"></i>','Stunting','TB/U < -2 SD (Tinggi Rendah)'],'wasting'=>['badge-danger','<i data-feather="alert-circle"></i>','Wasting','BB/U < -3 SD (Berat Sangat Rendah)'],'underweight'=>['badge-warning','<i data-feather="alert-triangle"></i>','Underweight','BB/U < -2 SD (Berat Rendah)']] as $status=>[$cls,$icon,$label,$desc])
                 <div style="display:flex;align-items:center;gap:10px;">
-                    <span class="badge {{ $cls }}">{{ $icon }} {{ $label }}</span>
+                    <span class="badge {{ $cls }}">{!! $icon !!} {{ $label }}</span>
                     <span style="font-size:12px;color:var(--text-muted);">{{ $desc }}</span>
                 </div>
                 @endforeach

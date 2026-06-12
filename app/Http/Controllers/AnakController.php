@@ -98,31 +98,8 @@ class AnakController extends Controller
             ->get(['tanggal_pengukuran', 'berat_badan', 'tinggi_badan']);
 
         // ── WHO Chart Data Intervals ──────────────────────────────
-        $interval = request('interval');
-        if (!$interval) {
-            $lastP = $anak->pertumbuhan_terakhir; // we loaded this implicitly or via relation
-            if ($lastP) {
-                $umurBulanAtMeasure = \Carbon\Carbon::parse($anak->tanggal_lahir)->diffInMonths($lastP->tanggal_pengukuran);
-                if ($umurBulanAtMeasure <= 20) $interval = 1;
-                elseif ($umurBulanAtMeasure <= 40) $interval = 2;
-                else $interval = 3;
-            } else {
-                $umurBulan = max(0, $anak->umur_bulan);
-                if ($umurBulan <= 20) $interval = 1;
-                elseif ($umurBulan <= 40) $interval = 2;
-                else $interval = 3;
-            }
-        }
-
-        $interval = (int) $interval;
-        if ($interval === 2) {
-            $minUmur = 21; $maxUmur = 40;
-        } elseif ($interval === 3) {
-            $minUmur = 41; $maxUmur = 60;
-        } else {
-            $minUmur = 0;  $maxUmur = 20;
-            $interval = 1;
-        }
+        $minUmur = 0;
+        $maxUmur = 104; // 104 minggu (~24 bulan)
 
         // Pre-process chart actual anak (null-padded array for Chart.js category scale)
         $chartBerat  = array_fill(0, $maxUmur - $minUmur + 1, null);
@@ -130,10 +107,10 @@ class AnakController extends Controller
         $tglLahir    = \Carbon\Carbon::parse($anak->tanggal_lahir);
         
         foreach ($pertumbuhanChart as $p) {
-            $umurBulanAtMeasure = $tglLahir->diffInMonths($p->tanggal_pengukuran);
+            $umurMingguAtMeasure = $tglLahir->diffInWeeks($p->tanggal_pengukuran);
             
-            if ($umurBulanAtMeasure >= $minUmur && $umurBulanAtMeasure <= $maxUmur) {
-                $index = $umurBulanAtMeasure - $minUmur;
+            if ($umurMingguAtMeasure >= $minUmur && $umurMingguAtMeasure <= $maxUmur) {
+                $index = $umurMingguAtMeasure - $minUmur;
                 // Assign to index so it perfectly aligns with WHO labels
                 $chartBerat[$index]  = (float) $p->berat_badan;
                 $chartTinggi[$index] = (float) $p->tinggi_badan;
@@ -141,8 +118,8 @@ class AnakController extends Controller
         }
         $chartLabels = []; 
 
-        $whoWeight = \App\Models\Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $anak->jenis_kelamin, 'weight');
-        $whoHeight = \App\Models\Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $anak->jenis_kelamin, 'height');
+        $whoWeight = \App\Models\Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $anak->jenis_kelamin, 'weight', true);
+        $whoHeight = \App\Models\Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $anak->jenis_kelamin, 'height', true);
 
         // ── Nutrition Summary (Hari Ini) ─────────────────────────
         $ringkasanHariIni = \App\Models\RecallGizi::where('anak_id', $anak->id)
@@ -163,8 +140,7 @@ class AnakController extends Controller
                 'ringkasanHariIni',
                 'akg',
                 'minUmur',
-                'maxUmur',
-                'interval'
+                'maxUmur'
             ));
         }
 
@@ -179,8 +155,7 @@ class AnakController extends Controller
             'ringkasanHariIni',
             'akg',
             'minUmur',
-            'maxUmur',
-            'interval'
+            'maxUmur'
         ));
     }
 

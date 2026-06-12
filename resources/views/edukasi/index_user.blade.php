@@ -5,7 +5,7 @@
 <div class="space-y-6">
     <!-- Header -->
     <div>
-        <h1 class="text-2xl font-bold text-on-surface">📚 Edukasi MPASI</h1>
+        <h1 class="text-2xl font-bold text-on-surface"><i data-feather="book"></i> Edukasi MPASI</h1>
         <p class="text-sm text-on-surface-variant mt-1">Panduan lengkap pemberian makanan bayi</p>
     </div>
 
@@ -37,7 +37,7 @@
                 @if($e->gambar)
                     <img src="{{ asset('storage/'.$e->gambar) }}" class="w-full h-full object-cover">
                 @else
-                    🥣
+                    <i data-feather="coffee"></i>
                 @endif
                 <span class="absolute top-3 left-3 bg-tertiary-container text-white text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider shadow-sm">{{ $e->kategori_label }}</span>
             </div>
@@ -58,7 +58,7 @@
         </a>
         @empty
         <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
-            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">🥣</div>
+            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="coffee"></i></div>
             <div class="font-bold text-on-surface mb-2">Belum ada panduan</div>
             <div class="text-xs text-on-surface-variant">Artikel edukasi MPASI akan segera tersedia untuk Anda</div>
         </div>

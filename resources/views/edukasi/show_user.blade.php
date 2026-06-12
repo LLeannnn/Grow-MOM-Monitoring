@@ -18,7 +18,7 @@
             @if($edukasi->gambar)
                 <img src="{{ asset('storage/'.$edukasi->gambar) }}" class="w-full h-full object-cover">
             @else
-                🥣
+                <i data-feather="coffee"></i>
             @endif
             <span class="absolute top-4 left-4 bg-tertiary-container text-white text-[9px] px-2.5 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">{{ $edukasi->kategori_label }}</span>
         </div>
@@ -26,7 +26,7 @@
         <div class="p-6 space-y-4">
             <!-- Metadata & Tags -->
             <div class="flex flex-wrap gap-2 items-center text-[10px] font-bold text-on-surface-variant/80">
-                <span>📅 {{ $edukasi->created_at->format('d F Y') }}</span>
+                <span><i data-feather="calendar"></i> {{ $edukasi->created_at->format('d F Y') }}</span>
                 @foreach($edukasi->tags_array as $tag)
                     @if($tag)
                     <span class="bg-surface-container text-on-surface-variant px-2.5 py-0.5 rounded-full">#{{ trim($tag) }}</span>
@@ -66,7 +66,7 @@
     @if($related->count())
     <div class="space-y-4 pt-4">
         <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-            <span class="text-xl">📚</span> Artikel Terkait
+            <span class="text-xl"><i data-feather="book"></i></span> Artikel Terkait
         </h2>
         <div class="grid grid-cols-1 gap-4">
             @foreach($related as $r)
@@ -75,7 +75,7 @@
                     @if($r->gambar)
                         <img src="{{ asset('storage/'.$r->gambar) }}" class="w-full h-full object-cover">
                     @else
-                        🥣
+                        <i data-feather="coffee"></i>
                     @endif
                 </div>
                 <div class="p-3 flex flex-col justify-center gap-1 min-w-0">

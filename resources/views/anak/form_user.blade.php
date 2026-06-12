@@ -72,8 +72,8 @@
                 <div class="relative">
                     <select name="jenis_kelamin" class="w-full px-4 py-3 bg-surface-container-low border-transparent rounded-2xl text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-semibold" required>
                         <option value="">-- Pilih --</option>
-                        <option value="L" {{ old('jenis_kelamin', $isEdit ? $anak->jenis_kelamin : '') == 'L' ? 'selected' : '' }}>👦 Laki-laki</option>
-                        <option value="P" {{ old('jenis_kelamin', $isEdit ? $anak->jenis_kelamin : '') == 'P' ? 'selected' : '' }}>👧 Perempuan</option>
+                        <option value="L" {{ old('jenis_kelamin', $isEdit ? $anak->jenis_kelamin : '') == 'L' ? 'selected' : '' }}><i data-feather="user"></i> Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin', $isEdit ? $anak->jenis_kelamin : '') == 'P' ? 'selected' : '' }}><i data-feather="user"></i> Perempuan</option>
                     </select>
                 </div>
                 @error('jenis_kelamin')<span class="text-[10px] text-error font-bold mt-1 ml-1 block">{{ $message }}</span>@enderror
@@ -114,7 +114,7 @@
 
         <div class="pt-2">
             <button type="submit" class="w-full bg-primary text-on-primary py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-primary/20 active:scale-[0.98] transition-transform">
-                {{ $isEdit ? '💾 Simpan Perubahan' : '🚀 Tambah Data Anak' }}
+                {!! $isEdit ? '<i data-feather="save"></i> Simpan Perubahan' : '<i data-feather="send"></i> Tambah Data Anak' !!}
             </button>
         </div>
     </form>

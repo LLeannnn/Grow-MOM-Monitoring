@@ -4,12 +4,12 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>✏️ Edit Data Anak</h1>
+        <h1><i data-feather="edit-2"></i> Edit Data Anak</h1>
     </div>
-    <a href="{{ route('anak.show', $anak) }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('anak.show', $anak) }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 <div class="card fade-up" style="max-width:800px;">
-    <div class="card-header"><div class="card-title">📝 Edit: {{ $anak->nama_anak }}</div></div>
+    <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Edit: {{ $anak->nama_anak }}</div></div>
     <div class="card-body">
         <form method="POST" action="{{ route('anak.update', $anak) }}" enctype="multipart/form-data">
             @csrf @method('PUT')
@@ -61,7 +61,7 @@
             <div class="divider"></div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <a href="{{ route('anak.show', $anak) }}" class="btn btn-outline">Batal</a>
-                <button type="submit" class="btn btn-primary">💾 Simpan</button>
+                <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Simpan</button>
             </div>
         </form>
     </div>

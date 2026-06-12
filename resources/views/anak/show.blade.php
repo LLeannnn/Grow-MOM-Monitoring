@@ -4,25 +4,25 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>{{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }} {{ $anak->nama_anak }}</h1>
+        <h1>{!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!} {{ $anak->nama_anak }}</h1>
         <p>{{ $anak->umur_label }} • {{ $anak->jenis_kelamin_label }}</p>
     </div>
     <div class="topbar-actions">
-        <a href="{{ route('pertumbuhan.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary">📏 Input Pengukuran</a>
-        <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary">🍽️ Input Recall</a>
-        <a href="{{ route('anak.edit', $anak) }}" class="btn btn-outline">✏️ Edit</a>
-        <a href="{{ route('anak.index') }}" class="btn btn-outline">← Kembali</a>
+        <a href="{{ route('pertumbuhan.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary"><i data-feather="bar-chart-2"></i> Input Pengukuran</a>
+        <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary"><i data-feather="coffee"></i> Input Recall</a>
+        <a href="{{ route('anak.edit', $anak) }}" class="btn btn-outline"><i data-feather="edit-2"></i> Edit</a>
+        <a href="{{ route('anak.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
     </div>
 </div>
 
 <div class="grid-2" style="gap:20px;align-items:start;margin-bottom:20px;">
     {{-- Info Anak --}}
     <div class="card fade-up">
-        <div class="card-header"><div class="card-title">📋 Profil Anak</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="clipboard"></i> Profil Anak</div></div>
         <div class="card-body">
             <div style="text-align:center;margin-bottom:18px;">
                 <div class="anak-avatar" style="width:80px;height:80px;font-size:40px;margin:0 auto 10px;">
-                    {{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                    {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                 </div>
                 <div style="font-weight:800;font-size:18px;">{{ $anak->nama_anak }}</div>
                 <div style="color:var(--text-muted);font-size:13px;">{{ $anak->umur_label }}</div>
@@ -44,7 +44,7 @@
     <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="card fade-up">
             <div class="card-header">
-                <div class="card-title">🍽️ Ringkasan Gizi Hari Ini</div>
+                <div class="card-title"><i data-feather="coffee"></i> Ringkasan Gizi Hari Ini</div>
                 <span style="font-size:12px;color:var(--text-muted);">{{ today()->format('d F Y') }}</span>
             </div>
             <div class="card-body">
@@ -52,22 +52,22 @@
                 <div class="grid-2" style="gap:16px;">
                     <div>
                         <div class="progress-bar-wrap">
-                            <div class="progress-label"><span>🔥 Kalori</span><span>{{ number_format($ringkasanHariIni->total_kalori,1) }} / {{ $akg['energi'] ?? 1000 }} kkal</span></div>
+                            <div class="progress-label"><span><i data-feather="zap"></i> Kalori</span><span>{{ number_format($ringkasanHariIni->total_kalori,1) }} / {{ $akg['energi'] ?? 1000 }} kkal</span></div>
                             <div class="progress-track"><div class="progress-fill amber" style="width:{{ min(round($ringkasanHariIni->total_kalori/($akg['energi']??1000)*100),100) }}%"></div></div>
                             <div style="font-size:11px;color:var(--text-muted);">{{ round($ringkasanHariIni->total_kalori/($akg['energi']??1000)*100) }}% dari AKG</div>
                         </div>
                         <div class="progress-bar-wrap">
-                            <div class="progress-label"><span>🥩 Protein</span><span>{{ number_format($ringkasanHariIni->total_protein,1) }} / {{ $akg['protein'] ?? 20 }} g</span></div>
+                            <div class="progress-label"><span><i data-feather="hash"></i> Protein</span><span>{{ number_format($ringkasanHariIni->total_protein,1) }} / {{ $akg['protein'] ?? 20 }} g</span></div>
                             <div class="progress-track"><div class="progress-fill green" style="width:{{ min(round($ringkasanHariIni->total_protein/($akg['protein']??20)*100),100) }}%"></div></div>
                         </div>
                     </div>
                     <div>
                         <div class="progress-bar-wrap">
-                            <div class="progress-label"><span>🌾 Karbohidrat</span><span>{{ number_format($ringkasanHariIni->total_karbo,1) }} / {{ $akg['karbo'] ?? 130 }} g</span></div>
+                            <div class="progress-label"><span><i data-feather="hash"></i> Karbohidrat</span><span>{{ number_format($ringkasanHariIni->total_karbo,1) }} / {{ $akg['karbo'] ?? 130 }} g</span></div>
                             <div class="progress-track"><div class="progress-fill purple" style="width:{{ min(round($ringkasanHariIni->total_karbo/($akg['karbo']??130)*100),100) }}%"></div></div>
                         </div>
                         <div class="progress-bar-wrap">
-                            <div class="progress-label"><span>🧈 Lemak</span><span>{{ number_format($ringkasanHariIni->total_lemak,1) }} / {{ $akg['lemak'] ?? 30 }} g</span></div>
+                            <div class="progress-label"><span><i data-feather="hash"></i> Lemak</span><span>{{ number_format($ringkasanHariIni->total_lemak,1) }} / {{ $akg['lemak'] ?? 30 }} g</span></div>
                             <div class="progress-track"><div class="progress-fill red" style="width:{{ min(round($ringkasanHariIni->total_lemak/($akg['lemak']??30)*100),100) }}%"></div></div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                 </div>
                 @else
                 <div class="empty-state" style="padding:10px;">
-                    <div class="empty-icon" style="font-size:24px;">🍽️</div>
+                    <div class="empty-icon" style="font-size:24px;"><i data-feather="coffee"></i></div>
                     <div class="empty-title" style="font-size:13px;">Belum ada asupan makanan hari ini</div>
                     <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary btn-sm" style="margin-top:10px;">Catat Sekarang</a>
                 </div>
@@ -88,12 +88,12 @@
         {{-- Pengukuran Terakhir --}}
         @if($anak->pertumbuhan_terakhir)
         <div class="card fade-up">
-            <div class="card-header"><div class="card-title">📊 Pengukuran Terakhir</div></div>
+            <div class="card-header"><div class="card-title"><i data-feather="bar-chart-2"></i> Pengukuran Terakhir</div></div>
             <div class="card-body">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-                    @foreach(['berat_badan'=>['⚖️','Berat Badan','kg'],'tinggi_badan'=>['📏','Tinggi Badan','cm']] as $key=>[$icon,$label,$satuan])
+                    @foreach(['berat_badan'=>['<i data-feather="activity"></i>','Berat Badan','kg'],'tinggi_badan'=>['<i data-feather="bar-chart-2"></i>','Tinggi Badan','cm']] as $key=>[$icon,$label,$satuan])
                     <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
-                        <div style="font-size:22px;">{{ $icon }}</div>
+                        <div style="font-size:22px;">{!! $icon !!}</div>
                         <div style="font-size:20px;font-weight:800;color:var(--primary);">{{ $anak->pertumbuhan_terakhir->$key ?? '-' }}</div>
                         <div style="font-size:11px;color:var(--text-muted);">{{ $label }} ({{ $satuan }})</div>
                     </div>
@@ -110,14 +110,14 @@
     {{-- Catatan Khusus dari Admin --}}
     @if($anak->feedbackAnak->isNotEmpty())
     <div class="card fade-up full" style="grid-column: 1 / -1; margin-bottom: 0px;">
-        <div class="card-header"><div class="card-title">📝 Catatan Khusus dari Bidan / Admin</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Catatan Khusus dari Bidan / Admin</div></div>
         <div class="card-body">
             <div style="display: flex; flex-direction: column; gap: 14px;">
                 @foreach($anak->feedbackAnak as $fbManual)
                 <div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid var(--secondary);border-radius:var(--radius);padding:16px 20px;">
                     <div style="display:flex;align-items:flex-start;gap:12px;">
                         <div style="width:38px;height:38px;background:var(--secondary-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
-                            👩‍⚕️
+                            <i data-feather="user"></i><i data-feather="activity"></i>
                         </div>
                         <div style="flex:1;">
                             <div style="display: flex; justify-content: space-between; margin-bottom:6px;">
@@ -135,21 +135,27 @@
     @endif
 </div>
 
-{{-- CHARTS WHO --}}
-<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:15px;">
+<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
     <h2 style="font-size:16px; margin:0;">Kurva Pertumbuhan WHO</h2>
-    <div style="display:flex; gap:8px;">
-        <a href="{{ request()->fullUrlWithQuery(['interval' => 1]) }}" class="btn btn-sm {{ $interval == 1 ? 'btn-primary' : 'btn-outline' }}">0-20 Bulan</a>
-        <a href="{{ request()->fullUrlWithQuery(['interval' => 2]) }}" class="btn btn-sm {{ $interval == 2 ? 'btn-primary' : 'btn-outline' }}">21-40 Bulan</a>
-        <a href="{{ request()->fullUrlWithQuery(['interval' => 3]) }}" class="btn btn-sm {{ $interval == 3 ? 'btn-primary' : 'btn-outline' }}">41-60 Bulan</a>
+    <div style="display:flex;gap:6px;background:var(--card);padding:4px;border-radius:10px;border:1px solid var(--border);overflow-x:auto;">
+        <button class="seg-btn active" data-s="0" data-e="24">0-24 Mgg</button>
+        <button class="seg-btn" data-s="25" data-e="52">25-52 Mgg</button>
+        <button class="seg-btn" data-s="53" data-e="78">53-78 Mgg</button>
+        <button class="seg-btn" data-s="79" data-e="104">79-104 Mgg</button>
+        <button class="seg-btn" data-s="0" data-e="104">Semua</button>
     </div>
 </div>
+<style>
+.seg-btn { background:transparent; border:none; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; color:var(--text-muted); cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+.seg-btn:hover { color:var(--text-main); }
+.seg-btn.active { background:var(--primary); color:#fff; }
+</style>
 
 <div class="grid-2" style="gap:20px;margin-bottom:20px;">
     {{-- Chart Berat Badan vs WHO --}}
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">⚖️ Berat Badan vs Kurva WHO ({{ $minUmur }} - {{ $maxUmur }} Bulan)</div>
+            <div class="card-title"><i data-feather="activity"></i> Berat Badan vs Kurva WHO</div>
             <span style="font-size:11px;color:var(--text-muted);">Weight-for-Age (WAZ)</span>
         </div>
         <div class="card-body">
@@ -169,7 +175,7 @@
     {{-- Chart Tinggi Badan vs WHO --}}
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">📏 Tinggi Badan vs Kurva WHO ({{ $minUmur }} - {{ $maxUmur }} Bulan)</div>
+            <div class="card-title"><i data-feather="bar-chart-2"></i> Tinggi Badan vs Kurva WHO</div>
             <span style="font-size:11px;color:var(--text-muted);">Height-for-Age (HAZ)</span>
         </div>
         <div class="card-body">
@@ -189,8 +195,8 @@
 {{-- Riwayat Pertumbuhan --}}
 <div class="card fade-up">
     <div class="card-header">
-        <div class="card-title">📋 Riwayat Pertumbuhan</div>
-        <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="btn btn-outline btn-sm">📄 Export PDF</a>
+        <div class="card-title"><i data-feather="clipboard"></i> Riwayat Pertumbuhan</div>
+        <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="btn btn-outline btn-sm"><i data-feather="file-text"></i> Export PDF</a>
     </div>
     <div class="table-wrap">
         <table>
@@ -209,7 +215,7 @@
                 </tr>
                 @empty
                 <tr><td colspan="5"><div class="empty-state" style="padding:20px;">
-                    <div class="empty-icon">📏</div>
+                    <div class="empty-icon"><i data-feather="bar-chart-2"></i></div>
                     <div class="empty-title">Belum ada data pengukuran</div>
                 </div></td></tr>
                 @endforelse
@@ -245,21 +251,24 @@ window.addEventListener('load', function () {
         pointRadius: 0, fill: false, tension: 0.3,
     });
 
+    let chartBerat = null;
+    let chartTinggi = null;
+
     // ── Chart Berat Badan vs WHO ────────────────────────────
     const ctxBerat = document.getElementById('chartBeratWHO')?.getContext('2d');
     if (ctxBerat) {
-        new Chart(ctxBerat, {
+        chartBerat = new Chart(ctxBerat, {
             type: 'line',
             data: {
-                labels: whoWeightLabels,
+                labels: whoWeightLabels.slice(0, 25),
                 datasets: [
-                    { label: 'Median', data: whoWeightMed, ...dashedLine('#94a3b8') },
-                    { label: '-2SD',   data: whoWeightM2,  ...dashedLine('#f59e0b') },
-                    { label: '-3SD',   data: whoWeightM3,  ...dashedLine('#ef4444') },
-                    { label: '+2SD',   data: whoWeightP2,  ...dashedLine('#3b82f6') },
+                    { label: 'Median', data: whoWeightMed.slice(0, 25), ...dashedLine('#94a3b8') },
+                    { label: '-2SD',   data: whoWeightM2.slice(0, 25),  ...dashedLine('#f59e0b') },
+                    { label: '-3SD',   data: whoWeightM3.slice(0, 25),  ...dashedLine('#ef4444') },
+                    { label: '+2SD',   data: whoWeightP2.slice(0, 25),  ...dashedLine('#3b82f6') },
                     {
                         label: 'Berat Anak (kg)',
-                        data: anakBerat, 
+                        data: anakBerat.slice(0, 25), 
                         borderColor: '#16a34a',
                         backgroundColor: 'rgba(22,163,74,0.12)',
                         borderWidth: 3,
@@ -288,18 +297,18 @@ window.addEventListener('load', function () {
     // ── Chart Tinggi Badan vs WHO ───────────────────────────
     const ctxTinggi = document.getElementById('chartTinggiWHO')?.getContext('2d');
     if (ctxTinggi) {
-        new Chart(ctxTinggi, {
+        chartTinggi = new Chart(ctxTinggi, {
             type: 'line',
             data: {
-                labels: whoHeightLabels,
+                labels: whoHeightLabels.slice(0, 25),
                 datasets: [
-                    { label: 'Median', data: whoHeightMed, ...dashedLine('#94a3b8') },
-                    { label: '-2SD',   data: whoHeightM2,  ...dashedLine('#f59e0b') },
-                    { label: '-3SD',   data: whoHeightM3,  ...dashedLine('#ef4444') },
-                    { label: '+2SD',   data: whoHeightP2,  ...dashedLine('#3b82f6') },
+                    { label: 'Median', data: whoHeightMed.slice(0, 25), ...dashedLine('#94a3b8') },
+                    { label: '-2SD',   data: whoHeightM2.slice(0, 25),  ...dashedLine('#f59e0b') },
+                    { label: '-3SD',   data: whoHeightM3.slice(0, 25),  ...dashedLine('#ef4444') },
+                    { label: '+2SD',   data: whoHeightP2.slice(0, 25),  ...dashedLine('#3b82f6') },
                     {
                         label: 'Tinggi Anak (cm)',
-                        data: anakTinggi, 
+                        data: anakTinggi.slice(0, 25), 
                         borderColor: '#7c3aed',
                         backgroundColor: 'rgba(124,58,237,0.10)',
                         borderWidth: 3,
@@ -324,6 +333,35 @@ window.addEventListener('load', function () {
             }
         });
     }
+
+    // ── Segment Logic ───────────────────────────────────────
+    document.querySelectorAll('.seg-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const s = parseInt(this.dataset.s);
+            const e = parseInt(this.dataset.e) + 1;
+            
+            if (chartBerat) {
+                chartBerat.data.labels = whoWeightLabels.slice(s, e);
+                chartBerat.data.datasets[0].data = whoWeightMed.slice(s, e);
+                chartBerat.data.datasets[1].data = whoWeightM2.slice(s, e);
+                chartBerat.data.datasets[2].data = whoWeightM3.slice(s, e);
+                chartBerat.data.datasets[3].data = whoWeightP2.slice(s, e);
+                chartBerat.data.datasets[4].data = anakBerat.slice(s, e);
+                chartBerat.update();
+            }
+            if (chartTinggi) {
+                chartTinggi.data.labels = whoHeightLabels.slice(s, e);
+                chartTinggi.data.datasets[0].data = whoHeightMed.slice(s, e);
+                chartTinggi.data.datasets[1].data = whoHeightM2.slice(s, e);
+                chartTinggi.data.datasets[2].data = whoHeightM3.slice(s, e);
+                chartTinggi.data.datasets[3].data = whoHeightP2.slice(s, e);
+                chartTinggi.data.datasets[4].data = anakTinggi.slice(s, e);
+                chartTinggi.update();
+            }
+        });
+    });
 });
 </script>
 @endpush

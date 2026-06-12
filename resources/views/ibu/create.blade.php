@@ -4,15 +4,15 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>👩 Tambah Data Ibu</h1>
+        <h1><i data-feather="user"></i> Tambah Data Ibu</h1>
         <p>Isi form berikut untuk mendaftarkan data ibu baru</p>
     </div>
-    <a href="{{ route('ibu.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('ibu.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 
 <div class="card fade-up" style="max-width:800px;">
     <div class="card-header">
-        <div class="card-title">📝 Form Data Ibu</div>
+        <div class="card-title"><i data-feather="edit"></i> Form Data Ibu</div>
     </div>
     <div class="card-body">
         <form method="POST" action="{{ route('ibu.store') }}" enctype="multipart/form-data">
@@ -84,7 +84,7 @@
             <div class="divider"></div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <a href="{{ route('ibu.index') }}" class="btn btn-outline">Batal</a>
-                <button type="submit" class="btn btn-primary">💾 Simpan Data</button>
+                <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Simpan Data</button>
             </div>
         </form>
     </div>

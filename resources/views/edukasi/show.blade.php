@@ -4,19 +4,19 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🥕 Edukasi MPASI</h1>
+        <h1><i data-feather="book-open"></i> Edukasi MPASI</h1>
     </div>
     <div class="topbar-actions">
         @if(auth()->user()->isAdmin())
         <div style="display:flex;gap:8px;">
-            <a href="{{ route('edukasi.edit', $edukasi) }}" class="btn btn-warning btn-sm">✏️ Edit</a>
+            <a href="{{ route('edukasi.edit', $edukasi) }}" class="btn btn-warning btn-sm"><i data-feather="edit-2"></i> Edit</a>
             <form method="POST" action="{{ route('edukasi.destroy', $edukasi) }}" onsubmit="return confirm('Hapus artikel ini?')">
                 @csrf @method('DELETE')
-                <button class="btn btn-danger btn-sm">🗑 Hapus</button>
+                <button class="btn btn-danger btn-sm"><i data-feather="trash-2"></i> Hapus</button>
             </form>
         </div>
         @endif
-        <a href="{{ route('edukasi.index') }}" class="btn btn-outline">← Kembali</a>
+        <a href="{{ route('edukasi.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -28,13 +28,13 @@
             <img src="{{ asset('storage/'.$edukasi->gambar) }}" style="width:100%;height:100%;object-fit:cover;">
         </div>
         @else
-        <div style="width:100%;height:180px;background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));display:flex;align-items:center;justify-content:center;font-size:72px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;">🥣</div>
+        <div style="width:100%;height:180px;background:linear-gradient(135deg,var(--primary-light),var(--secondary-light));display:flex;align-items:center;justify-content:center;font-size:72px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;"><i data-feather="coffee"></i></div>
         @endif
 
         <div class="card-body">
             <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;flex-wrap:wrap;">
-                <span class="badge badge-success">🍼 {{ $edukasi->kategori_label }}</span>
-                <span style="font-size:12px;color:var(--text-muted);">📅 {{ $edukasi->created_at->format('d F Y') }}</span>
+                <span class="badge badge-success"><i data-feather="heart"></i> {{ $edukasi->kategori_label }}</span>
+                <span style="font-size:12px;color:var(--text-muted);"><i data-feather="calendar"></i> {{ $edukasi->created_at->format('d F Y') }}</span>
                 @foreach($edukasi->tags_array as $tag)
                     @if($tag)
                     <span style="background:var(--bg);padding:2px 10px;border-radius:100px;font-size:11.5px;color:var(--text-muted);">#{{ trim($tag) }}</span>
@@ -48,13 +48,13 @@
             <div style="background:var(--bg);padding:16px;border-radius:var(--radius-md);margin-bottom:20px;border-left:4px solid var(--primary);">
                 @if($edukasi->tekstur_makanan)
                 <div style="margin-bottom:12px;">
-                    <strong>🥣 Tekstur Makanan:</strong>
+                    <strong><i data-feather="coffee"></i> Tekstur Makanan:</strong>
                     <div style="margin-top:4px;color:var(--text-main);">{{ $edukasi->tekstur_makanan }}</div>
                 </div>
                 @endif
                 @if($edukasi->bahan_makanan)
                 <div>
-                    <strong>🥕 Bahan Makanan:</strong>
+                    <strong><i data-feather="book-open"></i> Bahan Makanan:</strong>
                     <div style="margin-top:4px;color:var(--text-main);white-space:pre-wrap;">{{ $edukasi->bahan_makanan }}</div>
                 </div>
                 @endif
@@ -70,7 +70,7 @@
 
 @if($related->count())
 <div style="margin-top:24px;">
-    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;">📚 Artikel Terkait</h2>
+    <h2 style="font-size:16px;font-weight:700;margin-bottom:16px;"><i data-feather="book"></i> Artikel Terkait</h2>
     <div class="edukasi-grid">
         @foreach($related as $r)
         <a href="{{ route('edukasi.show', $r) }}" class="edukasi-card">
@@ -78,7 +78,7 @@
                 @if($r->gambar)
                     <img src="{{ asset('storage/'.$r->gambar) }}" style="width:100%;height:170px;object-fit:cover;">
                 @else
-                    🥣
+                    <i data-feather="coffee"></i>
                 @endif
             </div>
             <div class="edukasi-body">

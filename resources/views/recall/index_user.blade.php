@@ -6,7 +6,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-bold text-on-surface">🍽️ Catat Makan</h1>
+            <h1 class="text-2xl font-bold text-on-surface"><i data-feather="coffee"></i> Catat Makan</h1>
             <p class="text-sm text-on-surface-variant mt-1">Input asupan gizi harian anak</p>
         </div>
         <a href="{{ route('recall.create') }}" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary active:scale-95 transition-transform">
@@ -38,7 +38,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl">📊</span> Ringkasan Gizi Hari Ini
+                <span class="text-xl"><i data-feather="bar-chart-2"></i></span> Ringkasan Gizi Hari Ini
             </h2>
             <span class="text-[11px] font-semibold text-on-surface-variant bg-surface-container py-1 px-3 rounded-full">{{ today()->format('d M Y') }}</span>
         </div>
@@ -47,7 +47,7 @@
             <!-- Kalori -->
             <div>
                 <div class="flex justify-between text-sm mb-1.5 font-semibold">
-                    <span class="text-on-surface">🔥 Kalori</span>
+                    <span class="text-on-surface"><i data-feather="zap"></i> Kalori</span>
                     <span class="text-primary">{{ number_format($ringkasanHariIni->total_kalori,0) }} / {{ $akg['energi'] ?? 1000 }} kkal</span>
                 </div>
                 <div class="h-2.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -62,7 +62,7 @@
                 <!-- Protein -->
                 <div>
                     <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                        <span>🥩 Pro</span>
+                        <span><i data-feather="target"></i> Pro</span>
                         <span>{{ number_format($ringkasanHariIni->total_protein,1) }}g</span>
                     </div>
                     <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -73,7 +73,7 @@
                 <!-- Karbo -->
                 <div>
                     <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                        <span>🌾 Karbo</span>
+                        <span><i data-feather="layers"></i> Karbo</span>
                         <span>{{ number_format($ringkasanHariIni->total_karbo,1) }}g</span>
                     </div>
                     <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -84,7 +84,7 @@
                 <!-- Lemak -->
                 <div>
                     <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                        <span>🧈 Lemak</span>
+                        <span><i data-feather="droplet"></i> Lemak</span>
                         <span>{{ number_format($ringkasanHariIni->total_lemak,1) }}g</span>
                     </div>
                     <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -143,7 +143,7 @@
         </div>
         @empty
         <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
-            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">🥣</div>
+            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="coffee"></i></div>
             <div class="font-bold text-on-surface mb-2">Belum ada data asupan</div>
             <div class="text-xs text-on-surface-variant mb-6">Catat asupan gizi anak hari ini</div>
             <a href="{{ route('recall.create') }}" class="w-full justify-center flex items-center gap-2 py-3 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-md active:scale-[0.98] transition-all">

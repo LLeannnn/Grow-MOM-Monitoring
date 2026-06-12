@@ -3,17 +3,17 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🍽️ Input Recall Gizi Harian</h1>
+        <h1><i data-feather="coffee"></i> Input Recall Gizi Harian</h1>
         <p>Cari makanan dan data gizi otomatis dari database TKPI & internet</p>
     </div>
-    <a href="{{ route('recall.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('recall.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 @php
 $meals = [
-    'pagi'  => ['label'=>'Makan Pagi',  'icon'=>'🌅','color'=>'#f59e0b'],
-    'siang' => ['label'=>'Makan Siang', 'icon'=>'☀️', 'color'=>'#16a34a'],
-    'malam' => ['label'=>'Makan Malam', 'icon'=>'🌙', 'color'=>'#7c3aed'],
-    'snack' => ['label'=>'Snack',        'icon'=>'🍎','color'=>'#ef4444'],
+    'pagi'  => ['label'=>'Makan Pagi',  'icon'=>'<i data-feather="sun"></i>','color'=>'#f59e0b'],
+    'siang' => ['label'=>'Makan Siang', 'icon'=>'<i data-feather="sun"></i>', 'color'=>'#16a34a'],
+    'malam' => ['label'=>'Makan Malam', 'icon'=>'<i data-feather="moon"></i>', 'color'=>'#7c3aed'],
+    'snack' => ['label'=>'Snack',        'icon'=>'<i data-feather="coffee"></i>','color'=>'#ef4444'],
 ];
 @endphp
 <form method="POST" action="{{ route('recall.store') }}" id="formRecall">
@@ -46,7 +46,7 @@ $meals = [
         @foreach($meals as $key=>$m)
         <button type="button" onclick="switchTab('{{ $key }}')" id="tab-{{ $key }}"
             style="padding:14px 10px;border:none;border-right:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;background:{{ $loop->first?'var(--primary)':'var(--card)' }};color:{{ $loop->first?'#fff':'var(--text-muted)' }};display:flex;flex-direction:column;align-items:center;gap:4px;">
-            <span style="font-size:20px;">{{ $m['icon'] }}</span>
+            <span style="font-size:20px;">{!! $m['icon'] !!}</span>
             <span>{{ $m['label'] }}</span>
             <span id="count-{{ $key }}" style="font-size:11px;background:rgba(255,255,255,0.3);border-radius:100px;padding:1px 8px;display:none;">0</span>
         </button>
@@ -55,7 +55,7 @@ $meals = [
     @foreach($meals as $key=>$m)
     <div id="pane-{{ $key }}" style="display:{{ $loop->first?'block':'none' }};background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:20px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <div style="font-weight:700;font-size:14px;color:{{ $m['color'] }};">{{ $m['icon'] }} {{ $m['label'] }}</div>
+            <div style="font-weight:700;font-size:14px;color:{{ $m['color'] }};">{!! $m['icon'] !!} {{ $m['label'] }}</div>
             <button type="button" onclick="tambahBaris('{{ $key }}')"
                 style="background:{{ $m['color'] }};color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;">
                 + Tambah Makanan
@@ -64,10 +64,10 @@ $meals = [
         <div id="rows-{{ $key }}"></div>
         <div style="background:{{ $m['color'] }}15;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12.5px;">
             <div style="display:flex;gap:20px;flex-wrap:wrap;">
-                <span>🔥 <strong id="total-kal-{{ $key }}">0</strong> kkal</span>
-                <span>🥩 <strong id="total-pro-{{ $key }}">0</strong> g protein</span>
-                <span>🌾 <strong id="total-kar-{{ $key }}">0</strong> g karbo</span>
-                <span>🧈 <strong id="total-lem-{{ $key }}">0</strong> g lemak</span>
+                <span><i data-feather="zap"></i> <strong id="total-kal-{{ $key }}">0</strong> kkal</span>
+                <span><i data-feather="target"></i> <strong id="total-pro-{{ $key }}">0</strong> g protein</span>
+                <span><i data-feather="layers"></i> <strong id="total-kar-{{ $key }}">0</strong> g karbo</span>
+                <span><i data-feather="droplet"></i> <strong id="total-lem-{{ $key }}">0</strong> g lemak</span>
             </div>
         </div>
     </div>
@@ -75,12 +75,12 @@ $meals = [
 </div>
 <div style="position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;">
     <div class="card fade-up">
-        <div class="card-header"><div class="card-title">📊 Total Gizi Hari Ini</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="bar-chart-2"></i> Total Gizi Hari Ini</div></div>
         <div class="card-body">
-            @foreach([['id'=>'sum-kal','label'=>'🔥 Energi','satuan'=>'kkal','color'=>'amber'],['id'=>'sum-pro','label'=>'🥩 Protein','satuan'=>'g','color'=>'green'],['id'=>'sum-kar','label'=>'🌾 Karbohidrat','satuan'=>'g','color'=>'purple'],['id'=>'sum-lem','label'=>'🧈 Lemak','satuan'=>'g','color'=>'red']] as $item)
+            @foreach([['id'=>'sum-kal','label'=>'<i data-feather="zap"></i> Energi','satuan'=>'kkal','color'=>'amber'],['id'=>'sum-pro','label'=>'<i data-feather="target"></i> Protein','satuan'=>'g','color'=>'green'],['id'=>'sum-kar','label'=>'<i data-feather="layers"></i> Karbohidrat','satuan'=>'g','color'=>'purple'],['id'=>'sum-lem','label'=>'<i data-feather="droplet"></i> Lemak','satuan'=>'g','color'=>'red']] as $item)
             <div style="margin-bottom:12px;">
                 <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px;">
-                    <span>{{ $item['label'] }}</span>
+                    <span>{!! $item['label'] !!}</span>
                     <span><strong id="{{ $item['id'] }}">0</strong> / <span id="{{ $item['id'] }}-akg" style="color:var(--text-muted);">—</span> {{ $item['satuan'] }}</span>
                 </div>
                 <div class="progress-track"><div class="progress-fill {{ $item['color'] }}" id="{{ $item['id'] }}-bar" style="width:0%;transition:width 0.4s;"></div></div>
@@ -90,7 +90,7 @@ $meals = [
         </div>
     </div>
     <div class="card fade-up" id="akg-card" style="display:{{ $akg?'block':'none' }};">
-        <div class="card-header"><div class="card-title">📋 AKG Referensi</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="clipboard"></i> AKG Referensi</div></div>
         <div class="card-body" style="font-size:12.5px;">
             <div id="akg-label" style="color:var(--text-muted);margin-bottom:8px;">Usia: —</div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
@@ -114,7 +114,7 @@ $meals = [
             <div style="margin-top:10px;font-size:11px;color:var(--text-muted);">Sumber: AKG Indonesia 2019 (Permenkes No.28/2019)</div>
         </div>
     </div>
-    <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:14px;font-weight:700;">💾 Simpan Recall Gizi</button>
+    <button type="submit" class="btn btn-primary" style="width:100%;padding:14px;font-size:14px;font-weight:700;"><i data-feather="save"></i> Simpan Recall Gizi</button>
 </div>
 </div>
 </form>
@@ -127,13 +127,13 @@ $meals = [
             <label style="font-size:11.5px;color:var(--text-muted);margin-bottom:3px;display:block;">Nama Makanan</label>
             <div style="position:relative;">
                 <input type="text" class="form-control food-search-input" name="nama_makanan[]"
-                    placeholder="🔍 Ketik nama makanan..." autocomplete="off"
+                    placeholder="Ketik nama makanan..." autocomplete="off"
                     oninput="onFoodSearch(this)" onblur="hideDropdown(this,300)" required>
                 <div class="food-dropdown" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:999;background:#fff;border:1.5px solid var(--primary);border-radius:0 0 10px 10px;max-height:220px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,0.12);"></div>
             </div>
         </div>
         <div>
-            <label style="font-size:11.5px;color:var(--text-muted);margin-bottom:3px;display:block;">🍽️ Berapa banyak?</label>
+            <label style="font-size:11.5px;color:var(--text-muted);margin-bottom:3px;display:block;"><i data-feather="coffee"></i> Berapa banyak?</label>
             <select class="form-control porsi-select" onchange="recalcRow(this)">
                 <option value="100" data-satuan="gr">-- Pilih porsi --</option>
             </select>
@@ -141,7 +141,7 @@ $meals = [
             <input type="hidden" class="satuan-input" name="satuan[]" value="gr">
         </div>
         <div>
-            <button type="button" onclick="hapusBaris(this)" style="background:var(--danger);color:#fff;border:none;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:14px;" title="Hapus">🗑</button>
+            <button type="button" onclick="hapusBaris(this)" style="background:var(--danger);color:#fff;border:none;border-radius:8px;padding:9px 10px;cursor:pointer;font-size:14px;" title="Hapus"><i data-feather="trash-2"></i></button>
         </div>
         <input type="hidden" class="kal-field" name="kalori[]" value="0">
         <input type="hidden" class="pro-field" name="protein[]" value="0">
@@ -150,10 +150,10 @@ $meals = [
         <input type="hidden" class="wkt-field" name="waktu_makan[]" value="">
     </div>
     <div class="nutrisi-mini" style="margin-top:8px;font-size:11.5px;color:var(--text-muted);display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
-        <span>🔥 <span class="d-kal">0</span> kkal</span>
-        <span>🥩 <span class="d-pro">0</span>g</span>
-        <span>🌾 <span class="d-kar">0</span>g</span>
-        <span>🧈 <span class="d-lem">0</span>g</span>
+        <span><i data-feather="zap"></i> <span class="d-kal">0</span> kkal</span>
+        <span><i data-feather="target"></i> <span class="d-pro">0</span>g</span>
+        <span><i data-feather="layers"></i> <span class="d-kar">0</span>g</span>
+        <span><i data-feather="droplet"></i> <span class="d-lem">0</span>g</span>
         <span class="src-badge" style="font-size:10px;padding:2px 7px;border-radius:100px;background:#e0f2fe;color:#0369a1;display:none;"></span>
     </div>
 </div>
@@ -169,7 +169,7 @@ const AKG_DATA = [
     {max:59,  energi:1600, protein:35, karbo:220, lemak:62, label:'3-4 tahun'},
     {max:9999,energi:1600, protein:40, karbo:220, lemak:62, label:'5+ tahun'},
 ];
-// Porsi rumah tangga → gram
+// Porsi rumah tangga <i data-feather="arrow-right"></i> gram
 const PORSI = {
   cair: [
     {l:'1/4 gelas (±60ml)',  g:60,  s:'ml'},
@@ -209,7 +209,7 @@ const PORSI = {
     {l:'1 piring besar',   g:300, s:'piring'},
   ],
 };
-// Kata kunci → tipe porsi + default index
+// Kata kunci <i data-feather="arrow-right"></i> tipe porsi + default index
 const PORSI_MAP = [
   {kata:['asi','susu','air','jus','sari','kaldu','kuah','minum'],tipe:'cair',def:1},
   {kata:['telur'],                                               tipe:'butir',def:0},
@@ -223,8 +223,12 @@ const PORSI_MAP = [
 function getPorsiTipe(nama) {
   const n = nama.toLowerCase();
   for (const m of PORSI_MAP) {
-    if (m.kata.some(k => n.includes(k))) return {tipe:m.tipe, def:m.def};
+    // Gunakan regex boundary \b agar "asi" tidak me-match "nasi"
+    if (m.kata.some(k => new RegExp('\\b' + k + '\\b').test(n))) return {tipe:m.tipe, def:m.def};
   }
+  // Fallback tambahan jika tidak ketemu dan mengandung kata tertentu
+  if (n.includes('air') || n.includes('susu')) return {tipe:'cair', def:1};
+
   return {tipe:'padat', def:3};
 }
 let currentAkg = null;
@@ -276,8 +280,9 @@ function onFoodSearch(input) {
     const id = input.dataset.searchId || (input.dataset.searchId = Math.random());
     clearTimeout(searchTimers[id]);
     searchTimers[id] = setTimeout(() => {
-        drop.innerHTML = '<div style="padding:10px 14px;font-size:12px;color:#888;">🔍 Mencari...</div>';
+        drop.innerHTML = '<div style="padding:10px 14px;font-size:12px;color:#888;"><i data-feather="search"></i> Mencari...</div>';
         drop.style.display = 'block';
+        if(typeof feather !== 'undefined') feather.replace();
         fetch(SEARCH_URL + '?q=' + encodeURIComponent(q))
             .then(r => r.json())
             .then(results => renderDropdown(results, drop, input))
@@ -290,14 +295,15 @@ function onFoodSearch(input) {
 function renderDropdown(results, drop, input) {
     if (!results.length) {
         drop.innerHTML = '<div style="padding:10px 14px;font-size:12px;color:#888;">Tidak ditemukan. Masukkan data manual di bawah.</div>' +
-            '<div style="padding:6px 14px 12px;"><button type="button" onclick="pilihManual(this.closest(\'.food-row\'))" style="font-size:12px;padding:5px 12px;border:1.5px dashed #ccc;background:transparent;border-radius:6px;cursor:pointer;color:#555;">✏️ Isi manual</button></div>';
+            '<div style="padding:6px 14px 12px;"><button type="button" onclick="pilihManual(this.closest(\'.food-row\'))" style="font-size:12px;padding:5px 12px;border:1.5px dashed #ccc;background:transparent;border-radius:6px;cursor:pointer;color:#555;"><i data-feather="edit-2"></i> Isi manual</button></div>';
+        if(typeof feather !== 'undefined') feather.replace();
         return;
     }
     let html = '';
     results.forEach(r => {
         const badge = r.source_type==='online'
-            ? '<span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:10px;margin-left:4px;">🌐 Internet</span>'
-            : '<span style="font-size:10px;background:#dcfce7;color:#166534;padding:1px 6px;border-radius:10px;margin-left:4px;">📚 TKPI</span>';
+            ? '<span style="font-size:10px;background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:10px;margin-left:4px;"><i data-feather="globe"></i> Internet</span>'
+            : '<span style="font-size:10px;background:#dcfce7;color:#166534;padding:1px 6px;border-radius:10px;margin-left:4px;"><i data-feather="book"></i> TKPI</span>';
         html += `<div class="drop-item" onclick="pilihMakanan(this)"
             data-nama="${r.nama.replace(/"/g,'&quot;')}"
             data-kal="${r.kalori}" data-pro="${r.protein}"
@@ -306,14 +312,15 @@ function renderDropdown(results, drop, input) {
             style="padding:9px 14px;cursor:pointer;border-bottom:1px solid #f0f0f0;transition:background 0.15s;">
             <div style="font-weight:600;font-size:13px;">${r.nama}${badge}</div>
             <div style="font-size:11px;color:#888;margin-top:2px;">
-                🔥${r.kalori} kkal &nbsp;🥩${r.protein}g &nbsp;🌾${r.karbohidrat}g &nbsp;🧈${r.lemak}g
+                <i data-feather="zap"></i>${r.kalori} kkal &nbsp;<i data-feather="target"></i>${r.protein}g &nbsp;<i data-feather="layers"></i>${r.karbohidrat}g &nbsp;<i data-feather="droplet"></i>${r.lemak}g
                 <span style="margin-left:6px;font-style:italic;">(per ${r.satuan})</span>
             </div>
         </div>`;
     });
-    html += '<div style="padding:8px 14px;border-top:1px solid #f0f0f0;"><button type="button" onclick="pilihManual(this.closest(\'.food-dropdown\').closest(\'.food-row\'))" style="font-size:12px;padding:4px 10px;border:1.5px dashed #ccc;background:transparent;border-radius:6px;cursor:pointer;color:#555;">✏️ Isi manual</button></div>';
+    html += '<div style="padding:8px 14px;border-top:1px solid #f0f0f0;"><button type="button" onclick="pilihManual(this.closest(\'.food-dropdown\').closest(\'.food-row\'))" style="font-size:12px;padding:4px 10px;border:1.5px dashed #ccc;background:transparent;border-radius:6px;cursor:pointer;color:#555;"><i data-feather="edit-2"></i> Isi manual</button></div>';
     drop.innerHTML = html;
     drop.style.display = 'block';
+    if(typeof feather !== 'undefined') feather.replace();
     // Hover effect
     drop.querySelectorAll('.drop-item').forEach(el => {
         el.addEventListener('mouseenter', ()=>el.style.background='#f0f9ff');
@@ -342,7 +349,8 @@ function pilihMakanan(item) {
 
     // Badge sumber
     const badge = row.querySelector('.src-badge');
-    badge.textContent = item.dataset.type==='online' ? '🌐 '+item.dataset.sumber : '📚 '+item.dataset.sumber;
+    badge.innerHTML = item.dataset.type==='online' ? '<i data-feather="globe"></i> '+item.dataset.sumber : '<i data-feather="book"></i> '+item.dataset.sumber;
+    if(typeof feather !== 'undefined') feather.replace();
     badge.style.display = 'inline-block';
     badge.style.background = item.dataset.type==='online' ? '#dbeafe' : '#dcfce7';
     badge.style.color = item.dataset.type==='online' ? '#1d4ed8' : '#166534';
@@ -368,7 +376,7 @@ function isiDropdownPorsi(row, nama) {
     // Opsi "lainnya"
     const custom = document.createElement('option');
     custom.value = '__custom__';
-    custom.textContent = '✏️ Isi sendiri (gram)...';
+    custom.textContent = 'Isi sendiri (gram)...';
     sel.appendChild(custom);
     // Sync hidden fields
     syncPorsiHidden(row);
@@ -415,7 +423,8 @@ function pilihManual(row) {
         isiDropdownPorsi(row, 'nasi'); // default: padat
     }
     const badge = row.querySelector('.src-badge');
-    badge.textContent = '✏️ Manual'; badge.style.display='inline-block';
+    badge.innerHTML = '<i data-feather="edit-2"></i> Manual'; badge.style.display='inline-block';
+    if(typeof feather !== 'undefined') feather.replace();
     badge.style.background='#fef3c7'; badge.style.color='#92400e';
 }
 

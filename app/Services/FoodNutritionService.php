@@ -94,37 +94,89 @@ class FoodNutritionService
         return $results;
     }
 
+    /**
+     * Makanan asing yang umum di Indonesia — diizinkan lewat filter.
+     */
+    private static array $allowedForeignFoods = [
+        'pasta', 'pizza', 'spaghetti', 'macaroni', 'makaroni', 'lasagna',
+        'burger', 'hotdog', 'sandwich', 'croissant', 'pancake',
+        'sushi', 'ramen', 'udon', 'gyoza', 'takoyaki', 'dimsum',
+        'steak', 'nugget', 'sausage', 'sosis', 'kornet', 'bacon',
+        'cheese', 'yogurt', 'yoghurt', 'butter', 'margarin',
+        'cereal', 'oatmeal', 'granola', 'muesli',
+        'waffle', 'donut', 'cookies', 'cake', 'brownies', 'pudding',
+        'ice cream', 'es krim', 'chocolate', 'coklat',
+        'french fries', 'fried rice', 'noodle',
+    ];
+
+    /**
+     * Cek apakah nama makanan mengandung karakter non-latin yang bukan
+     * makanan umum di Indonesia (misal: tulisan Arab, China, Korea, Jepang).
+     */
+    private static function isRelevantFoodName(string $name): bool
+    {
+        // Tolak nama kosong atau terlalu pendek
+        if (mb_strlen($name) < 2) return false;
+
+        // Tolak nama yang mengandung karakter non-latin (Arab, China, Korea, dll)
+        if (preg_match('/[\x{0600}-\x{06FF}\x{4E00}-\x{9FFF}\x{AC00}-\x{D7AF}\x{3040}-\x{309F}\x{30A0}-\x{30FF}]/u', $name)) {
+            return false;
+        }
+
+        // Tolak nama dengan terlalu banyak karakter spesial
+        $cleanName = preg_replace('/[^a-zA-Z\s]/', '', $name);
+        if (mb_strlen($cleanName) < 2) return false;
+
+        return true;
+    }
+
     public static function searchOpenFoodFacts(string $query): array
     {
         $cacheKey = 'off_' . md5(strtolower($query));
-        return Cache::remember($cacheKey, 3600, function () use ($query) {
+
+        // Cache 24 jam agar tidak request berulang
+        return Cache::remember($cacheKey, 86400, function () use ($query) {
             try {
-                $response = Http::timeout(8)->withHeaders([
+                // Timeout singkat agar tidak blocking UI lama
+                $response = Http::timeout(4)->withHeaders([
                     'User-Agent' => 'GrowMOM-MonitoringSystem/1.0',
                 ])->get('https://world.openfoodfacts.org/cgi/search.pl', [
                     'search_terms'  => $query,
                     'search_simple' => 1,
                     'action'        => 'process',
                     'json'          => 1,
-                    'page_size'     => 10,
-                    'fields'        => 'product_name,nutriments,quantity',
+                    'page_size'     => 15,
+                    'fields'        => 'product_name,nutriments,countries_tags,lang',
                     'sort_by'       => 'unique_scans_n',
+                    'tagtype_0'     => 'countries',
+                    'tag_contains_0'=> 'contains',
+                    'tag_0'         => 'indonesia',
                 ]);
+
                 if (!$response->successful()) return [];
+
                 $products = $response->json('products') ?? [];
                 $results  = [];
+
                 foreach ($products as $p) {
                     $name = trim($p['product_name'] ?? '');
                     if (empty($name)) continue;
+
+                    // Filter nama yang tidak relevan
+                    if (!self::isRelevantFoodName($name)) continue;
+
                     $n      = $p['nutriments'] ?? [];
                     $kalori = $n['energy-kcal_100g'] ?? $n['energy_100g'] ?? null;
                     if ($kalori && ($n['energy_unit'] ?? '') === 'kJ') {
                         $kalori = round($kalori / 4.184, 1);
                     }
+
                     $protein = $n['proteins_100g']      ?? null;
                     $karbo   = $n['carbohydrates_100g'] ?? null;
                     $lemak   = $n['fat_100g']            ?? null;
+
                     if ($kalori === null || $protein === null || $karbo === null || $lemak === null) continue;
+
                     $results[] = [
                         'nama'        => ucwords(mb_strtolower($name)),
                         'kalori'      => round((float)$kalori, 1),
@@ -135,7 +187,10 @@ class FoodNutritionService
                         'sumber'      => 'Open Food Facts',
                         'source_type' => 'online',
                     ];
+
+                    if (count($results) >= 8) break; // Batasi hasil online
                 }
+
                 return $results;
             } catch (\Exception $e) {
                 Log::warning('OpenFoodFacts error: ' . $e->getMessage());
@@ -146,10 +201,19 @@ class FoodNutritionService
 
     public static function search(string $query): array
     {
-        $local      = self::searchLocal($query);
+        // Prioritas 1: Database lokal (cepat, tanpa network)
+        $local = self::searchLocal($query);
+
+        // Jika lokal sudah cukup (≥5 hasil), skip API untuk kecepatan
+        if (count($local) >= 5) {
+            return array_slice($local, 0, 10);
+        }
+
+        // Prioritas 2: Open Food Facts (async, di-cache)
         $online     = self::searchOpenFoodFacts($query);
         $localNames = array_map(fn($r) => mb_strtolower($r['nama']), $local);
         $online     = array_values(array_filter($online, fn($r) => !in_array(mb_strtolower($r['nama']), $localNames)));
-        return array_slice(array_merge($local, $online), 0, 12);
+
+        return array_slice(array_merge($local, $online), 0, 10);
     }
 }

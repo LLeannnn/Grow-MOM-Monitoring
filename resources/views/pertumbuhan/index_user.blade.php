@@ -6,7 +6,7 @@
     <!-- Header -->
     <div class="flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-bold text-on-surface">📈 Pertumbuhan</h1>
+            <h1 class="text-2xl font-bold text-on-surface"><i data-feather="trending-up"></i> Pertumbuhan</h1>
             <p class="text-sm text-on-surface-variant mt-1">Riwayat pengukuran BB & TB anak</p>
         </div>
         <a href="{{ route('pertumbuhan.create') }}" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary active:scale-95 transition-transform">
@@ -54,7 +54,7 @@
             <div class="flex justify-between items-start mb-3">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary text-lg">
-                        {{ $p->anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                        {!! $p->anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                     </div>
                     <div>
                         <div class="font-bold text-sm text-on-surface">{{ $p->anak->nama_anak }}</div>
@@ -92,7 +92,7 @@
         </div>
         @empty
         <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
-            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">📏</div>
+            <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="bar-chart-2"></i></div>
             <div class="font-bold text-on-surface mb-2">Belum ada data</div>
             <div class="text-xs text-on-surface-variant mb-6">Mulai pantau pertumbuhan anak Anda</div>
             <a href="{{ route('pertumbuhan.create') }}" class="w-full justify-center flex items-center gap-2 py-3 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-md active:scale-[0.98] transition-all">

@@ -30,27 +30,27 @@
 <body>
 <div class="auth-card">
     <div class="auth-logo">
-        <span class="icon">👩‍🍼</span>
+        <span class="icon"><i data-feather="user"></i><i data-feather="heart"></i></span>
         <h1>GROW-MOM</h1>
         <p>Sistem Monitoring Tumbuh Kembang Anak</p>
     </div>
 
     @if(session('success'))
-        <div class="alert-ok">✅ {{ session('success') }}</div>
+        <div class="alert-ok"><i data-feather="check-circle"></i> {{ session('success') }}</div>
     @endif
-    @if($errors->has('email'))
-        <div class="alert-err">❌ {{ $errors->first('email') }}</div>
+    @if($errors->has('nomer'))
+        <div class="alert-err"><i data-feather="x-circle"></i> {{ $errors->first('nomer') }}</div>
     @endif
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <div class="form-group">
-            <label>📧 Alamat Email</label>
-            <input type="email" name="email" value="{{ old('email') }}" placeholder="contoh@email.com" required autofocus>
-            @error('email')<div class="error">{{ $message }}</div>@enderror
+            <label><i data-feather="smartphone"></i> No. WhatsApp</label>
+            <input type="tel" name="nomer" value="{{ old('nomer') }}" placeholder="08xxxxxxxxxx" required autofocus>
+            @error('nomer')<div class="error">{{ $message }}</div>@enderror
         </div>
         <div class="form-group">
-            <label>🔒 Password</label>
+            <label><i data-feather="lock"></i> Password</label>
             <input type="password" name="password" placeholder="Masukkan password" required>
             @error('password')<div class="error">{{ $message }}</div>@enderror
         </div>
@@ -58,12 +58,12 @@
             <input type="checkbox" name="remember" id="remember">
             <label for="remember">Ingat saya di perangkat ini</label>
         </div>
-        <button type="submit" class="btn-auth">🚀 Masuk ke Aplikasi</button>
+        <button type="submit" class="btn-auth"><i data-feather="send"></i> Masuk ke Aplikasi</button>
     </form>
 
     <div class="auth-footer">
         Belum punya akun?
-        <a href="{{ route('register') }}">Daftar di sini →</a>
+        <a href="{{ route('register') }}">Daftar di sini <i data-feather="arrow-right"></i></a>
     </div>
 </div>
 </body>

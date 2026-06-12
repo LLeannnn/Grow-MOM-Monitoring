@@ -4,13 +4,13 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>💬 Rekomendasi untuk {{ $anak->nama_anak }}</h1>
+        <h1><i data-feather="message-circle"></i> Rekomendasi untuk {{ $anak->nama_anak }}</h1>
         <p>{{ $anak->umur_label }} • {{ $anak->jenis_kelamin_label }} • Ibu: {{ $anak->ibu->nama_ibu }}</p>
     </div>
     <div class="topbar-actions">
-        <a href="{{ route('pertumbuhan.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary btn-sm">📏 Input Pengukuran</a>
-        <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-outline btn-sm">📋 Input Recall</a>
-        <a href="{{ route('feedback.index') }}" class="btn btn-outline btn-sm">← Kembali</a>
+        <a href="{{ route('pertumbuhan.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary btn-sm"><i data-feather="bar-chart-2"></i> Input Pengukuran</a>
+        <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-outline btn-sm"><i data-feather="clipboard"></i> Input Recall</a>
+        <a href="{{ route('feedback.index') }}" class="btn btn-outline btn-sm"><i data-feather="arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -18,10 +18,10 @@
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;">
     @php
         $nutrisiConfig = [
-            'kalori'      => ['icon' => '🔥', 'label' => 'Kalori', 'satuan' => 'kkal', 'color' => 'green'],
-            'protein'     => ['icon' => '🥩', 'label' => 'Protein', 'satuan' => 'g', 'color' => 'purple'],
-            'karbohidrat' => ['icon' => '🍚', 'label' => 'Karbohidrat', 'satuan' => 'g', 'color' => 'amber'],
-            'lemak'       => ['icon' => '🫒', 'label' => 'Lemak', 'satuan' => 'g', 'color' => 'blue'],
+            'kalori'      => ['icon' => '<i data-feather="zap"></i>', 'label' => 'Kalori', 'satuan' => 'kkal', 'color' => 'green'],
+            'protein'     => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Protein', 'satuan' => 'g', 'color' => 'purple'],
+            'karbohidrat' => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Karbohidrat', 'satuan' => 'g', 'color' => 'amber'],
+            'lemak'       => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Lemak', 'satuan' => 'g', 'color' => 'blue'],
         ];
     @endphp
     @foreach($nutrisiConfig as $key => $cfg)
@@ -59,7 +59,7 @@
     <div>
         {{-- BAGIAN 1: FEEDBACK MANUAL DARI ADMIN --}}
         <h2 style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-            📝 Catatan Khusus (Manual)
+            <i data-feather="edit"></i> Catatan Khusus (Manual)
             <span class="badge badge-neutral" style="font-size:11px;">{{ $anak->feedbackAnak->count() }} catatan</span>
         </h2>
 
@@ -86,7 +86,7 @@
         <div style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid var(--secondary);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;" class="fade-up">
             <div style="display:flex;align-items:flex-start;gap:12px;">
                 <div style="width:38px;height:38px;background:var(--secondary-light);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">
-                    👩‍⚕️
+                    <i data-feather="user"></i><i data-feather="activity"></i>
                 </div>
                 <div style="flex:1;">
                     <div style="display: flex; justify-content: space-between; margin-bottom:6px;">
@@ -107,7 +107,7 @@
 
         {{-- BAGIAN 2: FEEDBACK OTOMATIS (SISTEM) --}}
         <h2 style="font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-            🤖 Saran Sistem (Otomatis)
+            <i data-feather="cpu"></i> Saran Sistem (Otomatis)
             <span class="badge badge-neutral" style="font-size:11px;">{{ count($feedbacks) }} analisis</span>
         </h2>
 
@@ -136,7 +136,7 @@
                         <div style="font-size:11.5px;font-weight:700;color:{{ $c['text'] }};margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Saran Tindakan:</div>
                         @foreach($fb['saran'] as $saran)
                         <div style="font-size:12.5px;color:#374151;padding:3px 0;display:flex;align-items:flex-start;gap:6px;">
-                            <span style="color:{{ $c['border'] }};margin-top:2px;flex-shrink:0;">›</span>
+                            <span style="color:{{ $c['border'] }};margin-top:2px;flex-shrink:0;"><i data-feather="chevron-right"></i></span>
                             <span>{{ $saran }}</span>
                         </div>
                         @endforeach
@@ -153,11 +153,11 @@
 
         {{-- Profil Anak --}}
         <div class="card fade-up">
-            <div class="card-header"><div class="card-title">👶 Profil Anak</div></div>
+            <div class="card-header"><div class="card-title"><i data-feather="smile"></i> Profil Anak</div></div>
             <div class="card-body">
                 <div style="text-align:center;margin-bottom:14px;">
                     <div class="anak-avatar" style="width:64px;height:64px;font-size:32px;margin:0 auto 8px;">
-                        {{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                        {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                     </div>
                     <div style="font-weight:700;font-size:15px;">{{ $anak->nama_anak }}</div>
                     <div style="font-size:12px;color:var(--text-muted);">{{ $anak->umur_label }}</div>
@@ -178,7 +178,7 @@
 
         {{-- Ringkasan Recall 7 Hari --}}
         <div class="card fade-up">
-            <div class="card-header"><div class="card-title">📅 Recall 7 Hari Terakhir</div></div>
+            <div class="card-header"><div class="card-title"><i data-feather="calendar"></i> Recall 7 Hari Terakhir</div></div>
             <div class="card-body">
                 @if($recalls->isNotEmpty())
                     <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">
@@ -198,7 +198,7 @@
                     @endforeach
                 @else
                     <div class="empty-state" style="padding:20px;">
-                        <div class="empty-icon" style="font-size:30px;">📋</div>
+                        <div class="empty-icon" style="font-size:30px;"><i data-feather="clipboard"></i></div>
                         <div class="empty-title" style="font-size:13px;">Belum ada data recall</div>
                         <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="btn btn-primary btn-sm" style="margin-top:8px;">+ Input Recall</a>
                     </div>
@@ -209,7 +209,7 @@
         {{-- Disclaimer --}}
         <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:var(--radius);padding:14px 16px;">
             <div style="font-size:12px;color:#92400e;line-height:1.6;">
-                ⚠️ <strong>Perhatian:</strong> Rekomendasi ini bersifat informatif berdasarkan data yang diinput. Untuk kondisi medis serius, selalu konsultasikan ke dokter atau tenaga kesehatan.
+                <i data-feather="alert-triangle"></i> <strong>Perhatian:</strong> Rekomendasi ini bersifat informatif berdasarkan data yang diinput. Untuk kondisi medis serius, selalu konsultasikan ke dokter atau tenaga kesehatan.
             </div>
         </div>
     </div>

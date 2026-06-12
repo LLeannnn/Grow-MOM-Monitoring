@@ -4,10 +4,10 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>👩 Data Ibu</h1>
+        <h1><i data-feather="users"></i> Data Ibu</h1>
         <p>Kelola data profil ibu yang terdaftar</p>
     </div>
-    <a href="{{ route('ibu.create') }}" class="btn btn-primary">+ Tambah Ibu</a>
+    <a href="{{ route('ibu.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Tambah Ibu</a>
 </div>
 
 <div class="card fade-up">
@@ -15,7 +15,7 @@
         <div class="card-title">Daftar Ibu ({{ $ibu->total() }})</div>
         <form method="GET" style="display:flex;gap:10px;">
             <div class="search-bar">
-                <span class="icon">🔍</span>
+                <span class="icon"><i data-feather="search"></i></span>
                 <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama / NIK...">
             </div>
             <button class="btn btn-outline btn-sm" type="submit">Cari</button>
@@ -59,12 +59,12 @@
                     </td>
                     <td>
                         <div style="display:flex;gap:6px;">
-                            <a href="{{ route('ibu.show', $row) }}" class="btn btn-outline btn-sm">👁</a>
-                            <a href="{{ route('ibu.edit', $row) }}" class="btn btn-outline btn-sm">✏️</a>
+                            <a href="{{ route('ibu.show', $row) }}" class="btn btn-outline btn-sm"><i data-feather="eye"></i></a>
+                            <a href="{{ route('ibu.edit', $row) }}" class="btn btn-outline btn-sm"><i data-feather="edit-2"></i></a>
                             <form method="POST" action="{{ route('ibu.destroy', $row) }}"
                                   onsubmit="return confirm('Hapus data ibu ini?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm">🗑</button>
+                                <button class="btn btn-danger btn-sm"><i data-feather="trash-2"></i></button>
                             </form>
                         </div>
                     </td>
@@ -72,7 +72,7 @@
                 @empty
                 <tr><td colspan="8">
                     <div class="empty-state">
-                        <div class="empty-icon">👩</div>
+                        <div class="empty-icon"><i data-feather="user"></i></div>
                         <div class="empty-title">Belum ada data ibu</div>
                         <a href="{{ route('ibu.create') }}" class="btn btn-primary btn-sm">Tambah Ibu Pertama</a>
                     </div>

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         // ===== ADMIN USER =====
         User::updateOrCreate(
-            ['email' => 'admin@growmom.id'],
+            ['nomer' => '081111111111'],
             ['name' => 'Administrator', 'password' => bcrypt('admin123'), 'role' => 'admin']
         );
 
@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
         foreach ($ibuData as $data) {
             // Create user first
             $user = User::updateOrCreate(
-                ['email' => $data['email']],
+                ['nomer' => $data['no_telepon']],
                 [
                     'name' => $data['nama_ibu'],
                     'password' => bcrypt('password123'),

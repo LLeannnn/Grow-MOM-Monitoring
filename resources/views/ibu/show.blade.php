@@ -4,12 +4,12 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>👩 Detail Ibu</h1>
+        <h1><i data-feather="user"></i> Detail Ibu</h1>
         <p>Profil lengkap dan data anak</p>
     </div>
     <div class="topbar-actions">
-        <a href="{{ route('ibu.edit', $ibu) }}" class="btn btn-outline">✏️ Edit</a>
-        <a href="{{ route('ibu.index') }}" class="btn btn-outline">← Kembali</a>
+        <a href="{{ route('ibu.edit', $ibu) }}" class="btn btn-outline"><i data-feather="edit-2"></i> Edit</a>
+        <a href="{{ route('ibu.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
     </div>
 </div>
 
@@ -17,7 +17,7 @@
     {{-- Profil Ibu --}}
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">📋 Profil Ibu</div>
+            <div class="card-title"><i data-feather="clipboard"></i> Profil Ibu</div>
         </div>
         <div class="card-body">
             <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border);">
@@ -44,13 +44,13 @@
     <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="card fade-up">
             <div class="card-header">
-                <div class="card-title">👶 Daftar Anak ({{ $ibu->anak->count() }})</div>
+                <div class="card-title"><i data-feather="smile"></i> Daftar Anak ({{ $ibu->anak->count() }})</div>
                 <a href="{{ route('anak.create') }}?ibu_id={{ $ibu->id }}" class="btn btn-primary btn-sm">+ Tambah</a>
             </div>
             <div class="card-body" style="padding:0;">
                 @forelse($ibu->anak as $anak)
                 <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);">
-                    <div style="font-size:28px;">{{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}</div>
+                    <div style="font-size:28px;">{!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}</div>
                     <div style="flex:1;">
                         <div style="font-weight:700;">{{ $anak->nama_anak }}</div>
                         <div style="font-size:12px;color:var(--text-muted);">{{ $anak->umur_label }} • {{ $anak->jenis_kelamin_label }}</div>
@@ -68,7 +68,7 @@
                 </div>
                 @empty
                 <div class="empty-state" style="padding:24px;">
-                    <div class="empty-icon" style="font-size:32px;">👶</div>
+                    <div class="empty-icon" style="font-size:32px;"><i data-feather="smile"></i></div>
                     <div class="empty-title" style="font-size:14px;">Belum ada data anak</div>
                 </div>
                 @endforelse
@@ -78,7 +78,7 @@
         {{-- Reminder --}}
         <div class="card fade-up">
             <div class="card-header">
-                <div class="card-title">🔔 Reminder Aktif</div>
+                <div class="card-title"><i data-feather="bell"></i> Reminder Aktif</div>
                 <a href="{{ route('reminder.create') }}" class="btn btn-outline btn-sm">+ Buat</a>
             </div>
             <div class="card-body" style="padding:0;">

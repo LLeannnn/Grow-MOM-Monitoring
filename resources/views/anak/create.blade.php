@@ -4,14 +4,14 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>👶 Tambah Data Anak</h1>
+        <h1><i data-feather="smile"></i> Tambah Data Anak</h1>
         <p>Daftarkan data anak untuk mulai monitoring</p>
     </div>
-    <a href="{{ route('anak.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('anak.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 
 <div class="card fade-up" style="max-width:800px;">
-    <div class="card-header"><div class="card-title">📝 Form Data Anak</div></div>
+    <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Form Data Anak</div></div>
     <div class="card-body">
         <form method="POST" action="{{ route('anak.store') }}" enctype="multipart/form-data">
             @csrf
@@ -43,8 +43,8 @@
                     <label>Jenis Kelamin <span class="required">*</span></label>
                     <select name="jenis_kelamin" required>
                         <option value="">-- Pilih --</option>
-                        <option value="L" {{ old('jenis_kelamin')=='L'?'selected':'' }}>👦 Laki-laki</option>
-                        <option value="P" {{ old('jenis_kelamin')=='P'?'selected':'' }}>👧 Perempuan</option>
+                        <option value="L" {{ old('jenis_kelamin')=='L'?'selected':'' }}><i data-feather="user"></i> Laki-laki</option>
+                        <option value="P" {{ old('jenis_kelamin')=='P'?'selected':'' }}><i data-feather="user"></i> Perempuan</option>
                     </select>
                     @error('jenis_kelamin')<span class="form-error">{{ $message }}</span>@enderror
                 </div>
@@ -74,7 +74,7 @@
             <div class="divider"></div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <a href="{{ route('anak.index') }}" class="btn btn-outline">Batal</a>
-                <button type="submit" class="btn btn-primary">💾 Simpan Data</button>
+                <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Simpan Data</button>
             </div>
         </form>
     </div>

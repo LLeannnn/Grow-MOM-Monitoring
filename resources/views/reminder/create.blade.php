@@ -4,14 +4,14 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🔔 Buat Reminder</h1>
+        <h1><i data-feather="bell"></i> Buat Reminder</h1>
         <p>Atur pengingat jadwal penting untuk ibu dan anak</p>
     </div>
-    <a href="{{ route('reminder.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('reminder.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 
 <div class="card fade-up" style="max-width:760px;">
-    <div class="card-header"><div class="card-title">📝 Form Reminder</div></div>
+    <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Form Reminder</div></div>
     <div class="card-body">
         <form method="POST" action="{{ route('reminder.store') }}">
             @csrf
@@ -41,7 +41,7 @@
                     <select name="tipe" required>
                         <option value="imunisasi" {{ old('tipe')=='imunisasi'?'selected':'' }}>💉 Imunisasi</option>
                         <option value="posyandu"  {{ old('tipe')=='posyandu'?'selected':'' }}>🏥 Posyandu</option>
-                        <option value="mpasi"     {{ old('tipe')=='mpasi'?'selected':'' }}>🥕 MPASI</option>
+                        <option value="mpasi"     {{ old('tipe')=='mpasi'?'selected':'' }}>🥣 MPASI</option>
                         <option value="kontrol"   {{ old('tipe')=='kontrol'?'selected':'' }}>👨‍⚕️ Kontrol Dokter</option>
                         <option value="lainnya"   {{ old('tipe')=='lainnya'?'selected':'' }}>🔔 Lainnya</option>
                     </select>
@@ -67,7 +67,7 @@
             <div class="divider"></div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <a href="{{ route('reminder.index') }}" class="btn btn-outline">Batal</a>
-                <button type="submit" class="btn btn-primary">🔔 Buat Reminder</button>
+                <button type="submit" class="btn btn-primary"><i data-feather="bell"></i> Buat Reminder</button>
             </div>
         </form>
     </div>

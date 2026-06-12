@@ -17,20 +17,17 @@ class OnboardingController extends Controller
         $request->validate([
             'nik'               => 'required|string|size:16|unique:ibu,nik',
             'nama_ibu'          => 'required|string|max:100',
-            'tanggal_lahir'     => 'required|date|before:today',
-            'no_telepon'        => 'required|string|max:20',
+            'tanggal_lahir'     => 'required|date',
             'alamat'            => 'required|string|max:255',
             'pekerjaan'         => 'required|in:ibu_rumah_tangga,pns,swasta,wiraswasta,petani,lainnya',
             'pendidikan'        => 'required|in:sd,smp,sma,d3,s1,s2,s3',
-            'status_pernikahan' => 'required|in:menikah,cerai_hidup,cerai_mati,janda',
+            'status_pernikahan' => 'required|in:menikah,belum_menikah,cerai',
         ], [
             'nik.required'           => 'NIK KTP wajib diisi.',
             'nik.size'               => 'NIK KTP harus tepat 16 digit.',
             'nik.unique'             => 'NIK ini sudah terdaftar di sistem.',
             'nama_ibu.required'      => 'Nama lengkap wajib diisi.',
             'tanggal_lahir.required' => 'Tanggal lahir wajib diisi.',
-            'tanggal_lahir.before'   => 'Tanggal lahir tidak valid.',
-            'no_telepon.required'    => 'Nomor HP wajib diisi.',
             'alamat.required'        => 'Alamat wajib diisi.',
             'pekerjaan.required'     => 'Pekerjaan wajib dipilih.',
             'pendidikan.required'    => 'Pendidikan wajib dipilih.',
@@ -38,11 +35,11 @@ class OnboardingController extends Controller
         ]);
 
         Ibu::create([
-            'user_id'           => Auth::id(),
+            'user_id'           => Auth::user()->id,
             'nik'               => $request->nik,
             'nama_ibu'          => $request->nama_ibu,
             'tanggal_lahir'     => $request->tanggal_lahir,
-            'no_telepon'        => $request->no_telepon,
+            'no_telepon'        => Auth::user()->nomer,
             'alamat'            => $request->alamat,
             'pekerjaan'         => $request->pekerjaan,
             'pendidikan'        => $request->pendidikan,

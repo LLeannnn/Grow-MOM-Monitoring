@@ -20,7 +20,7 @@
         <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/10 to-transparent"></div>
         <div class="relative">
             <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/60 flex items-center justify-center text-white text-5xl shadow-inner mb-4 border-4 border-white">
-                {{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
             </div>
             <h1 class="text-2xl font-bold text-on-surface mb-1">{{ $anak->nama_anak }}</h1>
             <p class="text-sm font-medium text-on-surface-variant">{{ $anak->umur_label }} • {{ $anak->jenis_kelamin_label }}</p>
@@ -79,7 +79,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl">🍽️</span> Gizi Hari Ini
+                <span class="text-xl"><i data-feather="coffee"></i></span> Gizi Hari Ini
             </h2>
             <span class="text-[11px] font-semibold text-on-surface-variant bg-surface-container py-1 px-3 rounded-full">{{ today()->format('d M Y') }}</span>
         </div>
@@ -89,7 +89,7 @@
                 <!-- Kalori -->
                 <div>
                     <div class="flex justify-between text-sm mb-1.5 font-semibold">
-                        <span class="text-on-surface">🔥 Kalori</span>
+                        <span class="text-on-surface"><i data-feather="zap"></i> Kalori</span>
                         <span class="text-primary">{{ number_format($ringkasanHariIni->total_kalori,0) }} / {{ $akg['energi'] ?? 1000 }} kkal</span>
                     </div>
                     <div class="h-2.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -103,7 +103,7 @@
                     <!-- Protein -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span>🥩 Pro</span>
+                            <span><i data-feather="hash"></i> Pro</span>
                             <span>{{ number_format($ringkasanHariIni->total_protein,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -114,7 +114,7 @@
                     <!-- Karbo -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span>🌾 Karbo</span>
+                            <span><i data-feather="hash"></i> Karbo</span>
                             <span>{{ number_format($ringkasanHariIni->total_karbo,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -125,7 +125,7 @@
                     <!-- Lemak -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span>🧈 Lemak</span>
+                            <span><i data-feather="hash"></i> Lemak</span>
                             <span>{{ number_format($ringkasanHariIni->total_lemak,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -141,7 +141,7 @@
             </a>
         @else
             <div class="text-center py-6">
-                <div class="text-4xl mb-3 opacity-50">🍽️</div>
+                <div class="text-4xl mb-3 opacity-50"><i data-feather="coffee"></i></div>
                 <p class="text-sm font-bold text-on-surface mb-1">Belum ada asupan</p>
                 <p class="text-xs text-on-surface-variant mb-4">Catat makanan anak hari ini</p>
                 <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="inline-block px-6 py-2.5 bg-primary text-on-primary font-bold text-sm rounded-xl shadow-md active:scale-95 transition-transform">
@@ -155,7 +155,7 @@
     @if($anak->feedbackAnak->isNotEmpty())
     <div class="bg-secondary-container/5 rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-secondary-container/20">
         <h2 class="text-base font-bold text-secondary-container flex items-center gap-2 mb-4">
-            <span class="text-xl">👩‍⚕️</span> Pesan Bidan / Admin
+            <span class="text-xl"><i data-feather="user"></i><i data-feather="activity"></i></span> Pesan Bidan / Admin
         </h2>
         <div class="space-y-4">
             @foreach($anak->feedbackAnak as $fbManual)
@@ -175,21 +175,22 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl">📈</span> Kurva WHO
+                <span class="text-xl"><i data-feather="trending-up"></i></span> Kurva WHO
             </h2>
-        </div>
-        
-        <div class="flex gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
-            <a href="{{ request()->fullUrlWithQuery(['interval' => 1]) }}" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-colors {{ $interval == 1 ? 'bg-primary text-on-primary shadow-md' : 'bg-surface-container-low text-on-surface-variant' }}">0-20 Bulan</a>
-            <a href="{{ request()->fullUrlWithQuery(['interval' => 2]) }}" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-colors {{ $interval == 2 ? 'bg-primary text-on-primary shadow-md' : 'bg-surface-container-low text-on-surface-variant' }}">21-40 Bulan</a>
-            <a href="{{ request()->fullUrlWithQuery(['interval' => 3]) }}" class="whitespace-nowrap px-4 py-2 rounded-xl text-xs font-bold transition-colors {{ $interval == 3 ? 'bg-primary text-on-primary shadow-md' : 'bg-surface-container-low text-on-surface-variant' }}">41-60 Bulan</a>
+            <div class="flex gap-1 bg-surface-container-low p-1 rounded-xl overflow-x-auto" style="max-width: 60%; -ms-overflow-style: none; scrollbar-width: none;">
+                <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all bg-primary text-on-primary shadow-sm" data-s="0" data-e="24">0-24</button>
+                <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-on-surface" data-s="25" data-e="52">25-52</button>
+                <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-on-surface" data-s="53" data-e="78">53-78</button>
+                <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-on-surface" data-s="79" data-e="104">79-104</button>
+                <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all text-on-surface-variant hover:text-on-surface" data-s="0" data-e="104">Semua</button>
+            </div>
         </div>
 
         <div class="space-y-8">
             <!-- Chart BB -->
             <div>
                 <h3 class="text-sm font-bold text-on-surface mb-1">Berat Badan (WAZ)</h3>
-                <p class="text-[10px] text-on-surface-variant mb-4">{{ $minUmur }} - {{ $maxUmur }} Bulan</p>
+                <p class="text-[10px] text-on-surface-variant mb-4">Grafik Weight-for-Age (Minggu)</p>
                 <div class="h-56 relative w-full">
                     <canvas id="chartBeratWHO"></canvas>
                 </div>
@@ -200,7 +201,7 @@
             <!-- Chart TB -->
             <div>
                 <h3 class="text-sm font-bold text-on-surface mb-1">Tinggi Badan (HAZ)</h3>
-                <p class="text-[10px] text-on-surface-variant mb-4">{{ $minUmur }} - {{ $maxUmur }} Bulan</p>
+                <p class="text-[10px] text-on-surface-variant mb-4">Grafik Height-for-Age (Minggu)</p>
                 <div class="h-56 relative w-full">
                     <canvas id="chartTinggiWHO"></canvas>
                 </div>
@@ -220,9 +221,9 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl">📋</span> Riwayat Ukur
+                <span class="text-xl"><i data-feather="clipboard"></i></span> Riwayat Ukur
             </h2>
-            <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="text-primary text-xs font-bold px-3 py-1.5 bg-primary/10 rounded-lg">📄 PDF</a>
+            <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="text-primary text-xs font-bold px-3 py-1.5 bg-primary/10 rounded-lg"><i data-feather="file-text"></i> PDF</a>
         </div>
         
         <div class="space-y-3">
@@ -233,13 +234,13 @@
                     <span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-bold">{{ $p->status_gizi_badge['label'] }}</span>
                 </div>
                 <div class="flex gap-4 text-xs font-medium text-on-surface-variant">
-                    <span>⚖️ {{ $p->berat_badan }} kg</span>
-                    <span>📏 {{ $p->tinggi_badan }} cm</span>
+                    <span><i data-feather="activity"></i> {{ $p->berat_badan }} kg</span>
+                    <span><i data-feather="bar-chart-2"></i> {{ $p->tinggi_badan }} cm</span>
                 </div>
             </div>
             @empty
             <div class="text-center py-6">
-                <span class="text-2xl opacity-50 block mb-2">📏</span>
+                <span class="text-2xl opacity-50 block mb-2"><i data-feather="bar-chart-2"></i></span>
                 <p class="text-xs text-on-surface-variant">Belum ada data pengukuran</p>
             </div>
             @endforelse
@@ -273,20 +274,23 @@ window.addEventListener('load', function () {
         pointRadius: 0, fill: false, tension: 0.3,
     });
 
+    let chartBerat = null;
+    let chartTinggi = null;
+
     const ctxBerat = document.getElementById('chartBeratWHO')?.getContext('2d');
     if (ctxBerat) {
-        new Chart(ctxBerat, {
+        chartBerat = new Chart(ctxBerat, {
             type: 'line',
             data: {
-                labels: whoWeightLabels,
+                labels: whoWeightLabels.slice(0, 25),
                 datasets: [
-                    { label: 'Median', data: whoWeightMed, ...dashedLine('#94a3b8') },
-                    { label: '-2SD',   data: whoWeightM2,  ...dashedLine('#f59e0b') },
-                    { label: '-3SD',   data: whoWeightM3,  ...dashedLine('#ef4444') },
-                    { label: '+2SD',   data: whoWeightP2,  ...dashedLine('#3b82f6') },
+                    { label: 'Median', data: whoWeightMed.slice(0, 25), ...dashedLine('#94a3b8') },
+                    { label: '-2SD',   data: whoWeightM2.slice(0, 25),  ...dashedLine('#f59e0b') },
+                    { label: '-3SD',   data: whoWeightM3.slice(0, 25),  ...dashedLine('#ef4444') },
+                    { label: '+2SD',   data: whoWeightP2.slice(0, 25),  ...dashedLine('#3b82f6') },
                     {
                         label: 'Berat Anak (kg)',
-                        data: anakBerat, 
+                        data: anakBerat.slice(0, 25), 
                         borderColor: '#4648d4', // primary
                         backgroundColor: 'rgba(70, 72, 212, 0.1)',
                         borderWidth: 3,
@@ -311,18 +315,18 @@ window.addEventListener('load', function () {
 
     const ctxTinggi = document.getElementById('chartTinggiWHO')?.getContext('2d');
     if (ctxTinggi) {
-        new Chart(ctxTinggi, {
+        chartTinggi = new Chart(ctxTinggi, {
             type: 'line',
             data: {
-                labels: whoHeightLabels,
+                labels: whoHeightLabels.slice(0, 25),
                 datasets: [
-                    { label: 'Median', data: whoHeightMed, ...dashedLine('#94a3b8') },
-                    { label: '-2SD',   data: whoHeightM2,  ...dashedLine('#f59e0b') },
-                    { label: '-3SD',   data: whoHeightM3,  ...dashedLine('#ef4444') },
-                    { label: '+2SD',   data: whoHeightP2,  ...dashedLine('#3b82f6') },
+                    { label: 'Median', data: whoHeightMed.slice(0, 25), ...dashedLine('#94a3b8') },
+                    { label: '-2SD',   data: whoHeightM2.slice(0, 25),  ...dashedLine('#f59e0b') },
+                    { label: '-3SD',   data: whoHeightM3.slice(0, 25),  ...dashedLine('#ef4444') },
+                    { label: '+2SD',   data: whoHeightP2.slice(0, 25),  ...dashedLine('#3b82f6') },
                     {
                         label: 'Tinggi Anak (cm)',
-                        data: anakTinggi, 
+                        data: anakTinggi.slice(0, 25), 
                         borderColor: '#00885d', // tertiary
                         backgroundColor: 'rgba(0, 136, 93, 0.1)',
                         borderWidth: 3,
@@ -344,6 +348,41 @@ window.addEventListener('load', function () {
             }
         });
     }
+
+    // Segment Logic
+    document.querySelectorAll('.seg-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.seg-btn').forEach(b => {
+                b.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
+                b.classList.add('text-on-surface-variant', 'hover:text-on-surface');
+            });
+            this.classList.remove('text-on-surface-variant', 'hover:text-on-surface');
+            this.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
+
+            const s = parseInt(this.dataset.s);
+            const e = parseInt(this.dataset.e) + 1; // +1 for slice
+
+            if (chartBerat) {
+                chartBerat.data.labels = whoWeightLabels.slice(s, e);
+                chartBerat.data.datasets[0].data = whoWeightMed.slice(s, e);
+                chartBerat.data.datasets[1].data = whoWeightM2.slice(s, e);
+                chartBerat.data.datasets[2].data = whoWeightM3.slice(s, e);
+                chartBerat.data.datasets[3].data = whoWeightP2.slice(s, e);
+                chartBerat.data.datasets[4].data = anakBerat.slice(s, e);
+                chartBerat.update();
+            }
+
+            if (chartTinggi) {
+                chartTinggi.data.labels = whoHeightLabels.slice(s, e);
+                chartTinggi.data.datasets[0].data = whoHeightMed.slice(s, e);
+                chartTinggi.data.datasets[1].data = whoHeightM2.slice(s, e);
+                chartTinggi.data.datasets[2].data = whoHeightM3.slice(s, e);
+                chartTinggi.data.datasets[3].data = whoHeightP2.slice(s, e);
+                chartTinggi.data.datasets[4].data = anakTinggi.slice(s, e);
+                chartTinggi.update();
+            }
+        });
+    });
 });
 </script>
 @endpush

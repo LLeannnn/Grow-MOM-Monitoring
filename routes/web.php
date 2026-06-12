@@ -11,6 +11,7 @@ use App\Http\Controllers\EdukasiMpasiController;
 use App\Http\Controllers\RecallGiziController;
 use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\UserMonitoringController;
 
 // ── Auth (tamu) ────────────────────────────────────────────────
 Route::middleware('guest')->group(function () {
@@ -69,6 +70,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth','admin'])->group(function () {
     // Dashboard admin
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Monitoring Aktivitas User
+    Route::get('monitoring', [UserMonitoringController::class, 'index'])->name('monitoring.index');
+    Route::get('monitoring/api/online', [UserMonitoringController::class, 'apiOnlineUsers'])->name('monitoring.api.online');
+    Route::get('monitoring/{user}', [UserMonitoringController::class, 'show'])->name('monitoring.show');
 
     // Data Ibu (admin kelola semua)
     Route::resource('ibu', IbuController::class);

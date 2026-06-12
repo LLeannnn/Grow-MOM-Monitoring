@@ -17,7 +17,7 @@
     <!-- Profil Anak Ringkas -->
     <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low flex gap-4 items-center">
         <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center text-3xl shrink-0">
-            {{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+            {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
         </div>
         <div class="flex-1 min-w-0">
             <h2 class="font-extrabold text-sm sm:text-base text-on-surface leading-tight">{{ $anak->nama_anak }}</h2>
@@ -40,10 +40,10 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             @php
                 $nutrisiConfig = [
-                    'kalori'      => ['icon' => '🔥', 'label' => 'Kalori', 'satuan' => 'kkal', 'color' => 'bg-amber-500', 'textColor' => 'text-amber-600'],
-                    'protein'     => ['icon' => '🥩', 'label' => 'Protein', 'satuan' => 'g', 'color' => 'bg-green-500', 'textColor' => 'text-green-600'],
-                    'karbohidrat' => ['icon' => '🍚', 'label' => 'Karbo', 'satuan' => 'g', 'color' => 'bg-purple-500', 'textColor' => 'text-purple-600'],
-                    'lemak'       => ['icon' => '🫒', 'label' => 'Lemak', 'satuan' => 'g', 'color' => 'bg-red-500', 'textColor' => 'text-red-600'],
+                    'kalori'      => ['icon' => '<i data-feather="zap"></i>', 'label' => 'Kalori', 'satuan' => 'kkal', 'color' => 'bg-amber-500', 'textColor' => 'text-amber-600'],
+                    'protein'     => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Protein', 'satuan' => 'g', 'color' => 'bg-green-500', 'textColor' => 'text-green-600'],
+                    'karbohidrat' => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Karbo', 'satuan' => 'g', 'color' => 'bg-purple-500', 'textColor' => 'text-purple-600'],
+                    'lemak'       => ['icon' => '<i data-feather="hash"></i>', 'label' => 'Lemak', 'satuan' => 'g', 'color' => 'bg-red-500', 'textColor' => 'text-red-600'],
                 ];
             @endphp
             @foreach($nutrisiConfig as $key => $cfg)
@@ -80,7 +80,7 @@
         <div class="bg-surface-container-lowest rounded-[24px] p-5 border-l-4 border-primary shadow-sm border-y border-r border-surface-container-low space-y-3">
             <div class="flex justify-between items-start">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl">👩‍⚕️</span>
+                    <span class="text-2xl"><i data-feather="user"></i><i data-feather="activity"></i></span>
                     <div>
                         <h4 class="font-bold text-xs text-on-surface leading-tight">Saran Bidan</h4>
                         <p class="text-[9px] text-on-surface-variant mt-0.5">Petugas Kesehatan</p>
@@ -142,7 +142,7 @@
     <!-- Riwayat Pengukuran (Mini) -->
     @if($anak->pertumbuhan->isNotEmpty())
     <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-surface-container-low space-y-4">
-        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider">📏 Data Antropometri Terakhir</h3>
+        <h3 class="text-xs font-bold text-on-surface-variant uppercase tracking-wider"><i data-feather="bar-chart-2"></i> Data Antropometri Terakhir</h3>
         @php $p = $anak->pertumbuhan->first(); @endphp
         <div class="grid grid-cols-3 gap-2 text-center text-xs font-semibold text-on-surface">
             <div>
@@ -163,7 +163,7 @@
 
     <!-- Disclaimer -->
     <div class="bg-amber-500/10 p-4 rounded-3xl border border-amber-500/20 text-[10px] sm:text-xs font-semibold text-amber-600/90 leading-relaxed text-center">
-        ⚠️ <strong>PENTING:</strong> Rekomendasi ini merupakan analisis sistem berdasarkan data yang diinput. Jika anak mengalami gejala medis serius, selalu konsultasikan langsung ke dokter atau puskesmas.
+        <i data-feather="alert-triangle"></i> <strong>PENTING:</strong> Rekomendasi ini merupakan analisis sistem berdasarkan data yang diinput. Jika anak mengalami gejala medis serius, selalu konsultasikan langsung ke dokter atau puskesmas.
     </div>
 
     <!-- Bottom Actions -->

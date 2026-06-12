@@ -4,13 +4,13 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>🥕 Tambah Artikel Edukasi</h1>
+        <h1><i data-feather="book-open"></i> Tambah Artikel Edukasi</h1>
     </div>
-    <a href="{{ route('edukasi.index') }}" class="btn btn-outline">← Kembali</a>
+    <a href="{{ route('edukasi.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
 
 <div class="card fade-up" style="max-width:800px;">
-    <div class="card-header"><div class="card-title">📝 Form Artikel MPASI</div></div>
+    <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Form Artikel MPASI</div></div>
     <div class="card-body">
         <form method="POST" action="{{ route('edukasi.store') }}" enctype="multipart/form-data">
             @csrf
@@ -61,7 +61,7 @@
             <div class="divider"></div>
             <div style="display:flex;gap:10px;justify-content:flex-end;">
                 <a href="{{ route('edukasi.index') }}" class="btn btn-outline">Batal</a>
-                <button type="submit" class="btn btn-primary">💾 Publikasikan</button>
+                <button type="submit" class="btn btn-primary"><i data-feather="save"></i> Publikasikan</button>
             </div>
         </form>
     </div>

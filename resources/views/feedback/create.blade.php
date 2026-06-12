@@ -4,15 +4,15 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>💬 Beri Feedback</h1>
+        <h1><i data-feather="message-circle"></i> Beri Feedback</h1>
         <p>Sampaikan pendapat Anda untuk perbaikan sistem GROW-MOM</p>
     </div>
-    <a href="{{ route('feedback.index') }}" class="btn btn-outline">📋 Lihat Semua</a>
+    <a href="{{ route('feedback.index') }}" class="btn btn-outline"><i data-feather="clipboard"></i> Lihat Semua</a>
 </div>
 
 <div class="grid-2" style="gap:24px;align-items:start;">
     <div class="card fade-up">
-        <div class="card-header"><div class="card-title">📝 Form Feedback</div></div>
+        <div class="card-header"><div class="card-title"><i data-feather="edit"></i> Form Feedback</div></div>
         <div class="card-body">
             <form method="POST" action="{{ route('feedback.store') }}">
                 @csrf
@@ -34,7 +34,7 @@
                         <div id="starRating" style="display:flex;gap:6px;margin:6px 0;">
                             @for($i=1;$i<=5;$i++)
                             <span class="star-btn" data-val="{{ $i }}"
-                                  style="font-size:30px;cursor:pointer;color:#e5e7eb;transition:color 0.15s;">★</span>
+                                  style="font-size:30px;cursor:pointer;color:#e5e7eb;transition:color 0.15s;"><i data-feather="star"></i></span>
                             @endfor
                         </div>
                         <input type="hidden" name="rating" id="ratingInput" value="{{ old('rating','5') }}">
@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <div class="divider"></div>
-                <button type="submit" class="btn btn-primary" style="width:100%;">💚 Kirim Feedback</button>
+                <button type="submit" class="btn btn-primary" style="width:100%;"><i data-feather="heart"></i> Kirim Feedback</button>
             </form>
         </div>
     </div>
@@ -66,7 +66,7 @@
     <div style="display:flex;flex-direction:column;gap:16px;">
         <div class="card fade-up" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;border:none;">
             <div class="card-body" style="text-align:center;padding:32px 24px;">
-                <div style="font-size:52px;margin-bottom:12px;">💚</div>
+                <div style="font-size:52px;margin-bottom:12px;"><i data-feather="heart"></i></div>
                 <div style="font-size:20px;font-weight:800;margin-bottom:8px;">Bantu Kami Berkembang!</div>
                 <div style="opacity:0.85;font-size:13.5px;line-height:1.7;">
                     Feedback Anda sangat berarti untuk meningkatkan kualitas layanan GROW-MOM demi tumbuh kembang anak yang optimal.
@@ -75,9 +75,9 @@
         </div>
 
         <div class="card fade-up">
-            <div class="card-header"><div class="card-title">💡 Panduan Feedback</div></div>
+            <div class="card-header"><div class="card-title"><i data-feather="info"></i> Panduan Feedback</div></div>
             <div class="card-body">
-                @foreach([['⭐⭐⭐⭐⭐','Sangat Puas — Semua fitur bekerja dengan baik'],['⭐⭐⭐⭐','Puas — Ada sedikit yang perlu diperbaiki'],['⭐⭐⭐','Cukup — Beberapa fitur perlu peningkatan'],['⭐⭐','Kurang — Banyak yang perlu diperbaiki'],['⭐','Tidak Puas — Butuh perbaikan menyeluruh']] as [$stars,$desc])
+                @foreach([['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Sangat Puas — Semua fitur bekerja dengan baik'],['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Puas — Ada sedikit yang perlu diperbaiki'],['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Cukup — Beberapa fitur perlu peningkatan'],['<i data-feather="star"></i><i data-feather="star"></i>','Kurang — Banyak yang perlu diperbaiki'],['<i data-feather="star"></i>','Tidak Puas — Butuh perbaikan menyeluruh']] as [$stars,$desc])
                 <div style="display:flex;gap:10px;margin-bottom:10px;font-size:13px;">
                     <span>{{ $stars }}</span>
                     <span style="color:var(--text-muted);">{{ $desc }}</span>

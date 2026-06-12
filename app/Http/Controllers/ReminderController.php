@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reminder;
 use App\Models\Anak;
 use App\Models\Ibu;
+use App\Services\FonnteService;
 use Illuminate\Http\Request;
 
 class ReminderController extends Controller
@@ -49,10 +50,10 @@ class ReminderController extends Controller
 
         $reminder = Reminder::create($validated);
 
-        // Ambil data ibu untuk mendapatkan nomor telepon
+        // Kirim pesan WhatsApp ke nomor ibu via Fonnte
         $ibu = Ibu::find($validated['ibu_id']);
         if ($ibu && $ibu->no_telepon) {
-            $this->kirimWhatsAppFonnte($ibu->no_telepon, $validated['pesan']);
+            (new FonnteService())->send($ibu->no_telepon, $validated['pesan']);
         }
 
         return redirect()->route('reminder.index')
@@ -78,24 +79,4 @@ class ReminderController extends Controller
         return back()->with('success', 'Reminder berhasil dihapus!');
     }
 
-    private function kirimWhatsAppFonnte(string $noTelepon, string $pesan): void
-    {
-        try {
-            $token = env('FONNTE_TOKEN', 'RCSvHJ2Bxj55WUJfKG9h');
-
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'Authorization' => $token,
-            ])->post('https://api.fonnte.com/send', [
-                'target' => $noTelepon,
-                'message' => $pesan,
-                'countryCode' => '62', 
-            ]);
-
-            if (!$response->successful()) {
-                \Log::error('Fonnte WhatsApp Error: ' . $response->body());
-            }
-        } catch (\Exception $e) {
-            \Log::error('Fonnte WhatsApp Exception: ' . $e->getMessage());
-        }
-    }
 }

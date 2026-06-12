@@ -72,11 +72,11 @@
     
     <!-- Top App Bar -->
     <header class="bg-surface sticky top-0 z-40 shadow-sm">
-        <div class="flex justify-between items-center w-full px-6 h-16 max-w-7xl mx-auto">
+        <div class="flex justify-between items-center w-full px-6 h-16 max-w-md mx-auto">
             <div class="flex items-center gap-3">
                 <a href="{{ route('user.dashboard') }}" class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full bg-primary/20 overflow-hidden flex items-center justify-center text-primary text-xl">
-                        👩
+                        <span class="material-symbols-outlined text-xl">person</span>
                     </div>
                     <span class="text-xl font-bold text-primary tracking-tight">GROW-MOM</span>
                 </a>
@@ -88,15 +88,15 @@
     </header>
 
     <!-- Main Content -->
-    <main class="px-6 pt-6 space-y-8 max-w-7xl mx-auto">
+    <main class="px-4 pt-6 space-y-6 max-w-md mx-auto">
         @if(session('success'))
-            <div class="bg-tertiary-container/10 border-l-4 border-tertiary-container text-tertiary-container p-4 rounded-xl shadow-sm font-semibold mb-4 text-sm">
-                ✅ {{ session('success') }}
+            <div class="bg-tertiary-container/10 border-l-4 border-tertiary-container text-tertiary-container p-4 rounded-xl shadow-sm font-semibold mb-4 text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">check_circle</span> {{ session('success') }}
             </div>
         @endif
         @if(session('error'))
-            <div class="bg-secondary-container/10 border-l-4 border-secondary-container text-secondary-container p-4 rounded-xl shadow-sm font-semibold mb-4 text-sm">
-                ❌ {{ session('error') }}
+            <div class="bg-secondary-container/10 border-l-4 border-secondary-container text-secondary-container p-4 rounded-xl shadow-sm font-semibold mb-4 text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-lg">cancel</span> {{ session('error') }}
             </div>
         @endif
         
@@ -203,7 +203,7 @@
         <h3 class="text-xl font-bold mb-6 text-center">Profil Saya</h3>
         
         <div class="flex items-center mb-6 p-4 bg-primary/5 rounded-2xl border border-primary/10">
-            <div class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary text-3xl mr-4">👩</div>
+            <div class="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center text-primary mr-4"><span class="material-symbols-outlined text-3xl">person</span></div>
             <div>
                 <div class="font-bold text-lg text-on-surface">{{ auth()->user()->ibu->nama_ibu ?? auth()->user()->name }}</div>
                 <div class="text-sm font-medium text-primary">Ibu</div>

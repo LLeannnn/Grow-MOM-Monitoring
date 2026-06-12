@@ -121,16 +121,11 @@ class PertumbuhanController extends Controller
         $haz = Pertumbuhan::hitungZScore((float) $pertumbuhan->tinggi_badan, $umurBulan, $jk, 'height');
 
         // ── WHO Chart Data Intervals (based on this measurement)
-        if ($umurBulan <= 20) {
-            $minUmur = 0; $maxUmur = 20; $interval = 1;
-        } elseif ($umurBulan <= 40) {
-            $minUmur = 21; $maxUmur = 40; $interval = 2;
-        } else {
-            $minUmur = 41; $maxUmur = 60; $interval = 3;
-        }
+        $minUmur = 0;
+        $maxUmur = 104; // 104 minggu (~24 bulan)
 
-        $whoWeight = Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $jk, 'weight');
-        $whoHeight = Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $jk, 'height');
+        $whoWeight = Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $jk, 'weight', true);
+        $whoHeight = Pertumbuhan::getWhoReferenceForChart($minUmur, $maxUmur, $jk, 'height', true);
 
         // Chart actual anak (null-padded array)
         $chartBerat  = array_fill(0, $maxUmur - $minUmur + 1, null);
@@ -138,7 +133,7 @@ class PertumbuhanController extends Controller
         $tglLahir    = \Carbon\Carbon::parse($anak->tanggal_lahir);
 
         foreach ($riwayat as $r) {
-            $uB = $tglLahir->diffInMonths($r->tanggal_pengukuran);
+            $uB = $tglLahir->diffInWeeks($r->tanggal_pengukuran);
             if ($uB >= $minUmur && $uB <= $maxUmur) {
                 $idx = $uB - $minUmur;
                 $chartBerat[$idx]  = (float) $r->berat_badan;
@@ -155,7 +150,7 @@ class PertumbuhanController extends Controller
             'waz', 'haz', 'statusWho',
             'whoWeight', 'whoHeight',
             'chartLabels', 'chartBerat', 'chartTinggi',
-            'minUmur', 'maxUmur', 'interval'
+            'minUmur', 'maxUmur'
         ));
     }
 

@@ -4,7 +4,7 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>📈 Monitoring Pertumbuhan</h1>
+        <h1><i data-feather="trending-up"></i> Monitoring Pertumbuhan</h1>
         <p>Riwayat pengukuran berat badan, tinggi, dan status gizi anak</p>
     </div>
     <a href="{{ route('pertumbuhan.create') }}" class="btn btn-primary">+ Input Pengukuran</a>
@@ -28,14 +28,14 @@
     @if(request()->hasAny(['anak_id','status_gizi']))
         <a href="{{ route('pertumbuhan.index') }}" class="btn btn-outline btn-sm">Reset</a>
         @if(request('anak_id'))
-        <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ request('anak_id') }}" class="btn btn-outline btn-sm">📄 Export PDF</a>
+        <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ request('anak_id') }}" class="btn btn-outline btn-sm"><i data-feather="file-text"></i> Export PDF</a>
         @endif
     @endif
 </form>
 
 <div class="card fade-up">
     <div class="card-header">
-        <div class="card-title">📊 Data Pengukuran ({{ $pertumbuhan->total() }})</div>
+        <div class="card-title"><i data-feather="bar-chart-2"></i> Data Pengukuran ({{ $pertumbuhan->total() }})</div>
     </div>
     <div class="table-wrap">
         <table>
@@ -60,12 +60,12 @@
                     <td style="font-size:12px;color:var(--text-muted);max-width:150px;">{{ Str::limit($p->catatan, 50) ?? '-' }}</td>
                     <td>
                         <div style="display:flex;gap:6px;align-items:center;">
-                            <a href="{{ route('anak.show', $p->anak) }}" class="btn btn-outline btn-sm" title="Detail Anak">👁 Detail</a>
-                            <a href="{{ route('pertumbuhan.show', $p) }}" class="btn btn-outline btn-sm" title="Analisis WHO">📊 WHO</a>
+                            <a href="{{ route('anak.show', $p->anak) }}" class="btn btn-outline btn-sm" title="Detail Anak"><i data-feather="eye"></i> Detail</a>
+                            <a href="{{ route('pertumbuhan.show', $p) }}" class="btn btn-outline btn-sm" title="Analisis WHO"><i data-feather="bar-chart-2"></i> WHO</a>
                             <form method="POST" action="{{ route('pertumbuhan.destroy', $p) }}"
                                   onsubmit="return confirm('Hapus data ini?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm">🗑</button>
+                                <button class="btn btn-danger btn-sm"><i data-feather="trash-2"></i></button>
                             </form>
                         </div>
                     </td>
@@ -73,7 +73,7 @@
                 @empty
                 <tr><td colspan="9">
                     <div class="empty-state">
-                        <div class="empty-icon">📏</div>
+                        <div class="empty-icon"><i data-feather="bar-chart-2"></i></div>
                         <div class="empty-title">Belum ada data pengukuran</div>
                         <a href="{{ route('pertumbuhan.create') }}" class="btn btn-primary btn-sm">Input Sekarang</a>
                     </div>

@@ -4,20 +4,16 @@
 @section('content')
 <div class="topbar">
     <div class="page-header">
-        <h1>Dashboard Statistik 📊</h1>
+        <h1><i data-feather="grid"></i> Dashboard Statistik</h1>
         <p>Selamat datang di GROW-MOM Monitoring System — {{ now()->format('l, d F Y') }}</p>
     </div>
-    <div class="topbar-actions">
-        <a href="{{ route('anak.create') }}" class="btn btn-primary">
-            <span>+</span> Tambah Anak
-        </a>
-    </div>
+    <a href="{{ route('anak.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Tambah Anak</a>
 </div>
 
 {{-- STAT CARDS --}}
 <div class="stat-grid">
     <div class="stat-card green fade-up">
-        <div class="stat-icon green">👩</div>
+        <div class="stat-icon green"><i data-feather="user"></i></div>
         <div class="stat-info">
             <div class="stat-label">Total Ibu</div>
             <div class="stat-value">{{ $totalIbu }}</div>
@@ -25,7 +21,7 @@
         </div>
     </div>
     <div class="stat-card purple fade-up">
-        <div class="stat-icon purple">👶</div>
+        <div class="stat-icon purple"><i data-feather="smile"></i></div>
         <div class="stat-info">
             <div class="stat-label">Total Anak</div>
             <div class="stat-value">{{ $totalAnak }}</div>
@@ -33,7 +29,7 @@
         </div>
     </div>
     <div class="stat-card amber fade-up">
-        <div class="stat-icon amber">🔔</div>
+        <div class="stat-icon amber"><i data-feather="bell"></i></div>
         <div class="stat-info">
             <div class="stat-label">Reminder Aktif</div>
             <div class="stat-value">{{ $reminderAktif }}</div>
@@ -46,7 +42,7 @@
 <div class="chart-grid">
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">📈 Tren Pertumbuhan (6 Bulan Terakhir)</div>
+            <div class="card-title"><i data-feather="trending-up"></i> Tren Pertumbuhan (6 Bulan Terakhir)</div>
         </div>
         <div class="card-body">
             <div class="chart-wrapper">
@@ -57,7 +53,7 @@
 
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">🥗 Distribusi Status Gizi</div>
+            <div class="card-title"><i data-feather="hash"></i> Distribusi Status Gizi</div>
         </div>
         <div class="card-body">
             <div class="chart-wrapper" style="height:220px;">
@@ -86,14 +82,14 @@
     {{-- Anak Terbaru --}}
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">👶 Anak Terbaru</div>
+            <div class="card-title"><i data-feather="smile"></i> Anak Terbaru</div>
             <a href="{{ route('anak.index') }}" class="btn btn-outline btn-sm">Lihat Semua</a>
         </div>
         <div class="card-body" style="padding:0;">
             @forelse($anakTerbaru as $a)
             <div style="display:flex;align-items:center;gap:14px;padding:14px 22px;border-bottom:1px solid var(--border);">
                 <div class="anak-avatar" style="width:40px;height:40px;font-size:18px;margin:0;">
-                    {{ $a->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                    {!! $a->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                 </div>
                 <div style="flex:1;">
                     <div style="font-weight:600;font-size:13.5px;">{{ $a->nama_anak }}</div>
@@ -103,7 +99,7 @@
             </div>
             @empty
             <div class="empty-state" style="padding:30px;">
-                <div class="empty-icon">👶</div>
+                <div class="empty-icon"><i data-feather="smile"></i></div>
                 <div class="empty-title">Belum ada data anak</div>
                 <a href="{{ route('anak.create') }}" class="btn btn-primary btn-sm">Tambah Anak</a>
             </div>
@@ -114,7 +110,7 @@
     {{-- Reminder Upcoming --}}
     <div class="card fade-up">
         <div class="card-header">
-            <div class="card-title">🔔 Reminder Mendatang</div>
+            <div class="card-title"><i data-feather="bell"></i> Reminder Mendatang</div>
             <a href="{{ route('reminder.index') }}" class="btn btn-outline btn-sm">Lihat Semua</a>
         </div>
         <div class="card-body" style="padding:0;">
@@ -133,7 +129,7 @@
             </div>
             @empty
             <div class="empty-state" style="padding:30px;">
-                <div class="empty-icon">🔔</div>
+                <div class="empty-icon"><i data-feather="bell"></i></div>
                 <div class="empty-title">Tidak ada reminder aktif</div>
             </div>
             @endforelse

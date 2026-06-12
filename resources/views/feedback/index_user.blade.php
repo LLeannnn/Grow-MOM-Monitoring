@@ -5,13 +5,13 @@
 <div class="space-y-6">
     <!-- Header -->
     <div>
-        <h1 class="text-2xl font-bold text-on-surface">💬 Saran & Feedback</h1>
+        <h1 class="text-2xl font-bold text-on-surface"><i data-feather="message-circle"></i> Saran & Feedback</h1>
         <p class="text-sm text-on-surface-variant mt-1">Rekomendasi gizi personal untuk buah hati Anda</p>
     </div>
 
     <!-- Info Banner (Sleek dark mode gradient) -->
     <div class="bg-gradient-to-br from-[#0f2419] to-[#1a3a28] rounded-3xl p-6 shadow-lg flex gap-4 items-center border border-emerald-950">
-        <span class="text-3xl shrink-0">🤖</span>
+        <span class="text-3xl shrink-0"><i data-feather="cpu"></i></span>
         <div class="space-y-1">
             <h4 class="text-white text-xs sm:text-sm font-bold">Sistem Analisis Otomatis</h4>
             <p class="text-[10px] sm:text-xs text-white/70 leading-relaxed">
@@ -24,7 +24,7 @@
     <!-- Grid Anak -->
     @if($anakList->isEmpty())
     <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
-        <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4">👶</div>
+        <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="smile"></i></div>
         <div class="font-bold text-on-surface mb-2">Belum ada data anak</div>
         <div class="text-xs text-on-surface-variant mb-6">Tambahkan data buah hati terlebih dahulu untuk melihat rekomendasi gizi otomatis</div>
         <a href="{{ route('anak.create') }}" class="w-full justify-center flex items-center gap-2 py-3 bg-primary text-on-primary rounded-xl text-sm font-bold active:scale-[0.98] transition-all">
@@ -39,7 +39,7 @@
             <!-- Header Anak -->
             <div class="flex items-center gap-4 mb-4 border-b border-surface-container pb-3">
                 <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-2xl shrink-0">
-                    {{ $anak->jenis_kelamin === 'L' ? '👦' : '👧' }}
+                    {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
                 </div>
                 <div class="flex-1 min-w-0">
                     <h3 class="font-bold text-sm sm:text-base text-on-surface leading-tight">{{ $anak->nama_anak }}</h3>
@@ -53,11 +53,11 @@
             <!-- Status Data Grid -->
             <div class="grid grid-cols-3 gap-2 text-center mb-4">
                 <div class="bg-surface-container/60 p-3 rounded-2xl border border-surface-container/40">
-                    <span class="text-lg block">{{ $anak->pertumbuhan->isNotEmpty() ? '✅' : '❌' }}</span>
+                    <span class="text-lg block">{!! $anak->pertumbuhan->isNotEmpty() ? '<i data-feather="check-circle"></i>' : '<i data-feather="x-circle"></i>' !!}</span>
                     <span class="text-[9px] font-bold text-on-surface-variant mt-1 block uppercase">Data BB/TB</span>
                 </div>
                 <div class="bg-surface-container/60 p-3 rounded-2xl border border-surface-container/40">
-                    <span class="text-lg block">{{ $r['has_recall'] ? '✅' : '❌' }}</span>
+                    <span class="text-lg block">{!! $r['has_recall'] ? '<i data-feather="check-circle"></i>' : '<i data-feather="x-circle"></i>' !!}</span>
                     <span class="text-[9px] font-bold text-on-surface-variant mt-1 block uppercase">Recall 7 Hari</span>
                 </div>
                 <div class="bg-surface-container/60 p-3 rounded-2xl border border-surface-container/40">
@@ -81,7 +81,7 @@
     @endif
 
     <div class="bg-surface-container/40 p-4 rounded-3xl text-center text-xs font-semibold text-on-surface-variant/80 border border-surface-container/30">
-        💡 <strong>Tips:</strong> Lengkapi data pertumbuhan & catat makan harian buah hati agar analisis feedback kami semakin akurat & personal.
+        <i data-feather="info"></i> <strong>Tips:</strong> Lengkapi data pertumbuhan & catat makan harian buah hati agar analisis feedback kami semakin akurat & personal.
     </div>
 </div>
 @endsection
