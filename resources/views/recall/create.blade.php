@@ -8,14 +8,7 @@
     </div>
     <a href="{{ route('recall.index') }}" class="btn btn-outline"><i data-feather="arrow-left"></i> Kembali</a>
 </div>
-@php
-$meals = [
-    'pagi'  => ['label'=>'Makan Pagi',  'icon'=>'<i data-feather="sun"></i>','color'=>'#f59e0b'],
-    'siang' => ['label'=>'Makan Siang', 'icon'=>'<i data-feather="sun"></i>', 'color'=>'#16a34a'],
-    'malam' => ['label'=>'Makan Malam', 'icon'=>'<i data-feather="moon"></i>', 'color'=>'#7c3aed'],
-    'snack' => ['label'=>'Snack',        'icon'=>'<i data-feather="coffee"></i>','color'=>'#ef4444'],
-];
-@endphp
+
 <form method="POST" action="{{ route('recall.store') }}" id="formRecall">
 @csrf
 <div class="card fade-up" style="margin-bottom:20px;">
@@ -42,36 +35,18 @@ $meals = [
 </div>
 <div style="display:grid;grid-template-columns:1fr 340px;gap:20px;align-items:start;">
 <div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--card);border:1px solid var(--border);border-radius:var(--radius) var(--radius) 0 0;overflow:hidden;">
-        @foreach($meals as $key=>$m)
-        <button type="button" onclick="switchTab('{{ $key }}')" id="tab-{{ $key }}"
-            style="padding:14px 10px;border:none;border-right:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;background:{{ $loop->first?'var(--primary)':'var(--card)' }};color:{{ $loop->first?'#fff':'var(--text-muted)' }};display:flex;flex-direction:column;align-items:center;gap:4px;">
-            <span style="font-size:20px;">{!! $m['icon'] !!}</span>
-            <span>{{ $m['label'] }}</span>
-            <span id="count-{{ $key }}" style="font-size:11px;background:rgba(255,255,255,0.3);border-radius:100px;padding:1px 8px;display:none;">0</span>
-        </button>
-        @endforeach
-    </div>
-    @foreach($meals as $key=>$m)
-    <div id="pane-{{ $key }}" style="display:{{ $loop->first?'block':'none' }};background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);padding:20px;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-            <div style="font-weight:700;font-size:14px;color:{{ $m['color'] }};">{!! $m['icon'] !!} {{ $m['label'] }}</div>
-            <button type="button" onclick="tambahBaris('{{ $key }}')"
-                style="background:{{ $m['color'] }};color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;">
-                + Tambah Makanan
+            <div style="font-weight:700;font-size:16px;color:var(--text-main);display:flex;align-items:center;gap:8px;">
+                <i data-feather="list"></i> Daftar Makanan
+            </div>
+            <button type="button" onclick="tambahBaris()"
+                style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;">
+                <i data-feather="plus" style="width:16px;height:16px;"></i> Tambah Makanan
             </button>
         </div>
-        <div id="rows-{{ $key }}"></div>
-        <div style="background:{{ $m['color'] }}15;border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12.5px;">
-            <div style="display:flex;gap:20px;flex-wrap:wrap;">
-                <span><i data-feather="zap"></i> <strong id="total-kal-{{ $key }}">0</strong> kkal</span>
-                <span><i data-feather="target"></i> <strong id="total-pro-{{ $key }}">0</strong> g protein</span>
-                <span><i data-feather="layers"></i> <strong id="total-kar-{{ $key }}">0</strong> g karbo</span>
-                <span><i data-feather="droplet"></i> <strong id="total-lem-{{ $key }}">0</strong> g lemak</span>
-            </div>
-        </div>
+        <div id="rows-container"></div>
     </div>
-    @endforeach
 </div>
 <div style="position:sticky;top:20px;display:flex;flex-direction:column;gap:16px;">
     <div class="card fade-up">
@@ -122,7 +97,16 @@ $meals = [
 {{-- ROW TEMPLATE --}}
 <template id="rowTemplate">
 <div class="food-row" style="margin-bottom:12px;padding:12px;background:var(--bg);border-radius:10px;border:1px solid var(--border);">
-    <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;">
+    <div style="display:grid;grid-template-columns:130px 1fr 1fr auto;gap:8px;align-items:end;">
+        <div>
+            <label style="font-size:11.5px;color:var(--text-muted);margin-bottom:3px;display:block;">Waktu Makan</label>
+            <select name="waktu_makan[]" class="form-control wkt-field" required style="padding:9px;">
+                <option value="pagi">Pagi</option>
+                <option value="siang">Siang</option>
+                <option value="malam">Malam</option>
+                <option value="snack">Snack</option>
+            </select>
+        </div>
         <div style="position:relative;">
             <label style="font-size:11.5px;color:var(--text-muted);margin-bottom:3px;display:block;">Nama Makanan</label>
             <div style="position:relative;">
@@ -147,7 +131,6 @@ $meals = [
         <input type="hidden" class="pro-field" name="protein[]" value="0">
         <input type="hidden" class="kar-field" name="karbohidrat[]" value="0">
         <input type="hidden" class="lem-field" name="lemak[]" value="0">
-        <input type="hidden" class="wkt-field" name="waktu_makan[]" value="">
     </div>
     <div class="nutrisi-mini" style="margin-top:8px;font-size:11.5px;color:var(--text-muted);display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
         <span><i data-feather="zap"></i> <span class="d-kal">0</span> kkal</span>
@@ -232,38 +215,45 @@ function getPorsiTipe(nama) {
   return {tipe:'padat', def:3};
 }
 let currentAkg = null;
-const waktuList = ['pagi','siang','malam','snack'];
 let searchTimers = {};
 
 window.addEventListener('DOMContentLoaded', () => {
-    waktuList.forEach(w => tambahBaris(w));
+    tambahBaris();
     const sel = document.getElementById('anakSelect');
     if (sel.value) updateAkg(sel);
+
+    // Before submit: remove empty rows to allow partial save
+    document.getElementById('formRecall').addEventListener('submit', function(e) {
+        const allRows = document.querySelectorAll('.food-row');
+        let filledCount = 0;
+        allRows.forEach(row => {
+            const input = row.querySelector('.food-search-input');
+            if (!input.value.trim()) {
+                // Remove required so validation passes, then remove the row
+                input.removeAttribute('required');
+                row.remove();
+            } else {
+                filledCount++;
+            }
+        });
+        if (filledCount === 0) {
+            e.preventDefault();
+            alert('Minimal 1 makanan harus diisi!');
+            tambahBaris();
+        }
+    });
 });
 
-function switchTab(key) {
-    waktuList.forEach(w => {
-        document.getElementById('pane-'+w).style.display = w===key?'block':'none';
-        const btn = document.getElementById('tab-'+w);
-        btn.style.background = w===key?'var(--primary)':'var(--card)';
-        btn.style.color = w===key?'#fff':'var(--text-muted)';
-    });
-}
-
-function tambahBaris(waktu) {
+function tambahBaris() {
     const tmpl = document.getElementById('rowTemplate').content.cloneNode(true);
     const row  = tmpl.querySelector('.food-row');
-    row.querySelector('.wkt-field').value = waktu;
-    document.getElementById('rows-'+waktu).appendChild(row);
-    updateCount(waktu);
+    document.getElementById('rows-container').appendChild(row);
+    if(typeof feather !== 'undefined') feather.replace();
 }
 
 function hapusBaris(btn) {
-    const row   = btn.closest('.food-row');
-    const waktu = row.querySelector('.wkt-field').value;
+    const row = btn.closest('.food-row');
     row.remove();
-    updateTotalWaktu(waktu);
-    updateCount(waktu);
     updateGrandTotal();
 }
 
@@ -487,22 +477,7 @@ function recalcRow(input) {
     row.querySelector('.d-pro').textContent = pro;
     row.querySelector('.d-kar').textContent = kar;
     row.querySelector('.d-lem').textContent = lem;
-    updateTotalWaktu(row.querySelector('.wkt-field').value);
     updateGrandTotal();
-}
-
-function updateTotalWaktu(waktu) {
-    let kal=0,pro=0,kar=0,lem=0;
-    document.querySelectorAll(`#rows-${waktu} .food-row`).forEach(r=>{
-        kal+=parseFloat(r.querySelector('.kal-field').value)||0;
-        pro+=parseFloat(r.querySelector('.pro-field').value)||0;
-        kar+=parseFloat(r.querySelector('.kar-field').value)||0;
-        lem+=parseFloat(r.querySelector('.lem-field').value)||0;
-    });
-    document.getElementById('total-kal-'+waktu).textContent=Math.round(kal*10)/10;
-    document.getElementById('total-pro-'+waktu).textContent=Math.round(pro*10)/10;
-    document.getElementById('total-kar-'+waktu).textContent=Math.round(kar*10)/10;
-    document.getElementById('total-lem-'+waktu).textContent=Math.round(lem*10)/10;
 }
 
 function updateGrandTotal() {
@@ -530,12 +505,7 @@ function updateGrandTotal() {
     });
 }
 
-function updateCount(waktu) {
-    const count = document.querySelectorAll(`#rows-${waktu} .food-row`).length;
-    const badge = document.getElementById('count-'+waktu);
-    badge.textContent = count;
-    badge.style.display = count>0?'inline-block':'none';
-}
+
 
 function updateAkg(sel) {
     const umur = parseInt(sel.options[sel.selectedIndex]?.dataset?.umur)||0;

@@ -7,7 +7,7 @@
     <div class="flex justify-between items-center">
         <div>
             <h1 class="text-2xl font-bold text-on-surface"><i data-feather="coffee"></i> Catat Makan</h1>
-            <p class="text-sm text-on-surface-variant mt-1">Input asupan gizi harian anak</p>
+            <p class="text-sm text-on-surface-variant mt-1">Riwayat asupan gizi harian anak</p>
         </div>
         <a href="{{ route('recall.create') }}" class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary active:scale-95 transition-transform">
             <span class="material-symbols-outlined text-2xl">add</span>
@@ -97,50 +97,54 @@
     </div>
     @endif
 
-    <!-- List Asupan -->
+    <!-- List Recall Grouped by Date -->
     <div class="space-y-4">
         @forelse($recalls as $r)
-        <div class="bg-surface-container-lowest rounded-[24px] p-5 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
+        <a href="{{ route('recall.detail', [$r->anak_id, $r->tanggal->format('Y-m-d')]) }}" class="block bg-surface-container-lowest rounded-[24px] p-5 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low active:scale-[0.99] transition-transform">
             <div class="flex justify-between items-start mb-3">
                 <div>
-                    <span class="inline-block bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide mb-2">{{ $r->waktu_makan_label }}</span>
-                    <h3 class="text-base font-bold text-on-surface leading-tight">{{ $r->nama_makanan }}</h3>
-                    <p class="text-xs text-on-surface-variant font-medium mt-1">{{ $r->jumlah }} {{ $r->satuan }} • {{ $r->anak->nama_anak }}</p>
+                    <h3 class="text-base font-bold text-on-surface leading-tight">{{ $r->tanggal->translatedFormat('d M Y') }}</h3>
+                    <p class="text-xs text-on-surface-variant font-medium mt-1">{{ $r->anak->nama_anak }} • {{ $r->jumlah_item }} makanan</p>
                 </div>
                 <div class="text-right">
-                    <span class="text-lg font-extrabold text-[#f59e0b]">{{ $r->kalori }}</span> <span class="text-[10px] text-on-surface-variant font-medium">kkal</span>
-                    <p class="text-[10px] text-on-surface-variant font-semibold mt-1">{{ $r->tanggal->format('d M Y') }}</p>
+                    <span class="text-lg font-extrabold text-[#f59e0b]">{{ number_format($r->total_kalori, 0) }}</span> <span class="text-[10px] text-on-surface-variant font-medium">kkal</span>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 bg-surface-container p-3 rounded-2xl text-center text-xs font-semibold text-on-surface-variant mb-4">
+            <!-- Waktu Makan Badges -->
+            <div class="flex flex-wrap gap-1.5 mb-3">
+                @php
+                    $waktuMeta = [
+                        'pagi'  => ['label' => '🌅 Pagi',  'bg' => 'bg-amber-500/10',  'text' => 'text-amber-600'],
+                        'siang' => ['label' => '☀️ Siang', 'bg' => 'bg-green-500/10',  'text' => 'text-green-600'],
+                        'malam' => ['label' => '🌙 Malam', 'bg' => 'bg-purple-500/10', 'text' => 'text-purple-600'],
+                        'snack' => ['label' => '🍎 Snack', 'bg' => 'bg-red-500/10',    'text' => 'text-red-600'],
+                    ];
+                @endphp
+                @foreach($r->waktu_list as $w)
+                    <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full {{ $waktuMeta[$w]['bg'] ?? 'bg-gray-100' }} {{ $waktuMeta[$w]['text'] ?? 'text-gray-600' }}">{{ $waktuMeta[$w]['label'] ?? $w }}</span>
+                @endforeach
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 bg-surface-container p-3 rounded-2xl text-center text-xs font-semibold text-on-surface-variant">
                 <div>
                     <span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Pro</span>
-                    {{ $r->protein }}g
+                    {{ number_format($r->total_protein,1) }}g
                 </div>
                 <div>
                     <span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Karbo</span>
-                    {{ $r->karbohidrat }}g
+                    {{ number_format($r->total_karbo,1) }}g
                 </div>
                 <div>
                     <span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Lemak</span>
-                    {{ $r->lemak }}g
+                    {{ number_format($r->total_lemak,1) }}g
                 </div>
             </div>
 
-            <div class="flex justify-between items-center pt-3 border-t border-surface-container-high">
-                <a href="{{ route('anak.show', $r->anak) }}" class="text-xs font-bold text-primary flex items-center gap-1 active:scale-95 transition-transform">
-                    <span class="material-symbols-outlined text-sm">visibility</span> Detail Anak
-                </a>
-                
-                <form method="POST" action="{{ route('recall.destroy', $r) }}" onsubmit="return confirm('Hapus data ini?')" class="m-0">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="text-xs font-bold text-error flex items-center gap-1 bg-error/10 px-3 py-1.5 rounded-lg active:scale-95 transition-transform">
-                        <span class="material-symbols-outlined text-sm">delete</span> Hapus
-                    </button>
-                </form>
+            <div class="flex items-center justify-end mt-3 text-xs font-bold text-primary gap-1">
+                <span class="material-symbols-outlined text-sm">visibility</span> Lihat Detail
             </div>
-        </div>
+        </a>
         @empty
         <div class="bg-surface-container-lowest rounded-3xl p-8 text-center shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
             <div class="w-16 h-16 mx-auto bg-primary/10 rounded-full flex items-center justify-center text-3xl mb-4"><i data-feather="coffee"></i></div>

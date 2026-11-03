@@ -2,14 +2,6 @@
 @section('title', 'Catat Makan')
 
 @section('content')
-@php
-$meals = [
-    'pagi'  => ['label'=>'Pagi',  'icon'=>'wb_sunny',   'color'=>'text-amber-500', 'bg'=>'bg-amber-500/10', 'border'=>'border-amber-500'],
-    'siang' => ['label'=>'Siang', 'icon'=>'light_mode',  'color'=>'text-green-500',  'bg'=>'bg-green-500/10',  'border'=>'border-green-500'],
-    'malam' => ['label'=>'Malam', 'icon'=>'nights_stay', 'color'=>'text-purple-500', 'bg'=>'bg-purple-500/10', 'border'=>'border-purple-500'],
-    'snack' => ['label'=>'Snack', 'icon'=>'cookie',      'color'=>'text-red-500',    'bg'=>'bg-red-500/10',    'border'=>'border-red-500'],
-];
-@endphp
 
 <div class="space-y-6 pb-24">
     <!-- Header -->
@@ -75,57 +67,17 @@ $meals = [
             </div>
         </div>
 
-        <!-- Tab Makanan -->
-        <div>
-            <div class="flex bg-surface-container-low rounded-2xl p-1 mb-4">
-                @foreach($meals as $key=>$m)
-                <button type="button" onclick="switchTab('{{ $key }}')" id="tab-{{ $key }}" class="flex-1 py-3 text-xs font-bold rounded-xl flex flex-col items-center gap-1 transition-all {{ $loop->first ? 'bg-primary text-on-primary shadow-sm' : 'text-on-surface-variant hover:text-on-surface' }}">
-                    <span class="material-symbols-outlined text-xl">{{ $m['icon'] }}</span>
-                    <span class="flex items-center gap-1">
-                        {{ $m['label'] }}
-                        <span id="count-{{ $key }}" class="hidden text-[9px] bg-white/20 px-1.5 py-0.5 rounded-full">0</span>
-                    </span>
+        <!-- Container Daftar Makanan -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
+            <div class="flex justify-between items-center mb-4 pb-4 border-b border-surface-container-low">
+                <span class="text-sm font-bold flex items-center gap-2 text-on-surface">
+                    <span class="material-symbols-outlined text-lg">list</span> Daftar Makanan
+                </span>
+                <button type="button" onclick="tambahBaris()" class="px-4 py-2 bg-primary/10 text-primary rounded-xl text-xs font-extrabold active:scale-95 transition-transform flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm font-bold">add</span> Tambah
                 </button>
-                @endforeach
             </div>
-
-            @foreach($meals as $key=>$m)
-            <div id="pane-{{ $key }}" class="space-y-4 {{ $loop->first ? 'block' : 'hidden' }}">
-                <div class="flex justify-between items-center bg-surface-container-lowest px-4 py-3 rounded-2xl border border-surface-container-low">
-                    <span class="text-xs font-bold flex items-center gap-1.5 {{ $m['color'] }}">
-                        <span class="material-symbols-outlined text-lg">{{ $m['icon'] }}</span> Menu {{ $m['label'] }}
-                    </span>
-                    <button type="button" onclick="tambahBaris('{{ $key }}')" class="px-4 py-2 {{ $m['bg'] }} {{ $m['color'] }} rounded-xl text-xs font-extrabold active:scale-95 transition-transform flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm font-bold">add</span> Tambah
-                    </button>
-                </div>
-
-                <!-- Container Baris Makanan -->
-                <div id="rows-{{ $key }}" class="space-y-4"></div>
-
-                <!-- Subtotal Gizi Per Waktu -->
-                <div class="p-4 rounded-2xl {{ $m['bg'] }} {{ $m['color'] }} text-xs font-bold">
-                    <div class="grid grid-cols-4 gap-2 text-center">
-                        <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">⚡ Kalori</span>
-                            <span id="total-kal-{{ $key }}">0</span> <span class="text-[9px]">kkal</span>
-                        </div>
-                        <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🥩 Pro</span>
-                            <span id="total-pro-{{ $key }}">0</span> <span class="text-[9px]">g</span>
-                        </div>
-                        <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🌾 Karbo</span>
-                            <span id="total-kar-{{ $key }}">0</span> <span class="text-[9px]">g</span>
-                        </div>
-                        <div>
-                            <span class="text-[9px] block opacity-80 uppercase mb-0.5">🫒 Lemak</span>
-                            <span id="total-lem-{{ $key }}">0</span> <span class="text-[9px]">g</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endforeach
+            <div id="rows-container" class="space-y-4"></div>
         </div>
 
         <!-- Button Simpan -->
@@ -149,7 +101,18 @@ $meals = [
     </div>
 
     <!-- Input Fields -->
-    <div class="px-4 pb-3">
+    <div class="px-4 pb-3 space-y-3">
+        <!-- Waktu Makan -->
+        <div>
+            <label class="block text-[10px] font-bold text-on-surface-variant mb-1 ml-0.5">Waktu Makan <span class="text-error">*</span></label>
+            <select name="waktu_makan[]" required class="wkt-field w-full px-4 py-2.5 bg-surface-container-low border border-transparent rounded-xl text-xs focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-bold">
+                <option value="pagi">Pagi</option>
+                <option value="siang">Siang</option>
+                <option value="malam">Malam</option>
+                <option value="snack">Snack</option>
+            </select>
+        </div>
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <!-- Nama Makanan -->
             <div class="relative">
@@ -190,7 +153,6 @@ $meals = [
     <input type="hidden" class="pro-field" name="protein[]" value="0">
     <input type="hidden" class="kar-field" name="karbohidrat[]" value="0">
     <input type="hidden" class="lem-field" name="lemak[]" value="0">
-    <input type="hidden" class="wkt-field" name="waktu_makan[]" value="">
 </div>
 </template>
 
@@ -265,43 +227,44 @@ function getPorsiTipe(nama) {
   return {tipe:'padat', def:3};
 }
 let currentAkg = null;
-const waktuList = ['pagi','siang','malam','snack'];
 let searchTimers = {};
 
 window.addEventListener('DOMContentLoaded', () => {
-    waktuList.forEach(w => tambahBaris(w));
+    tambahBaris();
     const sel = document.getElementById('anakSelect');
     if (sel.value) updateAkg(sel);
-});
 
-function switchTab(key) {
-    waktuList.forEach(w => {
-        document.getElementById('pane-'+w).style.display = w===key?'block':'none';
-        const btn = document.getElementById('tab-'+w);
-        if (w===key) {
-            btn.classList.add('bg-primary', 'text-on-primary', 'shadow-sm');
-            btn.classList.remove('text-on-surface-variant');
-        } else {
-            btn.classList.remove('bg-primary', 'text-on-primary', 'shadow-sm');
-            btn.classList.add('text-on-surface-variant');
+    // Before submit: remove empty rows to allow partial save
+    document.getElementById('formRecall').addEventListener('submit', function(e) {
+        const allRows = document.querySelectorAll('.food-row');
+        let filledCount = 0;
+        allRows.forEach(row => {
+            const input = row.querySelector('.food-search-input');
+            if (!input.value.trim()) {
+                // Remove required so validation passes, then remove the row
+                input.removeAttribute('required');
+                row.remove();
+            } else {
+                filledCount++;
+            }
+        });
+        if (filledCount === 0) {
+            e.preventDefault();
+            alert('Minimal 1 makanan harus diisi!');
+            tambahBaris();
         }
     });
-}
+});
 
-function tambahBaris(waktu) {
+function tambahBaris() {
     const tmpl = document.getElementById('rowTemplate').content.cloneNode(true);
     const row  = tmpl.querySelector('.food-row');
-    row.querySelector('.wkt-field').value = waktu;
-    document.getElementById('rows-'+waktu).appendChild(row);
-    updateCount(waktu);
+    document.getElementById('rows-container').appendChild(row);
 }
 
 function hapusBaris(btn) {
-    const row   = btn.closest('.food-row');
-    const waktu = row.querySelector('.wkt-field').value;
+    const row = btn.closest('.food-row');
     row.remove();
-    updateTotalWaktu(waktu);
-    updateCount(waktu);
     updateGrandTotal();
 }
 
@@ -509,22 +472,7 @@ function recalcRow(input) {
     row.querySelector('.d-pro').textContent = pro;
     row.querySelector('.d-kar').textContent = kar;
     row.querySelector('.d-lem').textContent = lem;
-    updateTotalWaktu(row.querySelector('.wkt-field').value);
     updateGrandTotal();
-}
-
-function updateTotalWaktu(waktu) {
-    let kal=0,pro=0,kar=0,lem=0;
-    document.querySelectorAll(`#rows-${waktu} .food-row`).forEach(r=>{
-        kal+=parseFloat(r.querySelector('.kal-field').value)||0;
-        pro+=parseFloat(r.querySelector('.pro-field').value)||0;
-        kar+=parseFloat(r.querySelector('.kar-field').value)||0;
-        lem+=parseFloat(r.querySelector('.lem-field').value)||0;
-    });
-    document.getElementById('total-kal-'+waktu).textContent=Math.round(kal*10)/10;
-    document.getElementById('total-pro-'+waktu).textContent=Math.round(pro*10)/10;
-    document.getElementById('total-kar-'+waktu).textContent=Math.round(kar*10)/10;
-    document.getElementById('total-lem-'+waktu).textContent=Math.round(lem*10)/10;
 }
 
 function updateGrandTotal() {
@@ -552,16 +500,7 @@ function updateGrandTotal() {
     });
 }
 
-function updateCount(waktu) {
-    const count = document.querySelectorAll(`#rows-${waktu} .food-row`).length;
-    const badge = document.getElementById('count-'+waktu);
-    badge.textContent = count;
-    if (count>0) {
-        badge.classList.remove('hidden');
-    } else {
-        badge.classList.add('hidden');
-    }
-}
+
 
 function updateAkg(sel) {
     const umur = parseInt(sel.options[sel.selectedIndex]?.dataset?.umur)||0;

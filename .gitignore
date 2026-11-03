@@ -25,3 +25,18 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Ignore compiled/cached files
+/bootstrap/cache/*.php
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+
+# Ignore database files
+/database/*.sqlite
+/database/*.sqlite-journal
+
+# Ignore debug/test files
+gen.php
+test-pdf.php
+replace_emojis.php

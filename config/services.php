@@ -41,4 +41,8 @@ return [
         'from'  => env('TWILIO_FROM'),
     ],
 
+    'fonnte' => [
+        'token' => env('FONNTE_TOKEN'),
+    ],
+
 ];

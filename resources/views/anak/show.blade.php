@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div style="margin-top:14px;text-align:center;">
-                    <a href="{{ route('recall.index') }}?anak_id={{ $anak->id }}" class="btn btn-outline btn-sm">Lihat Riwayat Asupan</a>
+                    <button type="button" onclick="openHistoryModal()" class="btn btn-outline btn-sm"><i data-feather="calendar"></i> Lihat Riwayat Gizi</button>
                 </div>
                 @else
                 <div class="empty-state" style="padding:10px;">
@@ -224,6 +224,23 @@
     </div>
 </div>
 
+<!-- Modal Riwayat Gizi -->
+<div id="historyModal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:9999;align-items:center;justify-content:center;">
+    <div style="background:var(--card);width:90%;max-width:500px;border-radius:12px;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-weight:700;font-size:15px;display:flex;align-items:center;gap:8px;"><i data-feather="history"></i> Riwayat Gizi</div>
+            <button onclick="closeHistoryModal()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);"><i data-feather="x"></i></button>
+        </div>
+        <div id="historyModalBody" style="padding:20px;overflow-y:auto;flex:1;">
+            <div style="text-align:center;padding:30px;"><i data-feather="loader" class="spin"></i><div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Memuat data...</div></div>
+        </div>
+    </div>
+</div>
+<style>
+@keyframes spin { 100% { transform:rotate(360deg); } }
+.spin { animation:spin 1s linear infinite; }
+</style>
+
 @push('scripts')
 <script>
 window.addEventListener('load', function () {
@@ -363,6 +380,49 @@ window.addEventListener('load', function () {
         });
     });
 });
+
+function openHistoryModal() {
+    document.getElementById('historyModal').style.display = 'flex';
+    const body = document.getElementById('historyModalBody');
+    body.innerHTML = '<div style="text-align:center;padding:30px;"><i data-feather="loader" class="spin"></i><div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Memuat data...</div></div>';
+    if(typeof feather !== 'undefined') feather.replace();
+
+    fetch(`{{ route('recall.history', $anak->id) }}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data.length === 0) {
+                body.innerHTML = '<div style="text-align:center;padding:30px;"><i data-feather="coffee" style="opacity:0.3;width:32px;height:32px;margin-bottom:10px;"></i><div style="font-weight:600;">Belum ada riwayat</div></div>';
+                if(typeof feather !== 'undefined') feather.replace();
+                return;
+            }
+            let html = '<div style="display:flex;flex-direction:column;gap:12px;">';
+            data.forEach(d => {
+                html += `
+                <div style="border:1px solid var(--border);border-radius:10px;padding:14px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                        <div style="font-weight:700;font-size:13px;">${d.tanggal_label}</div>
+                        <div style="font-weight:800;color:var(--primary);font-size:13px;">${Math.round(d.total_kalori)} <span style="font-size:10px;font-weight:500;color:var(--text-muted);">kkal</span></div>
+                    </div>
+                    <div style="display:flex;gap:10px;font-size:11px;color:var(--text-muted);background:var(--bg);padding:8px;border-radius:8px;justify-content:space-around;">
+                        <div><strong style="color:var(--text-main);">${Math.round(d.total_protein)}g</strong> Pro</div>
+                        <div><strong style="color:var(--text-main);">${Math.round(d.total_karbo)}g</strong> Karbo</div>
+                        <div><strong style="color:var(--text-main);">${Math.round(d.total_lemak)}g</strong> Lemak</div>
+                    </div>
+                    <a href="/recall/detail/{{ $anak->id }}/${d.tanggal}" class="btn btn-outline btn-sm" style="width:100%;margin-top:10px;text-align:center;">Lihat Detail Menu</a>
+                </div>`;
+            });
+            html += '</div>';
+            body.innerHTML = html;
+            if(typeof feather !== 'undefined') feather.replace();
+        })
+        .catch(err => {
+            body.innerHTML = '<div style="text-align:center;padding:30px;color:var(--danger);font-size:12px;font-weight:600;">Gagal memuat data.</div>';
+        });
+}
+
+function closeHistoryModal() {
+    document.getElementById('historyModal').style.display = 'none';
+}
 </script>
 @endpush
 @endsection

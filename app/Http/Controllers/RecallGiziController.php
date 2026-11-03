@@ -52,6 +52,9 @@ class RecallGiziController extends Controller
         return FoodNutritionService::getLocalDatabase();
     }
 
+    /**
+     * Index — grouped by date + anak
+     */
     public function index(Request $request)
     {
         $query = RecallGizi::with('anak.ibu');
@@ -59,7 +62,6 @@ class RecallGiziController extends Controller
         if (!auth()->user()->isAdmin()) {
             $ibu = auth()->user()->ibu;
             if (!$ibu) return redirect()->route('onboarding');
-            // Filter global recall list to only their children
             $query->whereHas('anak', function($q) use ($ibu) {
                 $q->where('ibu_id', $ibu->id);
             });
@@ -72,7 +74,35 @@ class RecallGiziController extends Controller
         }
         if ($request->tanggal) $query->whereDate('tanggal', $request->tanggal);
 
-        $recalls  = $query->orderBy('tanggal', 'desc')->paginate(20);
+        // Group by date + anak_id for display
+        $recallsRaw = $query->orderBy('tanggal', 'desc')->get();
+
+        $grouped = $recallsRaw->groupBy(function ($item) {
+            return $item->tanggal->format('Y-m-d') . '|' . $item->anak_id;
+        })->map(function ($items, $key) {
+            $first = $items->first();
+            return (object)[
+                'anak'           => $first->anak,
+                'anak_id'        => $first->anak_id,
+                'tanggal'        => $first->tanggal,
+                'jumlah_item'    => $items->count(),
+                'total_kalori'   => $items->sum('kalori'),
+                'total_protein'  => $items->sum('protein'),
+                'total_karbo'    => $items->sum('karbohidrat'),
+                'total_lemak'    => $items->sum('lemak'),
+                'waktu_list'     => $items->pluck('waktu_makan')->unique()->values()->toArray(),
+            ];
+        })->values();
+
+        // Manual pagination
+        $page    = $request->get('page', 1);
+        $perPage = 15;
+        $total   = $grouped->count();
+        $items   = $grouped->slice(($page - 1) * $perPage, $perPage)->values();
+        $recalls = new \Illuminate\Pagination\LengthAwarePaginator(
+            $items, $total, $perPage, $page,
+            ['path' => $request->url(), 'query' => $request->query()]
+        );
 
         if (auth()->user()->isAdmin()) {
             $anakList = Anak::orderBy('nama_anak')->get();
@@ -131,20 +161,18 @@ class RecallGiziController extends Controller
 
     /**
      * Batch store — accepts arrays of food items per waktu makan
+     * Now allows partial save (not all meal times need to be filled)
      */
     public function store(Request $request)
     {
         $request->validate([
             'anak_id'         => 'required|exists:anak,id',
             'tanggal'         => 'required|date',
-            'nama_makanan'    => 'required|array|min:1',
-            'nama_makanan.*'  => 'required|string|max:255',
+            'nama_makanan'    => 'required|array',
             'waktu_makan'     => 'required|array',
             'waktu_makan.*'   => 'required|in:pagi,siang,malam,snack',
             'jumlah'          => 'required|array',
-            'jumlah.*'        => 'required|numeric|min:0',
             'satuan'          => 'required|array',
-            'satuan.*'        => 'required|string|max:50',
             'kalori'          => 'nullable|array',
             'protein'         => 'nullable|array',
             'karbohidrat'     => 'nullable|array',
@@ -156,7 +184,9 @@ class RecallGiziController extends Controller
 
         $saved = 0;
         foreach ($request->nama_makanan as $i => $nama) {
-            if (empty($nama)) continue;
+            // Skip empty food rows (partial save support)
+            if (empty(trim($nama))) continue;
+
             RecallGizi::create([
                 'anak_id'      => $request->anak_id,
                 'tanggal'      => $request->tanggal,
@@ -172,8 +202,96 @@ class RecallGiziController extends Controller
             $saved++;
         }
 
+        if ($saved === 0) {
+            return back()->withInput()->with('error', 'Minimal 1 makanan harus diisi!');
+        }
+
         return redirect()->route('recall.index', ['anak_id' => $request->anak_id])
             ->with('success', "{$saved} asupan berhasil disimpan!");
+    }
+
+    /**
+     * Show detail recall gizi for a specific anak + date
+     */
+    public function showDetail($anak_id, $tanggal)
+    {
+        $anak = Anak::with('ibu')->findOrFail($anak_id);
+        $this->checkAccess($anak);
+
+        $recalls = RecallGizi::where('anak_id', $anak_id)
+            ->whereDate('tanggal', $tanggal)
+            ->orderByRaw("FIELD(waktu_makan, 'pagi', 'siang', 'malam', 'snack')")
+            ->get();
+
+        if ($recalls->isEmpty()) {
+            return redirect()->route('recall.index', ['anak_id' => $anak_id])
+                ->with('error', 'Tidak ada data recall gizi untuk tanggal ini.');
+        }
+
+        $grouped = $recalls->groupBy('waktu_makan');
+        $akg     = self::getAkg($anak->umur_bulan);
+
+        $totals = [
+            'kalori'      => $recalls->sum('kalori'),
+            'protein'     => $recalls->sum('protein'),
+            'karbohidrat' => $recalls->sum('karbohidrat'),
+            'lemak'       => $recalls->sum('lemak'),
+        ];
+
+        $tanggalFormatted = \Carbon\Carbon::parse($tanggal);
+
+        if (!auth()->user()->isAdmin()) {
+            return view('recall.detail_user', compact('anak', 'grouped', 'akg', 'totals', 'tanggalFormatted', 'tanggal'));
+        }
+
+        return view('recall.detail', compact('anak', 'grouped', 'akg', 'totals', 'tanggalFormatted', 'tanggal'));
+    }
+
+    /**
+     * AJAX — Return recall gizi history for an anak (used in anak detail modal)
+     */
+    public function history($anak_id)
+    {
+        $anak = Anak::findOrFail($anak_id);
+        $this->checkAccess($anak);
+
+        $recalls = RecallGizi::where('anak_id', $anak_id)
+            ->orderBy('tanggal', 'desc')
+            ->get();
+
+        $grouped = $recalls->groupBy(function ($item) {
+            return $item->tanggal->format('Y-m-d');
+        })->map(function ($items, $date) {
+            $byWaktu = $items->groupBy('waktu_makan');
+            $waktuData = [];
+            foreach (['pagi', 'siang', 'malam', 'snack'] as $w) {
+                if ($byWaktu->has($w)) {
+                    $waktuData[$w] = $byWaktu[$w]->map(function ($r) {
+                        return [
+                            'nama'    => $r->nama_makanan,
+                            'jumlah'  => $r->jumlah,
+                            'satuan'  => $r->satuan,
+                            'kalori'  => (float) $r->kalori,
+                            'protein' => (float) $r->protein,
+                            'karbo'   => (float) $r->karbohidrat,
+                            'lemak'   => (float) $r->lemak,
+                        ];
+                    })->values();
+                }
+            }
+            return [
+                'tanggal'        => $date,
+                'tanggal_label'  => \Carbon\Carbon::parse($date)->translatedFormat('d M Y'),
+                'total_kalori'   => (float) $items->sum('kalori'),
+                'total_protein'  => (float) $items->sum('protein'),
+                'total_karbo'    => (float) $items->sum('karbohidrat'),
+                'total_lemak'    => (float) $items->sum('lemak'),
+                'jumlah_item'    => $items->count(),
+                'waktu'          => $waktuData,
+            ];
+        })->values();
+
+        return response()->json($grouped);
     }
 
     public function destroy(RecallGizi $recall)

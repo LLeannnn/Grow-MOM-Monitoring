@@ -20,7 +20,7 @@
         <div class="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-primary/10 to-transparent"></div>
         <div class="relative">
             <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-primary/20 to-primary/60 flex items-center justify-center text-white text-5xl shadow-inner mb-4 border-4 border-white">
-                {!! $anak->jenis_kelamin === 'L' ? '<i data-feather="user"></i>' : '<i data-feather="user"></i>' !!}
+                <span class="material-symbols-outlined text-5xl">{{ $anak->jenis_kelamin === 'L' ? 'boy' : 'girl' }}</span>
             </div>
             <h1 class="text-2xl font-bold text-on-surface mb-1">{{ $anak->nama_anak }}</h1>
             <p class="text-sm font-medium text-on-surface-variant">{{ $anak->umur_label }} • {{ $anak->jenis_kelamin_label }}</p>
@@ -79,7 +79,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl"><i data-feather="coffee"></i></span> Gizi Hari Ini
+                <span class="text-xl"><span class="material-symbols-outlined">restaurant</span></span> Gizi Hari Ini
             </h2>
             <span class="text-[11px] font-semibold text-on-surface-variant bg-surface-container py-1 px-3 rounded-full">{{ today()->format('d M Y') }}</span>
         </div>
@@ -89,7 +89,7 @@
                 <!-- Kalori -->
                 <div>
                     <div class="flex justify-between text-sm mb-1.5 font-semibold">
-                        <span class="text-on-surface"><i data-feather="zap"></i> Kalori</span>
+                        <span class="text-on-surface"><span class="material-symbols-outlined text-sm align-middle">local_fire_department</span> Kalori</span>
                         <span class="text-primary">{{ number_format($ringkasanHariIni->total_kalori,0) }} / {{ $akg['energi'] ?? 1000 }} kkal</span>
                     </div>
                     <div class="h-2.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -103,7 +103,7 @@
                     <!-- Protein -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span><i data-feather="hash"></i> Pro</span>
+                            <span><span class="material-symbols-outlined text-sm align-middle">egg_alt</span> Pro</span>
                             <span>{{ number_format($ringkasanHariIni->total_protein,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -114,7 +114,7 @@
                     <!-- Karbo -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span><i data-feather="hash"></i> Karbo</span>
+                            <span><span class="material-symbols-outlined text-sm align-middle">breakfast_dining</span> Karbo</span>
                             <span>{{ number_format($ringkasanHariIni->total_karbo,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -125,7 +125,7 @@
                     <!-- Lemak -->
                     <div>
                         <div class="text-[10px] font-bold text-on-surface-variant mb-1 flex justify-between">
-                            <span><i data-feather="hash"></i> Lemak</span>
+                            <span><span class="material-symbols-outlined text-sm align-middle">water_drop</span> Lemak</span>
                             <span>{{ number_format($ringkasanHariIni->total_lemak,1) }}g</span>
                         </div>
                         <div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
@@ -136,12 +136,12 @@
                 </div>
             </div>
             
-            <a href="{{ route('recall.index') }}?anak_id={{ $anak->id }}" class="mt-6 block w-full py-2.5 text-center bg-primary/10 text-primary font-bold text-sm rounded-xl active:scale-95 transition-transform">
-                Lihat Riwayat Asupan
-            </a>
+            <button type="button" onclick="openHistoryModal()" class="mt-6 block w-full py-2.5 text-center bg-primary/10 text-primary font-bold text-sm rounded-xl active:scale-95 transition-transform">
+                📅 Lihat Riwayat Gizi
+            </button>
         @else
             <div class="text-center py-6">
-                <div class="text-4xl mb-3 opacity-50"><i data-feather="coffee"></i></div>
+                <div class="text-4xl mb-3 opacity-50"><span class="material-symbols-outlined text-4xl">restaurant</span></div>
                 <p class="text-sm font-bold text-on-surface mb-1">Belum ada asupan</p>
                 <p class="text-xs text-on-surface-variant mb-4">Catat makanan anak hari ini</p>
                 <a href="{{ route('recall.create') }}?anak_id={{ $anak->id }}" class="inline-block px-6 py-2.5 bg-primary text-on-primary font-bold text-sm rounded-xl shadow-md active:scale-95 transition-transform">
@@ -155,7 +155,7 @@
     @if($anak->feedbackAnak->isNotEmpty())
     <div class="bg-secondary-container/5 rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-secondary-container/20">
         <h2 class="text-base font-bold text-secondary-container flex items-center gap-2 mb-4">
-            <span class="text-xl"><i data-feather="user"></i><i data-feather="activity"></i></span> Pesan Bidan / Admin
+            <span class="text-xl"><span class="material-symbols-outlined">medical_services</span></span> Pesan Bidan / Admin
         </h2>
         <div class="space-y-4">
             @foreach($anak->feedbackAnak as $fbManual)
@@ -175,7 +175,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl"><i data-feather="trending-up"></i></span> Kurva WHO
+                <span class="text-xl"><span class="material-symbols-outlined">trending_up</span></span> Kurva WHO
             </h2>
             <div class="flex gap-1 bg-surface-container-low p-1 rounded-xl overflow-x-auto" style="max-width: 60%; -ms-overflow-style: none; scrollbar-width: none;">
                 <button class="seg-btn px-3 py-1.5 text-[10px] font-bold rounded-lg whitespace-nowrap transition-all bg-primary text-on-primary shadow-sm" data-s="0" data-e="24">0-24</button>
@@ -221,9 +221,9 @@
     <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-[0px_5px_15px_rgba(30,41,59,0.03)] border border-surface-container-low">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-base font-bold text-on-surface flex items-center gap-2">
-                <span class="text-xl"><i data-feather="clipboard"></i></span> Riwayat Ukur
+                <span class="text-xl"><span class="material-symbols-outlined">assignment</span></span> Riwayat Ukur
             </h2>
-            <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="text-primary text-xs font-bold px-3 py-1.5 bg-primary/10 rounded-lg"><i data-feather="file-text"></i> PDF</a>
+            <a href="{{ route('pertumbuhan.export-pdf') }}?anak_id={{ $anak->id }}" class="text-primary text-xs font-bold px-3 py-1.5 bg-primary/10 rounded-lg"><span class="material-symbols-outlined text-sm align-middle">description</span> PDF</a>
         </div>
         
         <div class="space-y-3">
@@ -234,16 +234,31 @@
                     <span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-bold">{{ $p->status_gizi_badge['label'] }}</span>
                 </div>
                 <div class="flex gap-4 text-xs font-medium text-on-surface-variant">
-                    <span><i data-feather="activity"></i> {{ $p->berat_badan }} kg</span>
-                    <span><i data-feather="bar-chart-2"></i> {{ $p->tinggi_badan }} cm</span>
+                    <span><span class="material-symbols-outlined text-sm align-middle">scale</span> {{ $p->berat_badan }} kg</span>
+                    <span><span class="material-symbols-outlined text-sm align-middle">height</span> {{ $p->tinggi_badan }} cm</span>
                 </div>
             </div>
             @empty
             <div class="text-center py-6">
-                <span class="text-2xl opacity-50 block mb-2"><i data-feather="bar-chart-2"></i></span>
+                <span class="text-2xl opacity-50 block mb-2"><span class="material-symbols-outlined text-2xl">monitoring</span></span>
                 <p class="text-xs text-on-surface-variant">Belum ada data pengukuran</p>
             </div>
             @endforelse
+        </div>
+    </div>
+</div>
+
+<!-- Modal Riwayat Gizi -->
+<div id="historyModal" class="fixed inset-0 z-50 hidden" style="background: rgba(0,0,0,0.5);">
+    <div class="absolute inset-x-0 bottom-0 bg-surface-container-lowest rounded-t-3xl transition-transform transform translate-y-full flex flex-col" style="max-height: 85vh;" id="historyModalContent">
+        <div class="p-4 border-b border-surface-container-low flex justify-between items-center bg-surface-container-lowest rounded-t-3xl sticky top-0 z-10">
+            <h3 class="text-base font-bold text-on-surface flex items-center gap-2"><span class="material-symbols-outlined">history</span> Riwayat Gizi</h3>
+            <button type="button" onclick="closeHistoryModal()" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant active:scale-95 transition-transform">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1" id="historyModalBody">
+            <div class="text-center py-8"><span class="animate-spin material-symbols-outlined text-3xl text-primary">autorenew</span></div>
         </div>
     </div>
 </div>
@@ -384,6 +399,66 @@ window.addEventListener('load', function () {
         });
     });
 });
+
+function openHistoryModal() {
+    const modal = document.getElementById('historyModal');
+    const content = document.getElementById('historyModalContent');
+    const body = document.getElementById('historyModalBody');
+    
+    modal.classList.remove('hidden');
+    // slight delay for animation
+    setTimeout(() => {
+        content.classList.remove('translate-y-full');
+    }, 10);
+
+    body.innerHTML = '<div class="text-center py-8"><span class="animate-spin material-symbols-outlined text-3xl text-primary">autorenew</span><div class="text-xs text-on-surface-variant mt-2">Memuat data...</div></div>';
+
+    fetch(`{{ route('recall.history', $anak->id) }}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 0) {
+                body.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="text-4xl mb-3 opacity-30">📅</div>
+                        <p class="text-sm font-bold text-on-surface">Belum ada riwayat</p>
+                    </div>`;
+                return;
+            }
+
+            let html = '<div class="space-y-4">';
+            data.forEach(d => {
+                html += `
+                <div class="bg-surface-container-lowest border border-surface-container-low rounded-2xl p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <div class="font-bold text-sm text-on-surface">${d.tanggal_label}</div>
+                        <div class="text-primary font-bold text-sm">${Math.round(d.total_kalori)} <span class="text-[10px] text-on-surface-variant font-medium">kkal</span></div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-2 bg-surface-container p-2.5 rounded-xl text-center text-xs font-semibold text-on-surface-variant mb-3">
+                        <div><span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Pro</span>${Math.round(d.total_protein)}g</div>
+                        <div><span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Karbo</span>${Math.round(d.total_karbo)}g</div>
+                        <div><span class="text-[9px] block text-on-surface-variant/60 font-bold uppercase">Lemak</span>${Math.round(d.total_lemak)}g</div>
+                    </div>
+                    
+                    <a href="/recall/detail/{{ $anak->id }}/${d.tanggal}" class="block w-full py-2 text-center text-xs font-bold text-primary bg-primary/10 rounded-xl active:scale-95 transition-transform">Lihat Detail Menu</a>
+                </div>`;
+            });
+            html += '</div>';
+            body.innerHTML = html;
+        })
+        .catch(err => {
+            body.innerHTML = '<div class="text-center py-8 text-error text-xs font-bold">Gagal memuat data.</div>';
+        });
+}
+
+function closeHistoryModal() {
+    const modal = document.getElementById('historyModal');
+    const content = document.getElementById('historyModalContent');
+    content.classList.add('translate-y-full');
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
 </script>
 @endpush
 @endsection

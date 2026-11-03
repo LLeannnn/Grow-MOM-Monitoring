@@ -33,7 +33,7 @@
     <div class="card fade-up">
         <div class="card-body" style="padding:16px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-                <span style="font-size:20px;">{{ $cfg['icon'] }}</span>
+                <span style="font-size:20px;">{!! $cfg['icon'] !!}</span>
                 <span style="font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;">{{ $cfg['label'] }}</span>
             </div>
             <div style="font-size:22px;font-weight:800;color:var(--text-main);">

@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
     // Recall Gizi (user dapat input untuk anak sendiri)
     Route::get('recall/food-search', [RecallGiziController::class, 'searchFood'])->name('recall.food-search');
     Route::get('recall/export-pdf',  [RecallGiziController::class, 'exportPdf'])->name('recall.export-pdf');
+    Route::get('recall/history/{anak_id}', [RecallGiziController::class, 'history'])->name('recall.history');
+    Route::get('recall/detail/{anak_id}/{tanggal}', [RecallGiziController::class, 'showDetail'])->name('recall.detail');
     Route::resource('recall', RecallGiziController::class)->except(['edit','update','show']);
 
     // Data Anak (user dapat tambah anak sendiri)

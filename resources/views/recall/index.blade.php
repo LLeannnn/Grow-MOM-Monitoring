@@ -66,12 +66,12 @@
 
 <div class="card fade-up">
     <div class="card-header">
-        <div class="card-title"><i data-feather="coffee"></i> Daftar Asupan ({{ $recalls->total() }})</div>
+        <div class="card-title"><i data-feather="coffee"></i> Daftar Recall Gizi ({{ $recalls->total() }} hari)</div>
     </div>
     <div class="table-wrap">
         <table>
             <thead><tr>
-                <th>Anak</th><th>Tanggal</th><th>Waktu</th><th>Makanan</th>
+                <th>Anak</th><th>Tanggal</th><th>Waktu Makan</th><th>Jumlah Item</th>
                 <th>Kalori</th><th>Protein</th><th>Karbo</th><th>Lemak</th><th>Aksi</th>
             </tr></thead>
             <tbody>
@@ -80,23 +80,30 @@
                     <td>
                         <div style="font-weight:600;font-size:13px;">{{ $r->anak->nama_anak }}</div>
                     </td>
-                    <td>{{ $r->tanggal->format('d M Y') }}</td>
-                    <td><span class="badge badge-neutral">{{ $r->waktu_makan_label }}</span></td>
+                    <td><strong>{{ $r->tanggal->format('d M Y') }}</strong></td>
                     <td>
-                        <div style="font-weight:600;">{{ $r->nama_makanan }}</div>
-                        <div style="font-size:11.5px;color:var(--text-muted);">{{ $r->jumlah }} {{ $r->satuan }}</div>
+                        <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                            @php
+                                $waktuLabels = [
+                                    'pagi'  => ['label' => '🌅 Pagi',  'color' => '#f59e0b'],
+                                    'siang' => ['label' => '☀️ Siang', 'color' => '#16a34a'],
+                                    'malam' => ['label' => '🌙 Malam', 'color' => '#7c3aed'],
+                                    'snack' => ['label' => '🍎 Snack', 'color' => '#ef4444'],
+                                ];
+                            @endphp
+                            @foreach($r->waktu_list as $w)
+                                <span class="badge badge-neutral" style="font-size:10px;background:{{ $waktuLabels[$w]['color'] ?? '#888' }}15;color:{{ $waktuLabels[$w]['color'] ?? '#888' }};border:1px solid {{ $waktuLabels[$w]['color'] ?? '#888' }}30;">{{ $waktuLabels[$w]['label'] ?? $w }}</span>
+                            @endforeach
+                        </div>
                     </td>
-                    <td><span style="font-weight:700;color:var(--accent);">{{ $r->kalori }}</span> kkal</td>
-                    <td>{{ $r->protein }} g</td>
-                    <td>{{ $r->karbohidrat }} g</td>
-                    <td>{{ $r->lemak }} g</td>
+                    <td><span style="font-weight:700;">{{ $r->jumlah_item }}</span> makanan</td>
+                    <td><span style="font-weight:700;color:var(--accent);">{{ number_format($r->total_kalori,1) }}</span> kkal</td>
+                    <td>{{ number_format($r->total_protein,1) }} g</td>
+                    <td>{{ number_format($r->total_karbo,1) }} g</td>
+                    <td>{{ number_format($r->total_lemak,1) }} g</td>
                     <td>
                         <div style="display:flex;gap:6px;align-items:center;">
-                            <a href="{{ route('anak.show', $r->anak) }}" class="btn btn-outline btn-sm" title="Detail Anak"><i data-feather="eye"></i> Detail</a>
-                            <form method="POST" action="{{ route('recall.destroy', $r) }}" onsubmit="return confirm('Hapus?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm"><i data-feather="trash-2"></i></button>
-                            </form>
+                            <a href="{{ route('recall.detail', [$r->anak_id, $r->tanggal->format('Y-m-d')]) }}" class="btn btn-primary btn-sm"><i data-feather="eye"></i> Detail</a>
                         </div>
                     </td>
                 </tr>

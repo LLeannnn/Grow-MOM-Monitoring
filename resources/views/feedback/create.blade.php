@@ -79,7 +79,7 @@
             <div class="card-body">
                 @foreach([['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Sangat Puas — Semua fitur bekerja dengan baik'],['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Puas — Ada sedikit yang perlu diperbaiki'],['<i data-feather="star"></i><i data-feather="star"></i><i data-feather="star"></i>','Cukup — Beberapa fitur perlu peningkatan'],['<i data-feather="star"></i><i data-feather="star"></i>','Kurang — Banyak yang perlu diperbaiki'],['<i data-feather="star"></i>','Tidak Puas — Butuh perbaikan menyeluruh']] as [$stars,$desc])
                 <div style="display:flex;gap:10px;margin-bottom:10px;font-size:13px;">
-                    <span>{{ $stars }}</span>
+                    <span>{!! $stars !!}</span>
                     <span style="color:var(--text-muted);">{{ $desc }}</span>
                 </div>
                 @endforeach
